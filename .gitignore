@@ -24,6 +24,9 @@
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
+!/storage/uploads/
+!/storage/uploads/recordings/
+/storage/uploads/recordings/*
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
@@ -32,3 +35,4 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+

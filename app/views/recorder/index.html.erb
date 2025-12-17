@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Видеозапись</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "recorder", "data-turbo-track": "reload" %>
+
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📹 Видеозапись</h1>
+      <div class="status-indicator" id="status">
+        <span class="status-dot"></span>
+        <span class="status-text">Не подключено</span>
+      </div>
+    </div>
+
+    <div class="video-container">
+      <video id="preview" autoplay muted playsinline style="background: #000;"></video>
+      <div class="recording-indicator" id="recordingIndicator">
+        <span class="rec-dot"></span>
+        <span>REC</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" class="btn btn-primary">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+        </svg>
+        <span>Включить запись</span>
+      </button>
+    </div>
+
+    <div class="info-panel">
+      <div class="info-item">
+        <span class="label">Время:</span>
+        <span class="value" id="bufferInfo">00:00</span>
+      </div>
+      <div class="info-item">
+        <span class="label">WebSocket:</span>
+        <span class="value" id="wsStatus">Отключено</span>
+      </div>
+    </div>
+
+    <div class="log-container" id="logContainer">
+      <div class="log-header">Журнал событий</div>
+      <div class="log-content" id="logContent"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Load ActionCable from CDN
+    import { createConsumer } from 'https://cdn.jsdelivr.net/npm/@rails/actioncable@7.1.0/+esm'
+    
+    class RecorderApp {
+      constructor() {
+        // Config: 20s buffer, 1s chunk pacing
+        this.CHUNK_MS = 1000
+        this.BUFFER_MS = 20000
+
+        this.stream = null
+        this.mediaRecorder = null
+        this.isRecording = false
+        this.isUploading = false
+        this.lastUploadAt = Date.now()
+        this.timerId = null
+
+        // MediaRecorder chunks
+        this.headerChunk = null // first chunk with EBML header
+        this.bodyChunks = [] // { blob, durationMs, timestamp }
+        this.totalBodyMs = 0
+        this.lastChunkTime = null
+        
+        this.startBtn = document.getElementById('startBtn')
+        this.preview = document.getElementById('preview')
+        this.status = document.getElementById('status')
+        this.recordingIndicator = document.getElementById('recordingIndicator')
+        this.bufferInfo = document.getElementById('bufferInfo')
+        this.wsStatus = document.getElementById('wsStatus')
+        this.logContent = document.getElementById('logContent')
+        
+        this.init()
+      }
+      
+      init() {
+        this.deviceId = this.generateDeviceId()
+        this.log(`ID устройства: ${this.deviceId}`)
+        
+        // Cache supported mime type once
+        this.supportedMimeType = this.pickMimeType()
+        this.log(`Кодек: ${this.supportedMimeType || 'default'}`)
+        
+        // MAX QUALITY options
+        this.recorderOptions = this.supportedMimeType 
+          ? { mimeType: this.supportedMimeType, videoBitsPerSecond: 8000000 } // 8 Mbps
+          : { videoBitsPerSecond: 8000000 }
+        
+        this.wakeLock = null
+        
+        this.startBtn.addEventListener('click', () => this.toggleRecording())
+        this.connectWebSocket()
+        this.startTimer()
+        this.log('Приложение запущено')
+      }
+      
+      generateDeviceId() {
+        return Math.random().toString(36).substring(2, 10)
+      }
+      
+      pickMimeType() {
+        const cands = [
+          "video/webm;codecs=vp9,opus",
+          "video/webm;codecs=h264,opus", // Try H.264 for hardware acceleration
+          "video/webm;codecs=vp8,opus",
+          "video/webm"
+        ]
+        return cands.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || ""
+      }
+      
+      async requestWakeLock() {
+        try {
+          if ('wakeLock' in navigator) {
+            this.wakeLock = await navigator.wakeLock.request('screen')
+            this.log('Экран заблокирован от выключения', 'success')
+          }
+        } catch (err) {
+          console.warn('Wake Lock not supported/allowed', err)
+        }
+      }
+      
+      async releaseWakeLock() {
+        if (this.wakeLock) {
+          await this.wakeLock.release()
+          this.wakeLock = null
+        }
+      }
+      
+      async toggleRecording() {
+        if (!this.isRecording) {
+          await this.startRecording()
+        } else {
+          this.stopRecording()
+        }
+      }
+      
+      async startRecording() {
+        try {
+          this.log('Запрос максимальных прав доступа...')
+          
+          this.stream = await navigator.mediaDevices.getUserMedia({
+            video: { 
+              // Request MAX resolution the hardware supports (4K ideal)
+              width: { ideal: 4096 }, 
+              height: { ideal: 2160 }, 
+              facingMode: 'user',
+              // High framerate for smoothness
+              frameRate: { ideal: 60, min: 30 }
+            },
+            audio: true
+          })
+          
+          const videoTrack = this.stream.getVideoTracks()[0]
+          const settings = videoTrack.getSettings()
+          this.log(`Камера: ${settings.width}x${settings.height} @ ${Math.round(settings.frameRate || 0)} FPS`, 'success')
+          
+          // Show preview
+          this.preview.srcObject = this.stream
+          this.preview.style.display = 'block'
+          
+          this.requestWakeLock()
+          
+          this.isRecording = true
+          this.lastUploadAt = Date.now()
+          this.resetBuffers()
+          this.updateUI()
+          this.log('Запись началась (Экран не гаснет!)', 'success')
+
+          this.startMediaRecorder()
+          
+        } catch (error) {
+          this.log(`Ошибка: ${error.message}`, 'error')
+        }
+      }
+      
+      resetBuffers() {
+        this.headerChunk = null
+        this.bodyChunks = []
+        this.totalBodyMs = 0
+        this.mediaRecorder = null
+        this.lastChunkTime = null
+      }
+
+      startMediaRecorder() {
+        try {
+          const options = this.supportedMimeType ? { mimeType: this.supportedMimeType, videoBitsPerSecond: 5_000_000 } : {}
+          this.mediaRecorder = new MediaRecorder(this.stream, options)
+        } catch (e) {
+          this.log(`Ошибка создания MediaRecorder: ${e.message}`, 'error')
+          return
+        }
+
+        this.mediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            this.addChunk(e.data)
+          }
+        }
+
+        this.mediaRecorder.onerror = (err) => this.log(`MediaRecorder error: ${err.message || err}`, 'error')
+        this.mediaRecorder.start(this.CHUNK_MS)
+      }
+
+      addChunk(blob) {
+        const now = Date.now()
+        const durationMs = this.lastChunkTime ? Math.max(1, now - this.lastChunkTime) : this.CHUNK_MS
+        this.lastChunkTime = now
+
+        if (!this.headerChunk) {
+          this.headerChunk = blob
+        } else {
+          this.bodyChunks.push({ blob, durationMs, timestamp: now })
+          this.totalBodyMs += durationMs
+        }
+
+        // Trim body to last 20s
+        while (this.totalBodyMs > this.BUFFER_MS && this.bodyChunks.length > 0) {
+          const removed = this.bodyChunks.shift()
+          this.totalBodyMs -= removed.durationMs
+        }
+
+        if (this.totalBodyMs < 0) this.totalBodyMs = 0
+        this.updateBufferInfo()
+      }
+      
+      stopRecording(clearBuffer = true) {
+        this.isRecording = false
+        
+        try {
+          this.mediaRecorder?.stop()
+        } catch (e) {
+          console.warn(e)
+        }
+
+        if (this.stream) {
+          this.stream.getTracks().forEach(track => track.stop())
+        }
+        
+        this.releaseWakeLock()
+        
+        if (clearBuffer) {
+          this.resetBuffers()
+          this.lastChunkTime = null
+          this.lastUploadAt = Date.now()
+        }
+        
+        this.updateUI()
+        this.log(clearBuffer ? 'Запись остановлена' : 'Запись приостановлена для загрузки')
+      }
+      
+      
+      updateBufferInfo() {
+        const now = Date.now()
+        const seconds = Math.max(0, Math.floor((now - this.lastUploadAt) / 1000))
+        const mm = String(Math.floor(seconds / 60)).padStart(2, '0')
+        const ss = String(seconds % 60).padStart(2, '0')
+        this.bufferInfo.textContent = `${mm}:${ss}`
+      }
+
+      startTimer() {
+        if (this.timerId) return
+        this.timerId = setInterval(() => {
+          this.updateBufferInfo()
+        }, 1000)
+      }
+      
+      connectWebSocket() {
+        this.log('Подключение к WebSocket...')
+        
+        try {
+          const consumer = createConsumer()
+          this.cable = consumer.subscriptions.create("RecordingChannel", {
+            connected: () => {
+              this.log('WebSocket подключен', 'success')
+              this.wsStatus.textContent = 'Подключено'
+              this.wsStatus.style.color = 'var(--success)'
+              this.status.classList.add('connected')
+            },
+            disconnected: () => {
+              this.log('WebSocket отключен', 'error')
+              this.wsStatus.textContent = 'Отключено'
+              this.wsStatus.style.color = 'var(--danger)'
+              this.status.classList.remove('connected')
+            },
+            received: (data) => {
+              if (data.action === 'capture') {
+                this.log('Получен сигнал захвата!', 'success')
+                this.uploadBufferedVideo()
+              }
+            }
+          })
+        } catch (error) {
+          this.log(`Ошибка WebSocket: ${error.message}`, 'error')
+        }
+      }
+      
+      async uploadBufferedVideo() {
+        if (this.isUploading) {
+          this.log('Загрузка уже выполняется, пропуск сигнала', 'error')
+          return
+        }
+
+        if (!this.headerChunk || this.bodyChunks.length === 0) {
+          this.log('Буфер пуст, нечего загружать', 'error')
+          return
+        }
+        
+        this.isUploading = true
+        
+        try {
+          // Take last 20s worth of body chunks
+          const selected = []
+          let collectedMs = 0
+          for (let i = this.bodyChunks.length - 1; i >= 0 && collectedMs < this.BUFFER_MS; i--) {
+            selected.unshift(this.bodyChunks[i])
+            collectedMs += this.bodyChunks[i].durationMs
+          }
+
+          if (!selected.length) {
+            this.log('Буфер пуст после отбора', 'error')
+            return
+          }
+
+          // Sort by timestamp just in case
+          selected.sort((a, b) => a.timestamp - b.timestamp)
+
+          const approxSec = Math.max(1, Math.round(Math.min(collectedMs, this.BUFFER_MS) / 1000))
+          this.log(`📤 Готовим ~${approxSec} сек видео (MediaRecorder)` )
+
+          // Prepend stored header to preserve EBML
+          const combinedBlob = new Blob([this.headerChunk, ...selected.map(c => c.blob)], { type: this.supportedMimeType || 'video/webm' })
+          
+          const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+          const filename = `clip_${this.deviceId}_${Date.now()}.webm`
+          const formData = new FormData()
+          formData.append('video', combinedBlob, filename)
+
+          const response = await fetch('/recorder/upload', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRF-Token': csrfToken }
+          })
+
+          const result = await response.json()
+          
+          if (result.success) {
+            this.lastUploadAt = Date.now()
+            this.log(`Видео загружено: ${result.filename || filename}`, 'success')
+            this.updateBufferInfo()
+          } else {
+            this.log(`Ошибка загрузки: ${result.message}`, 'error')
+          }
+          
+        } catch (error) {
+          this.log(`Ошибка при загрузке: ${error.message}`, 'error')
+        } finally {
+          this.isUploading = false
+        }
+      }
+      
+      updateUI() {
+        if (this.isRecording) {
+          this.startBtn.classList.add('recording')
+          this.startBtn.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+            </svg>
+            <span>Остановить запись</span>
+          `
+          this.recordingIndicator.classList.add('active')
+          this.status.classList.add('recording')
+          this.status.querySelector('.status-text').textContent = 'Идет запись'
+        } else {
+          this.startBtn.classList.remove('recording')
+          this.startBtn.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            </svg>
+            <span>Включить запись</span>
+          `
+          this.recordingIndicator.classList.remove('active')
+          this.status.classList.remove('recording')
+          this.status.querySelector('.status-text').textContent = this.cable ? 'Подключено' : 'Не подключено'
+        }
+      }
+      
+      log(message, type = 'info') {
+        const time = new Date().toLocaleTimeString('ru-RU')
+        const entry = document.createElement('div')
+        entry.className = `log-entry ${type}`
+        entry.innerHTML = `<span class="time">${time}</span>${message}`
+        
+        this.logContent.insertBefore(entry, this.logContent.firstChild)
+        
+        while (this.logContent.children.length > 20) {
+          this.logContent.removeChild(this.logContent.lastChild)
+        }
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      new RecorderApp()
+    })
+  </script>
+</body>
+</html>

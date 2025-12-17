@@ -11,4 +11,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Video recorder routes
+  get "/recorder", to: "recorder#index"
+  post "/recorder/upload", to: "recorder#upload"
+  post "/recorder/trigger", to: "recorder#trigger"
 end
