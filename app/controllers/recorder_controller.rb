@@ -1,11 +1,6 @@
 class RecorderController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :upload, :trigger ]
 
-  def index
-    # Render the video recording page without layout to avoid import map conflicts
-    render layout: false
-  end
-
   def upload
     if params[:video].present?
       # Create uploads directory if it doesn't exist

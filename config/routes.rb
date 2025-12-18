@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   # Video recorder routes
-  get "/recorder", to: "recorder#index"
   post "/recorder/upload", to: "recorder#upload"
   post "/recorder/trigger", to: "recorder#trigger"
 end
