@@ -13,6 +13,14 @@
           <span class="capture-time"><%= capture.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
         </div>
 
+        <% if capture.video.attached? %>
+          <div class="capture-video">
+            <%= video_tag url_for(capture.video), controls: true, preload: "metadata", class: "video-player" %>
+          </div>
+        <% else %>
+          <p>Видео не найдено.</p>
+        <% end %>
+
         <% if capture.thumbnails.attached? %>
           <div class="thumbnails">
             <% capture.thumbnails.each do |thumb| %>

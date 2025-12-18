@@ -5,7 +5,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @captures = @event.captures.with_attached_thumbnails.order(created_at: :desc)
+    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
 
     respond_to do |format|
       format.html
@@ -23,7 +23,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @captures = @event.captures.with_attached_thumbnails.order(created_at: :desc)
+    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
 
     respond_to do |format|
       format.html { render :show }
@@ -37,17 +37,28 @@ class EventsController < ApplicationController
     {
       event_id: event.id,
       captured_at: event.captured_at&.iso8601,
-      thumbnails: captures.flat_map do |capture|
-        capture.thumbnails.map do |thumb|
-          {
-            capture_id: capture.id,
-            filename: thumb.filename.to_s,
-            byte_size: thumb.byte_size,
-            content_type: thumb.content_type,
-            url: url_for(thumb)
-          }
-        end
+      thumbnails: interleaved_thumbnails(captures).map do |capture, thumb|
+        {
+          capture_id: capture.id,
+          filename: thumb.filename.to_s,
+          byte_size: thumb.byte_size,
+          content_type: thumb.content_type,
+          url: url_for(thumb)
+        }
       end
     }
+  end
+
+  def interleaved_thumbnails(captures)
+    attachments_by_capture = captures.map { |capture| [capture, capture.thumbnails.attachments] }
+    return [] if attachments_by_capture.empty?
+
+    max_thumbs = attachments_by_capture.map { |(_, thumbs)| thumbs.size }.max
+    max_thumbs.times.flat_map do |index|
+      attachments_by_capture.filter_map do |capture, thumbs|
+        thumb = thumbs[index]
+        [capture, thumb] if thumb
+      end
+    end
   end
 end
