@@ -1,0 +1,22 @@
+<% content_for :title, "Events" %>
+
+<div class="page">
+  <h1>События</h1>
+
+  <% if @events.any? %>
+    <ul class="events-list">
+      <% @events.each do |event| %>
+        <li class="event-card">
+          <%= link_to event_path(event) do %>
+            <div class="event-row">
+              <span class="event-date"><%= event.captured_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
+              <span class="event-meta"><%= pluralize(event.captures.size, "capture") %></span>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Пока нет событий.</p>
+  <% end %>
+</div>

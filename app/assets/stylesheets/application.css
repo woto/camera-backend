@@ -8,3 +8,82 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.page {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.events-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.event-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.event-card a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.75rem 1rem;
+}
+
+.event-card:hover {
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.event-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.event-meta {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.capture-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.capture-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.capture-time {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.thumbnail {
+  width: 200px;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}

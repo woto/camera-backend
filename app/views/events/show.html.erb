@@ -1,0 +1,30 @@
+<% content_for :title, "Event ##{@event.id}" %>
+
+<div class="page">
+  <p><%= link_to "← Все события", events_path %></p>
+
+  <h1>Событие <%= @event.captured_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>
+
+  <% if @captures.any? %>
+    <% @captures.each do |capture| %>
+      <div class="capture-card">
+        <div class="capture-header">
+          <span>Capture #<%= capture.id %></span>
+          <span class="capture-time"><%= capture.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
+        </div>
+
+        <% if capture.thumbnails.attached? %>
+          <div class="thumbnails">
+            <% capture.thumbnails.each do |thumb| %>
+              <%= image_tag url_for(thumb), alt: "Thumbnail for capture #{capture.id}", class: "thumbnail" %>
+            <% end %>
+          </div>
+        <% else %>
+          <p>Превью не загружены.</p>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Для события нет записей.</p>
+  <% end %>
+</div>
