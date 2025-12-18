@@ -1,7 +1,10 @@
 <% content_for :title, "Event ##{@event.id}" %>
 
 <div class="page">
-  <p><%= link_to "← Все события", events_path %></p>
+  <div class="page-actions">
+    <%= link_to "← Все события", events_path, class: "back-link" %>
+    <%= button_to "Удалить событие", event_path(@event), method: :delete, data: { turbo_confirm: "Удалить событие и все его записи?" }, class: "danger-button" %>
+  </div>
 
   <h1>Событие <%= @event.captured_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>
 

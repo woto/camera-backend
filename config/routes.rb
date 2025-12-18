@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "events#latest"
 
-  resources :events, only: [:index, :show]
+  resources :events, only: [:index, :show, :destroy]
 
   # Video recorder routes
   post "/recorder/upload", to: "recorder#upload"
