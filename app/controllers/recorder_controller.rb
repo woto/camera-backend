@@ -1,5 +1,6 @@
 class RecorderController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [ :upload, :trigger ]
+  skip_before_action :verify_authenticity_token, only: [:upload, :trigger]
+  skip_before_action :require_login, only: [:upload, :trigger]
 
   def upload
     video_file = params[:video]

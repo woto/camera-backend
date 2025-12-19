@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "events#latest"
 
+  resource :session, only: [:new, :create, :destroy]
+  get "/login", to: "sessions#new"
+  delete "/logout", to: "sessions#destroy"
+
   resources :events, only: [:index, :show, :destroy]
 
   # Video recorder routes

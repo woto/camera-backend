@@ -31,16 +31,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def destroy
-    @event = Event.find(params[:id])
-
-    if @event.destroy
-      redirect_to events_path, notice: "Событие удалено."
-    else
-      redirect_to event_path(@event), alert: "Не удалось удалить событие."
-    end
-  end
-
   private
 
   def thumbnails_payload(event, captures)

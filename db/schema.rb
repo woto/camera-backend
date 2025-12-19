@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_18_011705) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_18_011800) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,6 +51,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_18_011705) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["captured_at"], name: "index_events_on_captured_at", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

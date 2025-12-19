@@ -23,6 +23,19 @@
   </head>
 
   <body>
+    <div class="page">
+      <div class="top-nav">
+        <% if current_user %>
+          <span class="user-greeting">Привет, <%= current_user.username %></span>
+          <%= link_to "Выйти", session_path, data: { turbo_method: :delete, turbo_confirm: "Выйти из системы?" } %>
+        <% end %>
+      </div>
+
+      <% flash.each do |type, message| %>
+        <div class="flash <%= type %>"><%= message %></div>
+      <% end %>
+    </div>
+
     <%= yield %>
   </body>
 </html>
