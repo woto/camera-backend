@@ -9,15 +9,15 @@ class SessionsController < ApplicationController
 
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to events_path, notice: "Вы успешно вошли."
+      redirect_to events_path, notice: "Signed in successfully."
     else
-      flash.now[:alert] = "Неверное имя пользователя или пароль."
+      flash.now[:alert] = "Invalid username or password."
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     reset_session
-    redirect_to new_session_path, notice: "Вы вышли из системы."
+    redirect_to new_session_path, notice: "Signed out."
   end
 end

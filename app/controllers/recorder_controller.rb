@@ -7,14 +7,14 @@ class RecorderController < ApplicationController
     raw_timestamp = params[:timestamp]
 
     unless video_file.present? && raw_timestamp.present?
-      Rails.logger.warn("[RecorderController#upload] Отсутствуют обязательные параметры: video=#{video_file.present?}, timestamp=#{raw_timestamp.present?}")
-      return render json: { success: false, message: "Не хватает параметров video/timestamp" }, status: :bad_request
+      Rails.logger.warn("[RecorderController#upload] Missing required params: video=#{video_file.present?}, timestamp=#{raw_timestamp.present?}")
+      return render json: { success: false, message: "Missing video/timestamp params" }, status: :bad_request
     end
 
     captured_at = parse_timestamp(raw_timestamp)
     unless captured_at
-      Rails.logger.warn("[RecorderController#upload] Некорректный timestamp: #{raw_timestamp.inspect}")
-      return render json: { success: false, message: "Некорректный timestamp" }, status: :bad_request
+      Rails.logger.warn("[RecorderController#upload] Invalid timestamp: #{raw_timestamp.inspect}")
+      return render json: { success: false, message: "Invalid timestamp" }, status: :bad_request
     end
 
     thumbnails = []
@@ -32,7 +32,7 @@ class RecorderController < ApplicationController
 
       response_payload = {
         success: true,
-        message: "Видео загружено",
+        message: "Video uploaded",
         event_id: event.id,
         event_timestamp: event.captured_at.iso8601,
         capture_id: capture.id,
@@ -42,10 +42,10 @@ class RecorderController < ApplicationController
     end
     render json: response_payload, status: :ok
   rescue ThumbnailGenerator::Error => e
-    Rails.logger.error("[RecorderController#upload] Ошибка генерации превью: #{e.message}")
+    Rails.logger.error("[RecorderController#upload] Thumbnail generation failed: #{e.message}")
     render json: { success: false, message: e.message }, status: :unprocessable_entity
   rescue => e
-    Rails.logger.error("[RecorderController#upload] Ошибка загрузки: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
+    Rails.logger.error("[RecorderController#upload] Upload failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
     render json: { success: false, message: e.message }, status: :internal_server_error
   ensure
     thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
@@ -85,7 +85,7 @@ class RecorderController < ApplicationController
       content_type: file.content_type.presence
     )
 
-    raise "Не удалось сохранить видео" unless capture.video.attached?
+    raise "Failed to save video" unless capture.video.attached?
   end
 
   def attach_thumbnails!(capture, files, base_filename)
@@ -100,7 +100,7 @@ class RecorderController < ApplicationController
       )
     end
 
-    raise "Не удалось сохранить превью" unless capture.thumbnails.count >= files.size
+    raise "Failed to save thumbnails" unless capture.thumbnails.count >= files.size
   end
 
   def blob_payload(attached_file)

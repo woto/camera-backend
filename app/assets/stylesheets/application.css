@@ -9,7 +9,7 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-.page {
+.container {
   max-width: 960px;
   margin: 2rem auto;
   padding: 0 1rem;
@@ -101,15 +101,6 @@
   margin: 0;
 }
 
-.back-link {
-  color: #0f172a;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
 
 .danger-button {
   background: #dc2626;
@@ -209,4 +200,109 @@
   height: auto;
   border-radius: 6px;
   border: 1px solid #e2e8f0;
+}
+
+.event-thumbnails {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.event-thumbnail-mini {
+  height: 60px;
+  width: auto;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.navigation-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.prev-next-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination .page, .pagination .first, .pagination .last, .pagination .prev, .pagination .next {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #1e293b;
+  background: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.pagination .current {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+.pagination .gap {
+  padding: 0.5rem 0.25rem;
+  color: #64748b;
 }

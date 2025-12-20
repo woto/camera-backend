@@ -15,7 +15,7 @@ class ThumbnailGenerator
 
   def generate
     duration = video_duration
-    raise Error, "Не удалось определить длительность видео" if duration.nil? || duration <= 0
+    raise Error, "Unable to determine video duration" if duration.nil? || duration <= 0
 
     capture_points(duration).map.with_index(1) do |second_mark, index|
       generate_thumbnail(second_mark, index)
@@ -59,7 +59,7 @@ class ThumbnailGenerator
     ]
 
     stdout, stderr, status = Open3.capture3(*cmd)
-    raise Error, stderr.presence || stdout.presence || "FFmpeg завершился с ошибкой" unless status.success?
+    raise Error, stderr.presence || stdout.presence || "FFmpeg exited with an error" unless status.success?
 
     tempfile
   end
