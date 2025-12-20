@@ -1,7 +1,10 @@
 <% content_for :title, "Events" %>
 
 <div class="container">
-  <h1>Events</h1>
+  <div class="page-actions">
+    <h1>Events</h1>
+    <%= button_to "Trigger Capture", recorder_trigger_path, class: "primary-button", method: :post %>
+  </div>
 
   <% if @events.any? %>
     <ul class="events-list">

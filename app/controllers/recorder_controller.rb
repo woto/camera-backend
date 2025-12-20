@@ -58,9 +58,16 @@ class RecorderController < ApplicationController
     timestamp = Time.current
     # Broadcast signal to all connected clients via ActionCable
     ActionCable.server.broadcast("recording_channel", { action: "capture", timestamp: timestamp.iso8601 })
-    render json: { success: true, timestamp: timestamp.iso8601, message: "Capture signal sent" }, status: :ok
+
+    respond_to do |format|
+      format.json { render json: { success: true, timestamp: timestamp.iso8601, message: "Capture signal sent" }, status: :ok }
+      format.html { redirect_back fallback_location: root_path, notice: "Capture signal sent at #{timestamp.strftime("%H:%M:%S")}" }
+    end
   rescue => e
-    render json: { success: false, message: e.message }, status: :internal_server_error
+    respond_to do |format|
+      format.json { render json: { success: false, message: e.message }, status: :internal_server_error }
+      format.html { redirect_back fallback_location: root_path, alert: "Failed to send capture signal: #{e.message}" }
+    end
   end
 
   private
