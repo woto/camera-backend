@@ -1,6 +1,6 @@
 <% content_for :title, "Event ##{@event.id}" %>
 
-<div class="container">
+<div class="container" data-controller="sync-videos">
   <div class="page-actions">
     <div class="navigation-links">
       <%= link_to events_path, class: "back-button" do %>
@@ -24,8 +24,18 @@
   <h1>Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>
 
   <% if @captures.any? %>
-    <% @captures.each do |capture| %>
-      <div class="capture-card">
+    <div class="sync-toolbar">
+      <div class="sync-toolbar-buttons">
+        <button type="button" class="primary-button" data-action="click->sync-videos#playAll">Запустить синхронно</button>
+        <button type="button" class="secondary-button" data-action="click->sync-videos#pauseAll">Пауза</button>
+        <button type="button" class="ghost-button" data-action="click->sync-videos#resetAnchors">Сбросить привязки</button>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @captures.any? %>
+    <% @captures.each_with_index do |capture, index| %>
+      <div class="capture-card" data-sync-videos-index-value="<%= index %>">
         <div class="capture-header">
           <span>Capture #<%= capture.id %></span>
           <span class="capture-time"><%= capture.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
@@ -33,21 +43,43 @@
 
         <% if capture.video.attached? %>
           <div class="capture-video">
-            <%= video_tag url_for(capture.video), controls: true, preload: "metadata", class: "video-player" %>
+            <%= video_tag url_for(capture.video),
+              controls: true,
+              preload: "metadata",
+              class: "video-player",
+              data: {
+                sync_videos_target: "video",
+                sync_videos_index_value: index,
+                action: [
+                  "loadedmetadata->sync-videos#markReady",
+                  "waiting->sync-videos#handleWaiting",
+                  "stalled->sync-videos#handleWaiting",
+                  "playing->sync-videos#handlePlaying",
+                  "canplay->sync-videos#handlePlaying",
+                  "ended->sync-videos#handleEnded"
+                ].join(" ")
+              } %>
+          </div>
+
+          <div class="sync-row">
+            <div class="sync-actions">
+              <button type="button"
+                      class="primary-button"
+                      data-action="click->sync-videos#setAnchor"
+                      data-sync-videos-index-param="<%= index %>">
+                Контрольный кадр = текущее место
+              </button>
+            </div>
+            <div class="sync-status"
+                 data-sync-videos-target="status"
+                 data-sync-videos-index-value="<%= index %>">
+              Контрольный кадр не выбран
+            </div>
           </div>
         <% else %>
           <p>Video not found.</p>
         <% end %>
 
-        <% if capture.thumbnails.attached? %>
-          <div class="thumbnails">
-            <% capture.thumbnails.each do |thumb| %>
-              <%= image_tag url_for(thumb), alt: "Thumbnail for capture #{capture.id}", class: "thumbnail" %>
-            <% end %>
-          </div>
-        <% else %>
-          <p>Thumbnails not uploaded.</p>
-        <% end %>
       </div>
     <% end %>
   <% else %>

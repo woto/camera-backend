@@ -12,9 +12,9 @@
         <li class="event-card">
           <%= link_to event_path(event) do %>
             <div class="event-thumbnails">
-              <% event.captures.first(5).each do |capture| %>
-                <% if capture.thumbnails.attached? %>
-                  <%= image_tag url_for(capture.thumbnails.first), class: "event-thumbnail-mini" %>
+              <% event.captures.each do |capture| %>
+                <% capture.thumbnails.each do |thumb| %>
+                  <%= image_tag url_for(thumb), class: "event-thumbnail-mini", alt: "Thumbnail for capture #{capture.id}" %>
                 <% end %>
               <% end %>
             </div>
