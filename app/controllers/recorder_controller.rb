@@ -19,6 +19,8 @@ class RecorderController < ApplicationController
 
     thumbnails = []
     response_payload = {}
+    event = nil
+    capture = nil
 
     ActiveRecord::Base.transaction do
       event = Event.find_or_create_by!(captured_at: captured_at)
@@ -40,6 +42,7 @@ class RecorderController < ApplicationController
         thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) }
       }
     end
+    broadcast_upload_success(event, capture)
     render json: response_payload, status: :ok
   rescue ThumbnailGenerator::Error => e
     Rails.logger.error("[RecorderController#upload] Thumbnail generation failed: #{e.message}")
@@ -120,5 +123,22 @@ class RecorderController < ApplicationController
       byte_size: blob.byte_size,
       content_type: blob.content_type
     }
+  end
+
+  def broadcast_upload_success(event, capture)
+    return unless event&.persisted? && capture&.persisted?
+
+    payload = {
+      action: "upload_success",
+      event_id: event.id,
+      event_timestamp: event.captured_at&.iso8601,
+      capture_id: capture.id,
+      video: blob_payload(capture.video),
+      thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) }
+    }
+
+    ActionCable.server.broadcast("recording_channel", payload)
+  rescue => e
+    Rails.logger.warn("[RecorderController#upload] Failed to broadcast upload success: #{e.message}")
   end
 end
