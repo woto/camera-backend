@@ -16,7 +16,9 @@
         <% end %>
       </div>
     </div>
-    <%= button_to "Delete event", event_path(@event), method: :delete, data: { turbo_confirm: "Delete this event and all its captures?" }, class: "danger-button" %>
+    <% if current_user %>
+      <%= button_to "Delete event", event_path(@event), method: :delete, data: { turbo_confirm: "Delete this event and all its captures?" }, class: "danger-button" %>
+    <% end %>
   </div>
 
   <h1>Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>

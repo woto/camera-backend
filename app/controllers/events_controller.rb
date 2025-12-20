@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  skip_before_action :require_login, only: [ :index, :show, :latest ]
+
   def index
     @events = Event.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(20)
   end
