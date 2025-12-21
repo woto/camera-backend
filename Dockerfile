@@ -16,7 +16,14 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 ffmpeg && \
+    apt-get install --no-install-recommends -y \
+      curl \
+      libjemalloc2 \
+      libvips \
+      sqlite3 \
+      ffmpeg \
+      python3 \
+      python3-numpy && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment

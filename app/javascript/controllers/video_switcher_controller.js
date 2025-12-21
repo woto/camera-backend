@@ -70,6 +70,9 @@ export default class extends Controller {
       currentSrc: video.currentSrc
     })
 
+    // Apply rotation immediately before any source changes; Plyr may rebuild controls/video.
+    this.applyRotation(capture)
+
     return this.loadSource(capture)
       .finally(() => {
         this.seekAndMaybePlay(targetTime, autoPlay)
@@ -122,6 +125,8 @@ export default class extends Controller {
         // Plyr rebuilds controls when source changes; re-add custom buttons after that cycle.
         setTimeout(() => this.renderSourceButtons(), 0)
         setTimeout(() => this.applyRotation(capture), 0)
+        // Also re-apply after Plyr's ready event settles.
+        if (this.plyr && this.plyr.on) this.plyr.on("ready", () => this.applyRotation(capture))
       } else {
         const onReady = () => {
           video.removeEventListener("loadedmetadata", onReady)
