@@ -115,7 +115,8 @@ corr = np.fft.irfft(A * np.conj(B), m)
 
 corr = np.concatenate((corr[-(n-1):], corr[:n]))
 lag = int(np.argmax(corr) - (n-1))
-offset_seconds = -lag / sr   # + => target starts later than ref
+# Positive lag means target starts later; keep that sign for offsets.
+offset_seconds = lag / sr
 print(offset_seconds)
 '
 

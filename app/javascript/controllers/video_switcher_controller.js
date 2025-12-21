@@ -16,7 +16,7 @@ export default class extends Controller {
       hasPlayerTarget: this.hasPlayerTarget,
       currentIdValue: this.currentIdValue
     })
-    this.capturesById = new Map(this.capturesValue.map((c) => [c.id, c]))
+    this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
     if (!this.hasPlayerTarget) return
     if (!this.currentIdValue && this.capturesValue.length > 0) {
       this.currentIdValue = this.capturesValue[0].id
@@ -39,9 +39,20 @@ export default class extends Controller {
 
     const current = this.capturesById.get(this.currentIdValue)
     const currentTime = this.getCurrentTime() || 0
-    const baseTime = current ? currentTime + (current.offset_seconds || 0) : currentTime
-    const rewindSeconds = 1
-    const targetTime = Math.max(baseTime - (next.offset_seconds || 0) - rewindSeconds, 0)
+    const currentOffset = this.offsetSeconds(current)
+    const nextOffset = this.offsetSeconds(next)
+    const baseTime = current ? currentTime + currentOffset : currentTime
+    const targetTime = Math.max(baseTime - nextOffset - this.rewindSeconds(), 0)
+    console.log("[video-switcher] switchTo", {
+      currentId: this.currentIdValue,
+      nextId,
+      currentTime,
+      currentOffset,
+      nextOffset,
+      baseTime,
+      rewind: this.rewindSeconds(),
+      targetTime
+    })
     const wasPlaying = this.isPlaying()
 
     this.currentIdValue = nextId
@@ -81,7 +92,8 @@ export default class extends Controller {
 
   updateLabel(capture) {
     if (!this.hasLabelTarget) return
-    const basePart = capture.offset_seconds === 0 ? "База" : `Смещение: ${capture.offset_seconds.toFixed(3)}s`
+    const offset = this.offsetSeconds(capture)
+    const basePart = offset === 0 ? "База" : `Смещение: ${offset.toFixed(3)}s`
     this.labelTarget.textContent = `${capture.label} (${basePart})`
   }
 
@@ -231,5 +243,23 @@ export default class extends Controller {
     if (!video) return
     const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
     video.style.transform = `rotate(${deg}deg)`
+  }
+
+  offsetSeconds(capture) {
+    const raw = capture?.offset_seconds
+    const num = typeof raw === "string" ? parseFloat(raw) : raw
+    return Number.isFinite(num) ? num : 0
+  }
+
+  rewindSeconds() {
+    return 1
+  }
+
+  normalizeCapture(capture) {
+    return {
+      ...capture,
+      offset_seconds: this.offsetSeconds(capture),
+      rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0
+    }
   }
 }
