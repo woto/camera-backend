@@ -21,6 +21,11 @@
             <div class="event-row">
               <span class="event-date"><%= event.captured_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
               <span class="event-meta"><%= pluralize(event.captures.size, "capture") %></span>
+              <% if current_user %>
+                <span class="event-badge <%= event.hidden? ? "is-hidden" : "is-open" %>">
+                  <%= event.hidden? ? "Скрыто" : "Открыто" %>
+                </span>
+              <% end %>
             </div>
           <% end %>
         </li>

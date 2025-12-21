@@ -2,17 +2,18 @@ require "open3"
 
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
-  before_action :set_event, only: [:show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest]
+  before_action :set_event, only: [:show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest, :set_visibility]
 
   def index
-    @events = Event.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(20)
+    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(20)
   end
 
   def show
     @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :asc)
     backfill_rotations!(@captures)
-    @next_event = Event.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
-    @prev_event = Event.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
+    scope = scoped_events
+    @next_event = scope.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
+    @prev_event = scope.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
     assign_switcher_data!(@captures)
 
     respond_to do |format|
@@ -22,7 +23,7 @@ class EventsController < ApplicationController
   end
 
   def latest
-    @event = Event.order(captured_at: :desc).first
+    @event = scoped_events.order(captured_at: :desc).first
     unless @event
       return respond_to do |format|
         format.html { redirect_to events_path, alert: "No events yet." }
@@ -97,6 +98,17 @@ class EventsController < ApplicationController
     redirect_to event_path(@event), alert: "Не удалось обновить ориентацию: #{e.message}"
   end
 
+  def set_visibility
+    hidden = ActiveModel::Type::Boolean.new.cast(params[:hidden])
+
+    if @event.update(hidden: hidden)
+      status_text = hidden ? "скрыто" : "открыто"
+      redirect_back fallback_location: event_path(@event), notice: "Событие теперь #{status_text}."
+    else
+      redirect_back fallback_location: event_path(@event), alert: "Не удалось обновить видимость события."
+    end
+  end
+
   private
 
   def thumbnails_payload(event, captures)
@@ -130,7 +142,7 @@ class EventsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id]) if params[:id]
+    @event = scoped_events.find(params[:id]) if params[:id]
   end
 
   def sync_params
@@ -219,5 +231,9 @@ class EventsController < ApplicationController
         rotation_degrees: rotation
       }
     end
+  end
+
+  def scoped_events
+    Event.for_viewer(current_user)
   end
 end

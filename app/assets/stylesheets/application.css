@@ -155,6 +155,29 @@
   font-size: 0.95rem;
 }
 
+.event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+}
+
+.event-badge.is-hidden {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.event-badge.is-open {
+  background: #ecfeff;
+  color: #0f172a;
+  border-color: #22d3ee;
+}
+
 .capture-card {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -292,6 +315,12 @@
 .prev-next-links {
   display: flex;
   gap: 0.75rem;
+}
+
+.page-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav-link {

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       post :set_base
       post :sync_offsets
       patch :set_rotation
+      patch :set_visibility
     end
   end
 

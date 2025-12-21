@@ -24,11 +24,22 @@
       </div>
     </div>
     <% if current_user %>
-      <%= button_to "Delete event", event_path(@event), method: :delete, data: { turbo_confirm: "Delete this event and all its captures?" }, class: "danger-button" %>
+      <div class="page-actions-buttons">
+        <%= button_to(@event.hidden? ? "Сделать открытым" : "Скрыть событие",
+          set_visibility_event_path(@event, hidden: !@event.hidden?),
+          method: :patch,
+          class: "secondary-button") %>
+        <%= button_to "Delete event", event_path(@event), method: :delete, data: { turbo_confirm: "Delete this event and all its captures?" }, class: "danger-button" %>
+      </div>
     <% end %>
   </div>
 
-  <h1>Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>
+  <h1>
+    Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %>
+    <span class="event-badge <%= @event.hidden? ? "is-hidden" : "is-open" %>">
+      <%= @event.hidden? ? "Скрыто" : "Открыто" %>
+    </span>
+  </h1>
 
   <% if @captures.any? %>
     <div class="capture-card">
