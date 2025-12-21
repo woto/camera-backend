@@ -1,6 +1,13 @@
 <% content_for :title, "Event ##{@event.id}" %>
 
-<div class="container" data-controller="sync-videos">
+<% content_for :head do %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+<% end %>
+
+<div class="container" data-controller="video-switcher"
+     data-video-switcher-captures-value="<%= @switcher_captures.to_json %>"
+     data-video-switcher-current-id-value="<%= @base_capture&.id %>">
   <div class="page-actions">
     <div class="navigation-links">
       <%= link_to events_path, class: "back-button" do %>
@@ -24,65 +31,77 @@
   <h1>Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %></h1>
 
   <% if @captures.any? %>
-    <div class="sync-toolbar">
-      <div class="sync-toolbar-buttons">
-        <button type="button" class="primary-button" data-action="click->sync-videos#playAll">Запустить синхронно</button>
-        <button type="button" class="secondary-button" data-action="click->sync-videos#pauseAll">Пауза</button>
-        <button type="button" class="ghost-button" data-action="click->sync-videos#resetAnchors">Сбросить привязки</button>
+    <div class="capture-card">
+      <div class="capture-header">
+        <span data-video-switcher-target="label">Загрузка…</span>
+        <span class="capture-time"><%= @base_capture&.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
+      </div>
+
+      <div class="capture-video">
+        <%= video_tag "",
+          controls: true,
+          preload: "metadata",
+          class: "video-player",
+          data: { video_switcher_target: "player" } %>
+      </div>
+
+      <div class="camera-switcher">
+        <% @captures.each do |capture| %>
+          <button type="button"
+                  class="ghost-button"
+                  data-action="click->video-switcher#switch"
+                  data-video-switcher-id-param="<%= capture.id %>">
+            Камера <%= capture.id %><%= capture == @base_capture ? " (база)" : "" %>
+          </button>
+        <% end %>
       </div>
     </div>
-  <% end %>
-
-  <% if @captures.any? %>
-    <% @captures.each_with_index do |capture, index| %>
-      <div class="capture-card" data-sync-videos-index-value="<%= index %>">
-        <div class="capture-header">
-          <span>Capture #<%= capture.id %></span>
-          <span class="capture-time"><%= capture.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
-        </div>
-
-        <% if capture.video.attached? %>
-          <div class="capture-video">
-            <%= video_tag url_for(capture.video),
-              controls: true,
-              preload: "metadata",
-              class: "video-player",
-              data: {
-                sync_videos_target: "video",
-                sync_videos_index_value: index,
-                action: [
-                  "loadedmetadata->sync-videos#markReady",
-                  "waiting->sync-videos#handleWaiting",
-                  "stalled->sync-videos#handleWaiting",
-                  "playing->sync-videos#handlePlaying",
-                  "canplay->sync-videos#handlePlaying",
-                  "ended->sync-videos#handleEnded"
-                ].join(" ")
-              } %>
-          </div>
-
-          <div class="sync-row">
-            <div class="sync-actions">
-              <button type="button"
-                      class="primary-button"
-                      data-action="click->sync-videos#setAnchor"
-                      data-sync-videos-index-param="<%= index %>">
-                Контрольный кадр = текущее место
-              </button>
-            </div>
-            <div class="sync-status"
-                 data-sync-videos-target="status"
-                 data-sync-videos-index-value="<%= index %>">
-              Контрольный кадр не выбран
-            </div>
-          </div>
-        <% else %>
-          <p>Video not found.</p>
-        <% end %>
-
-      </div>
-    <% end %>
   <% else %>
     <p>No captures for this event.</p>
+  <% end %>
+
+  <% if current_user && @captures.any? %>
+    <div class="admin-tools">
+      <h3>Админ · Синхронизация</h3>
+      <div class="admin-actions">
+        <% @captures.each do |capture| %>
+          <%= button_to "Сделать базой ##{capture.id}", set_base_event_path(@event, capture_id: capture.id), method: :post, class: "secondary-button" %>
+        <% end %>
+      </div>
+
+      <div class="admin-actions">
+        <%= form_with url: sync_offsets_event_path(@event), method: :post, local: true do |f| %>
+          <div class="form-row">
+            <label>Базовый ролик</label>
+            <%= select_tag :capture_id, options_from_collection_for_select(@captures, :id, :id, @base_capture&.id), include_blank: false %>
+          </div>
+          <div class="form-row">
+            <label>Длительность анализа (сек)</label>
+            <%= number_field_tag :analyze_duration, 90, step: 1 %>
+          </div>
+          <div class="form-row">
+            <label>Sample rate (Hz)</label>
+          <%= number_field_tag :sample_rate, 8000, step: 1000 %>
+        </div>
+        <%= f.submit "Запустить синхронизацию", class: "primary-button" %>
+      <% end %>
+      </div>
+
+      <h3>Админ · Ориентация</h3>
+      <div class="admin-actions">
+        <% @captures.each do |capture| %>
+          <div class="form-row">
+            <div class="form-label">
+              Capture ##<%= capture.id %> (текущая: <%= capture.rotation_degrees || 0 %>°)
+            </div>
+            <div class="form-controls">
+              <% [0, 90, 180, 270].each do |deg| %>
+                <%= button_to "#{deg}°", set_rotation_event_path(@event, capture_id: capture.id, rotation: deg), method: :patch, class: "ghost-button" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

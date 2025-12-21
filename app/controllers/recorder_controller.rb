@@ -5,6 +5,8 @@ class RecorderController < ApplicationController
   def upload
     video_file = params[:video]
     raw_timestamp = params[:timestamp]
+    raw_offset = params[:offset_seconds].presence || params[:offset_sec].presence
+    offset_seconds = parse_offset_seconds(raw_offset)
 
     unless video_file.present? && raw_timestamp.present?
       Rails.logger.warn("[RecorderController#upload] Missing required params: video=#{video_file.present?}, timestamp=#{raw_timestamp.present?}")
@@ -25,7 +27,9 @@ class RecorderController < ApplicationController
     ActiveRecord::Base.transaction do
       event = Event.find_or_create_by!(captured_at: captured_at)
       capture = event.captures.build
+      capture.rotation_degrees = VideoMetadata.rotation_degrees(video_file.tempfile.path)
 
+      capture.offset_seconds = offset_seconds unless offset_seconds.nil?
       attach_video!(capture, video_file)
       capture.save!
 
@@ -39,7 +43,8 @@ class RecorderController < ApplicationController
         event_timestamp: event.captured_at.iso8601,
         capture_id: capture.id,
         video: blob_payload(capture.video),
-        thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) }
+        thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
+        offset_seconds: capture.offset_seconds&.to_f
       }
     end
     broadcast_upload_success(event, capture)
@@ -84,6 +89,16 @@ class RecorderController < ApplicationController
 
   def numeric_timestamp?(value)
     /\A-?\d+(\.\d+)?\z/.match?(value.to_s)
+  end
+
+  def parse_offset_seconds(raw_offset)
+    return nil unless raw_offset.present?
+
+    offset = Float(raw_offset)
+    offset if offset.finite?
+  rescue ArgumentError, TypeError
+    Rails.logger.warn("[RecorderController#upload] Invalid offset_seconds: #{raw_offset.inspect}")
+    nil
   end
 
   def attach_video!(capture, file)
@@ -141,7 +156,8 @@ class RecorderController < ApplicationController
       event_timestamp: event.captured_at&.iso8601,
       capture_id: capture.id,
       video: blob_payload(capture.video),
-      thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) }
+      thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
+      offset_seconds: capture.offset_seconds&.to_f
     }
 
     ActionCable.server.broadcast("recording_channel", payload)

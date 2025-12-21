@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_18_011800) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_18_024000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -43,13 +43,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_18_011800) do
     t.integer "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "offset_seconds", precision: 10, scale: 5
+    t.integer "offset_base_capture_id"
+    t.integer "rotation_degrees"
     t.index ["event_id"], name: "index_captures_on_event_id"
+    t.index ["offset_base_capture_id"], name: "index_captures_on_offset_base_capture_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.datetime "captured_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "base_capture_id"
+    t.index ["base_capture_id"], name: "index_events_on_base_capture_id"
     t.index ["captured_at"], name: "index_events_on_captured_at", unique: true
   end
 
@@ -63,5 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_18_011800) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "captures", "captures", column: "offset_base_capture_id"
   add_foreign_key "captures", "events"
+  add_foreign_key "events", "captures", column: "base_capture_id"
 end

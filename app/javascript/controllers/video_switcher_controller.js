@@ -1,0 +1,231 @@
+import { Controller } from "@hotwired/stimulus"
+
+// Shows one video at a time and keeps playback aligned using stored offsets.
+// Offsets are relative to a base capture (offset_seconds = 0 for base).
+// Uses Plyr when available; otherwise falls back to native video element.
+export default class extends Controller {
+  static targets = ["player", "label"]
+  static values = {
+    captures: Array,
+    currentId: Number
+  }
+
+  connect() {
+    console.log("[video-switcher] connect", {
+      capturesCount: this.capturesValue.length,
+      hasPlayerTarget: this.hasPlayerTarget,
+      currentIdValue: this.currentIdValue
+    })
+    this.capturesById = new Map(this.capturesValue.map((c) => [c.id, c]))
+    if (!this.hasPlayerTarget) return
+    if (!this.currentIdValue && this.capturesValue.length > 0) {
+      this.currentIdValue = this.capturesValue[0].id
+    }
+    this.setupPlyr()
+    this.setupSourceButtons()
+    this.loadCurrent(false)
+  }
+
+  switch(event) {
+    event.preventDefault()
+    const nextId = Number(event.params.id)
+    if (!Number.isFinite(nextId)) return
+    this.switchTo(nextId)
+  }
+
+  switchTo(nextId) {
+    if (nextId === this.currentIdValue) return
+    const next = this.capturesById.get(nextId)
+    if (!next) return
+
+    const current = this.capturesById.get(this.currentIdValue)
+    const currentTime = this.getCurrentTime() || 0
+    const baseTime = current ? currentTime + (current.offset_seconds || 0) : currentTime
+    const rewindSeconds = 2
+    const targetTime = Math.max(baseTime - (next.offset_seconds || 0) - rewindSeconds, 0)
+    const wasPlaying = this.isPlaying()
+
+    this.currentIdValue = nextId
+    this.updateLabel(next)
+    this.applyRotation(next)
+    this.updateActiveSourceButton()
+    this.loadVideo(next, targetTime, wasPlaying).catch(() => {})
+  }
+
+  loadCurrent(autoPlay = false) {
+    console.log("[video-switcher] loadCurrent", { autoPlay, currentId: this.currentIdValue })
+    const current = this.capturesById.get(this.currentIdValue)
+    if (!current) return
+    this.updateLabel(current)
+    this.applyRotation(current)
+    this.loadVideo(current, 0, autoPlay).catch(() => {})
+  }
+
+  loadVideo(capture, targetTime, autoPlay) {
+    const video = this.mediaElement()
+    if (!video) return
+    const src = capture.url
+    console.log("[video-switcher] loadVideo", {
+      captureId: capture.id,
+      src,
+      currentSrc: video.currentSrc
+    })
+
+    return this.loadSource(capture)
+      .finally(() => {
+        this.seekAndMaybePlay(targetTime, autoPlay)
+      })
+  }
+
+  updateLabel(capture) {
+    if (!this.hasLabelTarget) return
+    const basePart = capture.offset_seconds === 0 ? "База" : `Смещение: ${capture.offset_seconds.toFixed(3)}s`
+    this.labelTarget.textContent = `${capture.label} (${basePart})`
+  }
+
+  setupPlyr() {
+    if (window.Plyr && !this.plyr) {
+      this.plyr = new Plyr(this.playerTarget, {
+        controls: ["play", "progress", "current-time", "mute", "volume", "settings", "fullscreen"]
+      })
+    }
+  }
+
+  mediaElement() {
+    if (this.plyr && this.plyr.media) return this.plyr.media
+    if (this.hasPlayerTarget) return this.playerTarget
+    return this.element.querySelector("video")
+  }
+
+  loadSource(capture) {
+    const src = capture.url
+    return new Promise((resolve) => {
+      const video = this.mediaElement()
+      if (!video) return resolve()
+
+      if (this.plyr) {
+        const onReady = () => {
+          if (this.plyr && this.plyr.off) this.plyr.off("ready", onReady)
+          video.removeEventListener("loadedmetadata", onReady)
+          resolve()
+        }
+
+        // Force underlying video element to reload even if URL matches.
+        video.addEventListener("loadedmetadata", onReady, { once: true })
+        video.src = src
+        video.load()
+
+        if (this.plyr.once) this.plyr.once("ready", onReady)
+        this.plyr.source = {
+          type: "video",
+          sources: [{ src, type: "video/mp4" }]
+        }
+        // Plyr rebuilds controls when source changes; re-add custom buttons after that cycle.
+        setTimeout(() => this.renderSourceButtons(), 0)
+        setTimeout(() => this.applyRotation(capture), 0)
+      } else {
+        const onReady = () => {
+          video.removeEventListener("loadedmetadata", onReady)
+          this.applyRotation(capture)
+          resolve()
+        }
+
+        video.addEventListener("loadedmetadata", onReady, { once: true })
+        video.src = src
+        video.load()
+        if (video.readyState >= 1) onReady()
+      }
+
+      // Safety timeout to avoid hanging promises if metadata never fires.
+      setTimeout(() => {
+        this.applyRotation(capture)
+        resolve()
+      }, 1500)
+    })
+  }
+
+  seekAndMaybePlay(targetTime, autoPlay) {
+    const video = this.mediaElement()
+    if (!video) return
+    const duration = Number.isFinite(video.duration) ? video.duration : targetTime
+    video.currentTime = Math.min(targetTime, duration || targetTime)
+    if (autoPlay) {
+      video.play().catch(() => {})
+    }
+  }
+
+  getCurrentTime() {
+    if (this.plyr) return this.plyr.currentTime
+    const video = this.mediaElement()
+    return video ? video.currentTime : 0
+  }
+
+  isPlaying() {
+    if (this.plyr) return !this.plyr.paused && !this.plyr.ended
+    const video = this.mediaElement()
+    return video ? !video.paused && !video.ended : false
+  }
+
+  // No-op logger kept to avoid errors if stray debug calls remain.
+  log() {}
+
+  setupSourceButtons() {
+    if (this.plyr && this.plyr.ready) {
+      this.renderSourceButtons()
+      return
+    }
+    if (this.plyr && this.plyr.on) {
+      this.plyr.on("ready", () => this.renderSourceButtons())
+    } else {
+      // Fallback if Plyr isn't available; try once after a tick.
+      setTimeout(() => this.renderSourceButtons(), 0)
+    }
+  }
+
+  renderSourceButtons() {
+    const controls = this.controlsElement()
+    if (!controls) return
+    const existing = controls.querySelector(".plyr-source-buttons")
+    if (existing) existing.remove()
+
+    const wrapper = document.createElement("div")
+    wrapper.className = "plyr__controls__item plyr-source-buttons"
+
+    this.capturesValue.forEach((capture) => {
+      const button = document.createElement("button")
+      button.type = "button"
+      button.className = "plyr__controls__item plyr-source-button"
+      button.dataset.captureId = capture.id
+      button.textContent = capture.label || `#${capture.id}`
+      button.addEventListener("click", () => this.switchTo(Number(capture.id)))
+      wrapper.appendChild(button)
+    })
+
+    controls.appendChild(wrapper)
+    this.updateActiveSourceButton()
+  }
+
+  updateActiveSourceButton() {
+    const controls = this.controlsElement()
+    if (!controls) return
+    const buttons = controls.querySelectorAll(".plyr-source-button")
+    buttons.forEach((btn) => {
+      const id = Number(btn.dataset.captureId)
+      btn.classList.toggle("is-active", id === this.currentIdValue)
+    })
+  }
+
+  controlsElement() {
+    if (this.plyr && this.plyr.elements && this.plyr.elements.controls) return this.plyr.elements.controls
+    const root = this.playerTarget?.closest(".plyr")
+    if (root) return root.querySelector(".plyr__controls")
+    return null
+  }
+
+  applyRotation(capture) {
+    const video = this.mediaElement()
+    if (!video) return
+    const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
+    video.style.transform = `rotate(${deg}deg)`
+  }
+}

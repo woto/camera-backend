@@ -16,7 +16,14 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new"
   delete "/logout", to: "sessions#destroy"
 
-  resources :events, only: [:index, :show, :destroy]
+  resources :events, only: [:index, :show, :destroy] 
+  resources :events, only: [] do
+    member do
+      post :set_base
+      post :sync_offsets
+      patch :set_rotation
+    end
+  end
 
   # Video recorder routes
   post "/recorder/upload", to: "recorder#upload"

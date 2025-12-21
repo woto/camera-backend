@@ -1,15 +1,19 @@
+require "open3"
+
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
+  before_action :set_event, only: [:show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest]
 
   def index
     @events = Event.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(20)
   end
 
   def show
-    @event = Event.find(params[:id])
-    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
+    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :asc)
+    backfill_rotations!(@captures)
     @next_event = Event.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
     @prev_event = Event.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
+    assign_switcher_data!(@captures)
 
     respond_to do |format|
       format.html
@@ -19,7 +23,6 @@ class EventsController < ApplicationController
 
   def latest
     @event = Event.order(captured_at: :desc).first
-
     unless @event
       return respond_to do |format|
         format.html { redirect_to events_path, alert: "No events yet." }
@@ -28,6 +31,7 @@ class EventsController < ApplicationController
     end
 
     @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
+    assign_switcher_data!(@captures)
 
     respond_to do |format|
       format.html { render :show }
@@ -36,7 +40,6 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = Event.find(params[:id])
     @older_event = Event.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
 
     if @event.destroy
@@ -50,6 +53,50 @@ class EventsController < ApplicationController
     end
   end
 
+  def set_base
+    capture = @event.captures.find(params[:capture_id])
+
+    ActiveRecord::Base.transaction do
+      @event.update!(base_capture: capture)
+      # Mark offsets relative to this base; preserve existing offset_seconds.
+      @event.captures.update_all(offset_base_capture_id: capture.id)
+      capture.update!(offset_seconds: 0.0)
+    end
+
+    redirect_to event_path(@event), notice: "Базовый ролик установлен (Capture ##{capture.id})."
+  rescue => e
+    redirect_to event_path(@event), alert: "Не удалось установить базовый ролик: #{e.message}"
+  end
+
+  def sync_offsets
+    capture = params[:capture_id].present? ? @event.captures.find(params[:capture_id]) : (@event.base_capture || @event.captures.first)
+    unless capture
+      return redirect_to event_path(@event), alert: "Нет роликов для синхронизации."
+    end
+
+    result = compute_offsets_for_event(@event, capture, sync_params)
+    notice = "Смещения обновлены: #{result[:updated]} шт."
+    notice += " (пропущено: #{result[:skipped].join(", ")})" if result[:skipped].any?
+
+    redirect_to event_path(@event), notice: notice
+  rescue => e
+    redirect_to event_path(@event), alert: "Ошибка синхронизации: #{e.message}"
+  end
+
+  def set_rotation
+    capture = @event.captures.find(params[:capture_id])
+    rotation = params[:rotation].to_i
+    allowed = [0, 90, 180, 270]
+    unless allowed.include?(rotation)
+      return redirect_to event_path(@event), alert: "Недопустимый угол (разрешены: #{allowed.join(", ")})"
+    end
+
+    capture.update!(rotation_degrees: rotation)
+    redirect_to event_path(@event), notice: "Ориентация Capture ##{capture.id} установлена на #{rotation}°."
+  rescue => e
+    redirect_to event_path(@event), alert: "Не удалось обновить ориентацию: #{e.message}"
+  end
+
   private
 
   def thumbnails_payload(event, captures)
@@ -59,6 +106,7 @@ class EventsController < ApplicationController
       thumbnails: interleaved_thumbnails(captures).map do |capture, thumb|
         {
           capture_id: capture.id,
+          offset_seconds: capture.offset_seconds&.to_f,
           filename: thumb.filename.to_s,
           byte_size: thumb.byte_size,
           content_type: thumb.content_type,
@@ -78,6 +126,96 @@ class EventsController < ApplicationController
         thumb = thumbs[index]
         [ capture, thumb ] if thumb
       end
+    end
+  end
+
+  def set_event
+    @event = Event.find(params[:id]) if params[:id]
+  end
+
+  def sync_params
+    params.permit(:analyze_duration, :sample_rate)
+  end
+
+  def compute_offsets_for_event(event, base_capture, options = {})
+    files = [base_capture] + event.captures.order(:created_at).where.not(id: base_capture.id).to_a
+    if files.empty?
+      raise "Нет файлов для анализа"
+    end
+
+    paths_map = files.index_with { |cap| video_path_for(cap) }
+    analyze_duration = options[:analyze_duration].presence || "90"
+    sample_rate = options[:sample_rate].presence || "8000"
+
+    cmd = [
+      Rails.root.join("bin/camera.sh").to_s,
+      "-d", analyze_duration.to_s,
+      "-r", sample_rate.to_s,
+      *paths_map.values
+    ]
+
+    stdout_str, stderr_str, status = Open3.capture3(*cmd)
+    raise "camera.sh failed: #{stderr_str.presence || stdout_str}" unless status.success?
+
+    json = JSON.parse(stdout_str)
+    offsets_by_path = json["files"].to_h { |entry| [entry["file"], entry["offset_sec"]] }
+
+    updated = 0
+    skipped = []
+    ActiveRecord::Base.transaction do
+      event.update!(base_capture: base_capture)
+      event.captures.update_all(offset_base_capture_id: base_capture.id)
+
+      paths_map.each do |cap, path|
+        offset = offsets_by_path[path]
+        if offset.nil?
+          skipped << "Capture ##{cap.id}"
+          next
+        end
+        cap.update!(offset_seconds: offset.to_f, offset_base_capture_id: base_capture.id)
+        updated += 1
+      end
+    end
+
+    { updated: updated, skipped: skipped }
+  end
+
+  def video_path_for(capture)
+    blob = capture.video&.blob
+    raise "Capture ##{capture.id} без видео" unless blob
+
+    service = ActiveStorage::Blob.service
+    if service.respond_to?(:path_for)
+      service.path_for(blob.key)
+    else
+      service.send(:path_for, blob.key)
+    end
+  end
+
+  def backfill_rotations!(captures)
+    captures.each do |capture|
+      next unless capture.video.attached?
+      next unless capture.rotation_degrees.nil?
+
+      path = video_path_for(capture)
+      rotation = VideoMetadata.rotation_degrees(path)
+      capture.update_columns(rotation_degrees: rotation) # avoid callbacks; lightweight backfill
+    rescue => e
+      Rails.logger.warn("[EventsController#show] rotation backfill failed for Capture ##{capture.id}: #{e.message}")
+    end
+  end
+
+  def assign_switcher_data!(captures)
+    @base_capture = @event.base_capture || captures.first
+    @switcher_captures = captures.filter_map do |capture|
+      next unless capture.video.attached?
+      {
+        id: capture.id,
+        offset_seconds: capture.offset_seconds&.to_f || 0.0,
+        url: url_for(capture.video),
+        label: "Capture ##{capture.id}",
+        rotation_degrees: capture.rotation_degrees || 0
+      }
     end
   end
 end

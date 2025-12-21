@@ -9,10 +9,12 @@ export default class extends Controller {
   static targets = ["video", "status"]
 
   connect() {
+    alert('sync_videos_controller connected')
     this.anchorTimes = new Map() // index -> seconds
     this.manuallyPaused = true
     this.blockedByBuffering = false
     this.waitingVideos = new Set()
+    this.applyOffsetsFromDataset()
   }
 
   setAnchor(event) {
@@ -98,6 +100,29 @@ export default class extends Controller {
 
   anchorText(time) {
     return `Контрольный кадр: ${time.toFixed(2)}s`
+  }
+
+  applyOffsetsFromDataset() {
+    const offsets = this.videoTargets
+      .map((video) => {
+        const rawOffset = video.dataset.syncVideosOffsetValue
+        if (rawOffset === undefined || rawOffset === "") return null
+
+        const parsed = Number(rawOffset)
+        if (!Number.isFinite(parsed)) return null
+
+        return { index: this.indexFor(video), offset: parsed }
+      })
+      .filter(Boolean)
+
+    if (offsets.length === 0) return
+
+    const maxOffset = Math.max(...offsets.map(({ offset }) => offset))
+    offsets.forEach(({ index, offset }) => {
+      const anchor = Math.max(maxOffset - offset, 0)
+      this.anchorTimes.set(index, anchor)
+      this.updateStatus(index, this.anchorText(anchor))
+    })
   }
 
   alignToAnchors() {
