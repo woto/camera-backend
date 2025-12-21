@@ -34,14 +34,13 @@ export default class extends Controller {
   }
 
   switchTo(nextId) {
-    if (nextId === this.currentIdValue) return
     const next = this.capturesById.get(nextId)
     if (!next) return
 
     const current = this.capturesById.get(this.currentIdValue)
     const currentTime = this.getCurrentTime() || 0
     const baseTime = current ? currentTime + (current.offset_seconds || 0) : currentTime
-    const rewindSeconds = 2
+    const rewindSeconds = 1
     const targetTime = Math.max(baseTime - (next.offset_seconds || 0) - rewindSeconds, 0)
     const wasPlaying = this.isPlaying()
 

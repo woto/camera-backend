@@ -209,12 +209,14 @@ class EventsController < ApplicationController
     @base_capture = @event.base_capture || captures.first
     @switcher_captures = captures.filter_map do |capture|
       next unless capture.video.attached?
+      offset = capture.offset_seconds&.to_f || 0.0
+      rotation = capture.rotation_degrees || 0
       {
         id: capture.id,
-        offset_seconds: capture.offset_seconds&.to_f || 0.0,
+        offset_seconds: offset,
         url: url_for(capture.video),
         label: "Capture ##{capture.id}",
-        rotation_degrees: capture.rotation_degrees || 0
+        rotation_degrees: rotation
       }
     end
   end
