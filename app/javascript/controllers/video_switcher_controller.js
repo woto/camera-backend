@@ -85,6 +85,7 @@ export default class extends Controller {
     this.applyRotation(capture)
 
     return this.loadSource(capture)
+      .catch(() => {})
       .finally(() => {
         this.seekAndMaybePlay(targetTime, autoPlay)
       })
@@ -113,51 +114,14 @@ export default class extends Controller {
 
   loadSource(capture) {
     const src = capture.url
-    return new Promise((resolve) => {
-      const video = this.mediaElement()
-      if (!video) return resolve()
+    const video = this.mediaElement()
+    if (!video) return Promise.resolve()
 
-      if (this.plyr) {
-        const onReady = () => {
-          if (this.plyr && this.plyr.off) this.plyr.off("ready", onReady)
-          video.removeEventListener("loadedmetadata", onReady)
-          resolve()
-        }
+    if (this.plyr) {
+      return this.loadWithPlyr(src, capture)
+    }
 
-        // Force underlying video element to reload even if URL matches.
-        video.addEventListener("loadedmetadata", onReady, { once: true })
-        video.src = src
-        video.load()
-
-        if (this.plyr.once) this.plyr.once("ready", onReady)
-        this.plyr.source = {
-          type: "video",
-          sources: [{ src, type: "video/mp4" }]
-        }
-        // Plyr rebuilds controls when source changes; re-add custom buttons after that cycle.
-        setTimeout(() => this.renderSourceButtons(), 0)
-        setTimeout(() => this.applyRotation(capture), 0)
-        // Also re-apply after Plyr's ready event settles.
-        if (this.plyr && this.plyr.on) this.plyr.on("ready", () => this.applyRotation(capture))
-      } else {
-        const onReady = () => {
-          video.removeEventListener("loadedmetadata", onReady)
-          this.applyRotation(capture)
-          resolve()
-        }
-
-        video.addEventListener("loadedmetadata", onReady, { once: true })
-        video.src = src
-        video.load()
-        if (video.readyState >= 1) onReady()
-      }
-
-      // Safety timeout to avoid hanging promises if metadata never fires.
-      setTimeout(() => {
-        this.applyRotation(capture)
-        resolve()
-      }, 1500)
-    })
+    return this.loadNative(video, src, capture)
   }
 
   seekAndMaybePlay(targetTime, autoPlay) {
@@ -261,5 +225,91 @@ export default class extends Controller {
       offset_seconds: this.offsetSeconds(capture),
       rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0
     }
+  }
+
+  loadWithPlyr(src, capture) {
+    return new Promise((resolve) => {
+      if (!this.plyr) return resolve()
+
+      const cleanup = () => {
+        if (this.plyr?.off && readyHandler) this.plyr.off("ready", readyHandler)
+        clearTimeout(timeout)
+      }
+
+      const done = () => {
+        if (finished) return
+        finished = true
+        cleanup()
+        this.applyRotation(capture)
+        resolve()
+      }
+
+      let finished = false
+      const readyHandler = () => {
+        this.waitForMetadata(this.mediaElement()).then(done)
+      }
+      const timeout = setTimeout(done, 2000)
+
+      if (this.plyr.once) {
+        this.plyr.once("ready", readyHandler)
+      } else {
+        readyHandler()
+      }
+
+      this.plyr.source = {
+        type: "video",
+        sources: [{ src, type: "video/mp4" }]
+      }
+
+      // Plyr rebuilds controls when source changes; re-add custom buttons after that cycle.
+      setTimeout(() => this.renderSourceButtons(), 0)
+      setTimeout(() => this.applyRotation(capture), 0)
+    })
+  }
+
+  loadNative(video, src, capture) {
+    return new Promise((resolve) => {
+      const done = () => {
+        if (finished) return
+        finished = true
+        cleanup()
+        this.applyRotation(capture)
+        resolve()
+      }
+
+      const cleanup = () => {
+        clearTimeout(timeout)
+        video.removeEventListener("loadedmetadata", done)
+      }
+
+      let finished = false
+      const timeout = setTimeout(done, 2000)
+
+      video.addEventListener("loadedmetadata", done, { once: true })
+      video.src = src
+      video.load()
+
+      if (video.readyState >= 1) done()
+    })
+  }
+
+  waitForMetadata(video) {
+    return new Promise((resolve) => {
+      if (!video) return resolve()
+      if (video.readyState >= 1 && Number.isFinite(video.duration)) return resolve()
+
+      const cleanup = () => {
+        clearTimeout(timeout)
+        video.removeEventListener("loadedmetadata", onReady)
+      }
+
+      const onReady = () => {
+        cleanup()
+        resolve()
+      }
+
+      const timeout = setTimeout(onReady, 1500)
+      video.addEventListener("loadedmetadata", onReady, { once: true })
+    })
   }
 }
