@@ -99,10 +99,19 @@ export default class extends Controller {
   }
 
   setupPlyr() {
-    if (window.Plyr && !this.plyr) {
-      this.plyr = new Plyr(this.playerTarget, {
-        controls: ["play", "progress", "current-time", "mute", "volume", "settings", "fullscreen"]
-      })
+    if (window.Plyr) {
+      if (!this.plyr) {
+        this.plyr = new Plyr(this.playerTarget, {
+          controls: ["play", "progress", "current-time", "mute", "volume", "settings", "fullscreen"]
+        })
+        this.setupSourceButtons()
+        this.loadCurrent(false)
+      }
+    } else {
+      this.plyrRetryCount = (this.plyrRetryCount || 0) + 1
+      if (this.plyrRetryCount < 50) { // 5 seconds max
+        setTimeout(() => this.setupPlyr(), 100)
+      }
     }
   }
 
