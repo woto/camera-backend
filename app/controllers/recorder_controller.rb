@@ -5,6 +5,7 @@ class RecorderController < ApplicationController
   def upload
     video_file = params[:video]
     raw_timestamp = params[:timestamp]
+    room = room_from_param
     raw_offset = params[:offset_seconds].presence || params[:offset_sec].presence
     offset_seconds = parse_offset_seconds(raw_offset)
 
@@ -25,8 +26,8 @@ class RecorderController < ApplicationController
     capture = nil
 
     ActiveRecord::Base.transaction do
-      event = Event.find_or_create_by!(captured_at: captured_at)
-      capture = event.captures.build
+      event = Event.find_or_create_by!(captured_at: captured_at, room: room)
+      capture = event.captures.build(room: room)
       capture.rotation_degrees = VideoMetadata.rotation_degrees(video_file.tempfile.path)
 
       capture.offset_seconds = offset_seconds unless offset_seconds.nil?
@@ -44,7 +45,8 @@ class RecorderController < ApplicationController
         capture_id: capture.id,
         video: blob_payload(capture.video),
         thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
-        offset_seconds: capture.offset_seconds&.to_f
+        offset_seconds: capture.offset_seconds&.to_f,
+        room: room&.name
       }
     end
     broadcast_upload_success(event, capture)
@@ -60,13 +62,21 @@ class RecorderController < ApplicationController
   end
 
   def trigger
+    room = room_from_param
+    unless room
+      return respond_to do |format|
+        format.json { render json: { success: false, message: "Room is required" }, status: :bad_request }
+        format.html { redirect_back fallback_location: events_path, alert: "Room is required" }
+      end
+    end
+
     timestamp = Time.current
     # Broadcast signal to all connected clients via ActionCable
-    ActionCable.server.broadcast("recording_channel", { action: "capture", timestamp: timestamp.iso8601 })
+    broadcast_to_room({ action: "capture", timestamp: timestamp.iso8601, room: room&.name }, room)
 
     respond_to do |format|
-      format.json { render json: { success: true, timestamp: timestamp.iso8601, message: "Capture signal sent" }, status: :ok }
-      format.html { redirect_back fallback_location: root_path, notice: "Capture signal sent at #{timestamp.strftime("%H:%M:%S")}" }
+      format.json { render json: { success: true, timestamp: timestamp.iso8601, room: room&.name, message: "Сигнал записи отправлен" }, status: :ok }
+      format.html { redirect_back fallback_location: root_path, notice: "Сигнал записи отправлен в #{timestamp.strftime("%H:%M:%S")}" }
     end
   rescue => e
     respond_to do |format|
@@ -157,11 +167,33 @@ class RecorderController < ApplicationController
       capture_id: capture.id,
       video: blob_payload(capture.video),
       thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
-      offset_seconds: capture.offset_seconds&.to_f
+      offset_seconds: capture.offset_seconds&.to_f,
+      room: event.room&.name
     }
 
-    ActionCable.server.broadcast("recording_channel", payload)
+    broadcast_to_room(payload, event.room)
   rescue => e
     Rails.logger.warn("[RecorderController#upload] Failed to broadcast upload success: #{e.message}")
+  end
+
+  def broadcast_to_room(payload, room)
+    channel = recording_channel(room)
+    return unless channel
+
+    ActionCable.server.broadcast(channel, payload)
+  end
+
+  def recording_channel(room)
+    name = room.respond_to?(:name) ? room.name : room
+    return unless name.present?
+
+    "recording_channel:#{name}"
+  end
+
+  def room_from_param
+    name = params[:room].presence
+    return unless name
+
+    Room.find_or_create_by!(name: name)
   end
 end

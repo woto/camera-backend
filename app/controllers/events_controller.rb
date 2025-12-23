@@ -3,9 +3,10 @@ require "open3"
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
   before_action :set_event, only: [:show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest, :set_visibility]
+  helper_method :room_param
 
   def index
-    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(20)
+    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(5)
   end
 
   def show
@@ -26,7 +27,7 @@ class EventsController < ApplicationController
     @event = scoped_events.order(captured_at: :desc).first
     unless @event
       return respond_to do |format|
-        format.html { redirect_to events_path, alert: "No events yet." }
+        format.html { redirect_to events_path, alert: "Событий пока нет." }
         format.json { render json: { event_id: nil, thumbnails: [] }, status: :ok }
       end
     end
@@ -45,12 +46,12 @@ class EventsController < ApplicationController
 
     if @event.destroy
       if @older_event
-        redirect_to event_path(@older_event), notice: "Event deleted. Showing older event."
+        redirect_to event_path(@older_event), notice: "Событие удалено. Показано более старое событие."
       else
-        redirect_to events_path, notice: "Event deleted."
+        redirect_to events_path, notice: "Событие удалено."
       end
     else
-      redirect_to event_path(@event), alert: "Failed to delete event."
+      redirect_to event_path(@event), alert: "Не удалось удалить событие."
     end
   end
 
@@ -115,6 +116,7 @@ class EventsController < ApplicationController
     {
       event_id: event.id,
       captured_at: event.captured_at&.iso8601,
+      room: event.room&.name,
       thumbnails: interleaved_thumbnails(captures).map do |capture, thumb|
         {
           capture_id: capture.id,
@@ -227,13 +229,17 @@ class EventsController < ApplicationController
         id: capture.id,
         offset_seconds: offset,
         url: url_for(capture.video),
-        label: "Capture ##{capture.id}",
+        label: "Запись ##{capture.id}",
         rotation_degrees: rotation
       }
     end
   end
 
   def scoped_events
-    Event.for_viewer(current_user)
+    events_scope
+  end
+
+  def room_param
+    params[:room].presence || current_room_name
   end
 end

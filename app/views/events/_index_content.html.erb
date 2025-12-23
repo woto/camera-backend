@@ -1,0 +1,50 @@
+<% content_for :title, "События" %>
+
+<div id="events_page" class="container">
+  <div class="page-actions">
+    <div class="page-actions-left">
+      <h1>События</h1>
+    </div>
+    <div class="page-actions-right">
+      <%= button_to "Сохранить запись",
+        recorder_trigger_path(room: current_room_name),
+        class: "primary-button",
+        method: :post,
+        disabled: current_room_name.blank?,
+        data: { turbo_disable_with: "Сохранение..." } %>
+    </div>
+  </div>
+
+  <% if @events.any? %>
+    <ul class="events-list">
+      <% @events.each do |event| %>
+        <li class="event-card">
+          <%= link_to event_path(event) do %>
+            <div class="event-thumbnails">
+              <% event.captures.each do |capture| %>
+                <% capture.thumbnails.each do |thumb| %>
+                  <%= image_tag url_for(thumb), class: "event-thumbnail-mini", alt: "Thumbnail for capture #{capture.id}" %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="event-row">
+                <span class="event-date"><%= l(event.captured_at, format: :long) if event.captured_at %></span>
+              <span class="event-meta"><%= t("events.captures_count", count: event.captures.size) %></span>
+              <% if current_user %>
+                <span class="event-badge <%= event.hidden? ? "is-hidden" : "is-open" %>">
+                  <%= event.hidden? ? "Скрыто" : "Открыто" %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="pagination">
+      <%= paginate @events, params: { room: current_room_name }.compact %>
+    </div>
+  <% else %>
+    <p>Событий пока нет.</p>
+  <% end %>
+</div>

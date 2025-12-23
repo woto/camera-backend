@@ -61,4 +61,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  # NOTE: Downgrade due to the bug https://github.com/rails/rails/issues/56406
+  gem "minitest", "~> 5"
 end

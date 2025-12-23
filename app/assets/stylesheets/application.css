@@ -9,11 +9,16 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+  color: #0f172a;
+}
+
 .container {
   max-width: 960px;
   margin: 2rem auto;
   padding: 0 1rem;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .flash {
@@ -144,7 +149,7 @@
 
 .event-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
@@ -197,6 +202,123 @@
 .capture-time {
   color: #475569;
   font-size: 0.9rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 40;
+  animation: modal-fade 150ms ease-out;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+  max-width: 460px;
+  width: 100%;
+  overflow: hidden;
+  animation: modal-scale 150ms ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.modal-body {
+  padding: 1.25rem;
+  display: grid;
+}
+
+.modal-body .actions {
+  margin-top: 1rem;
+}
+
+.modal-body .field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="password"] {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.room-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  background: #ecfeff;
+  border: 1px solid #bae6fd;
+  color: #0f172a;
+}
+
+.room-chip.is-empty {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.nav-link {
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.nav-link:hover {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-scale {
+  from { transform: translateY(8px) scale(0.98); }
+  to   { transform: translateY(0) scale(1); }
 }
 
 .capture-video {
@@ -280,7 +402,7 @@
 }
 
 .event-thumbnail-mini {
-  height: 60px;
+  max-height: 400px;
   width: auto;
   border-radius: 4px;
   border: 1px solid #e2e8f0;

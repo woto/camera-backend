@@ -1,4 +1,4 @@
-<% content_for :title, "Event ##{@event.id}" %>
+<% content_for :title, "Событие ##{@event.id}" %>
 
 <% content_for :head do %>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
@@ -11,15 +11,15 @@
   <div class="page-actions">
     <div class="navigation-links">
       <%= link_to events_path, class: "back-button" do %>
-        All events
+        Все события
       <% end %>
 
       <div class="prev-next-links">
         <% if @next_event %>
-          <%= link_to "« Newer", event_path(@next_event), class: "nav-link" %>
+          <%= link_to "« Новее", event_path(@next_event), class: "nav-link" %>
         <% end %>
         <% if @prev_event %>
-          <%= link_to "Older »", event_path(@prev_event), class: "nav-link" %>
+          <%= link_to "Старее »", event_path(@prev_event), class: "nav-link" %>
         <% end %>
       </div>
     </div>
@@ -29,13 +29,13 @@
           set_visibility_event_path(@event, hidden: !@event.hidden?),
           method: :patch,
           class: "secondary-button") %>
-        <%= button_to "Delete event", event_path(@event), method: :delete, data: { turbo_confirm: "Delete this event and all its captures?" }, class: "danger-button" %>
+        <%= button_to "Удалить событие", event_path(@event), method: :delete, data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, class: "danger-button" %>
       </div>
     <% end %>
   </div>
 
   <h1>
-    Event <%= @event.captured_at.strftime("%Y-%m-%d %H:%M:%S %Z") %>
+    Событие <%= l(@event.captured_at) %>
     <span class="event-badge <%= @event.hidden? ? "is-hidden" : "is-open" %>">
       <%= @event.hidden? ? "Скрыто" : "Открыто" %>
     </span>
@@ -45,7 +45,7 @@
     <div class="capture-card">
       <div class="capture-header">
         <span data-video-switcher-target="label">Загрузка…</span>
-        <span class="capture-time"><%= @base_capture&.created_at&.strftime("%Y-%m-%d %H:%M:%S %Z") %></span>
+        <span class="capture-time"><%= l(@base_capture.created_at) if @base_capture&.created_at %></span>
       </div>
 
       <div class="capture-video">
@@ -68,7 +68,7 @@
       </div>
     </div>
   <% else %>
-    <p>No captures for this event.</p>
+    <p>Записей для этого события нет.</p>
   <% end %>
 
   <% if current_user && @captures.any? %>

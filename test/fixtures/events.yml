@@ -1,7 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  captured_at: 2025-12-18 02:17:00
+visible_living:
+  captured_at: 2025-12-01 00:00:00
+  room: living_room
+  hidden: false
 
-two:
-  captured_at: 2025-12-18 02:18:00
+hidden_living:
+  captured_at: 2025-12-02 00:00:00
+  room: living_room
+  hidden: true
+
+visible_bedroom:
+  captured_at: 2025-12-03 00:00:00
+  room: bedroom
+  hidden: false
+
+hidden_bedroom:
+  captured_at: 2025-12-04 00:00:00
+  room: bedroom
+  hidden: true

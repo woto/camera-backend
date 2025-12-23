@@ -1,23 +1,24 @@
 class SessionsController < ApplicationController
-  skip_before_action :require_login, only: [:new, :create]
+  skip_before_action :require_login, only: [ :new, :create ]
 
   def new
   end
 
   def create
-    user = User.find_by(username: params[:username])
-
-    if user&.authenticate(params[:password])
+    if (user = User.find_by(username: params[:username])) && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to events_path, notice: "Signed in successfully."
+      redirect_back fallback_location: events_path, notice: "Вы вошли успешно.", status: :see_other
     else
-      flash.now[:alert] = "Invalid username or password."
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = "Неверное имя пользователя или пароль."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.update("modal", method: :morph, partial: "sessions/form") }
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     reset_session
-    redirect_to new_session_path, notice: "Signed out."
+    redirect_back fallback_location: events_path, notice: "Вы вышли.", status: :see_other
   end
 end

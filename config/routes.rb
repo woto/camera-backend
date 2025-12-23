@@ -29,4 +29,6 @@ Rails.application.routes.draw do
   # Video recorder routes
   post "/recorder/upload", to: "recorder#upload"
   post "/recorder/trigger", to: "recorder#trigger"
+
+  resource :room_selection, only: [:new, :create], controller: "room_selections"
 end

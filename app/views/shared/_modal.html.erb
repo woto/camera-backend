@@ -1,0 +1,15 @@
+<div class="modal-backdrop" data-controller="modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2><%= title %></h2>
+      <button type="button" class="modal-close" data-action="click->modal#close">×</button>
+    </div>
+    <div class="modal-body">
+      <% if block_given? %>
+        <%= yield %>
+      <% else %>
+        <%= body %>
+      <% end %>
+    </div>
+  </div>
+</div>

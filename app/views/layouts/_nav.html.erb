@@ -1,0 +1,24 @@
+<div class="top-nav">
+  <div class="nav-left">
+    <% if current_user %>
+      <span class="user-greeting">Привет, <%= current_user.username %></span>
+    <% else %>
+      <span class="user-greeting">Гость</span>
+    <% end %>
+
+    <% if current_room_name.present? %>
+      <span class="room-chip">Комната: <%= current_room_name %></span>
+    <% else %>
+      <span class="room-chip is-empty">Комната не выбрана</span>
+    <% end %>
+  </div>
+
+  <div class="nav-actions">
+    <%= link_to "Войти", new_session_path, data: { turbo_frame: "modal" }, class: "nav-link" unless current_user %>
+    <%= link_to "Комната", new_room_selection_path, data: { turbo_frame: "modal" }, class: "nav-link" %>
+
+    <% if current_user %>
+      <%= link_to "Выйти", session_path, data: { turbo_method: :delete, turbo_confirm: "Выйти?" }, class: "nav-link" %>
+    <% end %>
+  </div>
+</div>

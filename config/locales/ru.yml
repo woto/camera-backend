@@ -1,0 +1,36 @@
+ru:
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M:%S"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+    month_names: ["", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+    abbr_month_names: ["", "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+    day_names: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+    abbr_day_names: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"]
+  views:
+    pagination:
+      first: "&laquo; Первая"
+      last: "Последняя &raquo;"
+      previous: "&lsaquo; Назад"
+      next: "Вперед &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          one: "Показана <b>1</b> запись"
+          few: "Показано <b>%{count}</b> записи"
+          many: "Показано <b>%{count}</b> записей"
+          other: "Показано <b>%{count}</b> записей"
+  events:
+    captures_count:
+      one: "1 запись"
+      few: "%{count} записи"
+      many: "%{count} записей"
+      other: "%{count} записей"

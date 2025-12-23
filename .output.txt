@@ -1,0 +1,200 @@
+115-    } else {
+116-      this.removeAttribute("refresh");
+117-    }
+118-  }
+119-  get shouldReloadWithMorph() {
+120:    return this.src && this.refresh === "morph";
+121-  }
+122-  get loading() {
+123-    return frameLoadingStyleFromString(this.getAttribute("loading") || "");
+124-  }
+125-  set loading(value) {
+--
+1682-  } else {
+1683-    return defaultValue;
+1684-  }
+1685-}
+1686-
+1687:var Idiomorph = function() {
+1688-  const noOp = () => {};
+1689-  const defaults = {
+1690:    morphStyle: "outerHTML",
+1691-    callbacks: {
+1692-      beforeNodeAdded: noOp,
+1693-      afterNodeAdded: noOp,
+1694-      beforeNodeMorphed: noOp,
+1695-      afterNodeMorphed: noOp,
+--
+1704-      shouldRemove: noOp,
+1705-      afterHeadMorphed: noOp
+1706-    },
+1707-    restoreFocus: true
+1708-  };
+1709:  function morph(oldNode, newContent, config = {}) {
+1710-    oldNode = normalizeElement(oldNode);
+1711-    const newNode = normalizeParent(newContent);
+1712-    const ctx = createMorphContext(oldNode, newNode, config);
+1713:    const morphedNodes = saveAndRestoreFocus(ctx, (() => withHeadBlocking(ctx, oldNode, newNode, (ctx => {
+1714:      if (ctx.morphStyle === "innerHTML") {
+1715:        morphChildren(ctx, oldNode, newNode);
+1716-        return Array.from(oldNode.childNodes);
+1717-      } else {
+1718:        return morphOuterHTML(ctx, oldNode, newNode);
+1719-      }
+1720-    }))));
+1721-    ctx.pantry.remove();
+1722:    return morphedNodes;
+1723-  }
+1724:  function morphOuterHTML(ctx, oldNode, newNode) {
+1725-    const oldParent = normalizeParent(oldNode);
+1726:    morphChildren(ctx, oldParent, newNode, oldNode, oldNode.nextSibling);
+1727-    return Array.from(oldParent.childNodes);
+1728-  }
+1729-  function saveAndRestoreFocus(ctx, fn) {
+1730-    if (!ctx.config.restoreFocus) return fn();
+1731-    let activeElement = document.activeElement;
+--
+1741-    if (activeElement && !activeElement.selectionEnd && selectionEnd) {
+1742-      activeElement.setSelectionRange(selectionStart, selectionEnd);
+1743-    }
+1744-    return results;
+1745-  }
+1746:  const morphChildren = function() {
+1747:    function morphChildren(ctx, oldParent, newParent, insertionPoint = null, endPoint = null) {
+1748-      if (oldParent instanceof HTMLTemplateElement && newParent instanceof HTMLTemplateElement) {
+1749-        oldParent = oldParent.content;
+1750-        newParent = newParent.content;
+1751-      }
+1752-      insertionPoint ||= oldParent.firstChild;
+--
+1755-          const bestMatch = findBestMatch(ctx, newChild, insertionPoint, endPoint);
+1756-          if (bestMatch) {
+1757-            if (bestMatch !== insertionPoint) {
+1758-              removeNodesBetween(ctx, insertionPoint, bestMatch);
+1759-            }
+1760:            morphNode(bestMatch, newChild, ctx);
+1761-            insertionPoint = bestMatch.nextSibling;
+1762-            continue;
+1763-          }
+1764-        }
+1765-        if (newChild instanceof Element) {
+1766-          const newChildId = newChild.getAttribute("id");
+1767-          if (ctx.persistentIds.has(newChildId)) {
+1768-            const movedChild = moveBeforeById(oldParent, newChildId, insertionPoint, ctx);
+1769:            morphNode(movedChild, newChild, ctx);
+1770-            insertionPoint = movedChild.nextSibling;
+1771-            continue;
+1772-          }
+1773-        }
+1774-        const insertedNode = createNode(oldParent, newChild, insertionPoint, ctx);
+--
+1785-    function createNode(oldParent, newChild, insertionPoint, ctx) {
+1786-      if (ctx.callbacks.beforeNodeAdded(newChild) === false) return null;
+1787-      if (ctx.idMap.has(newChild)) {
+1788-        const newEmptyChild = document.createElement(newChild.tagName);
+1789-        oldParent.insertBefore(newEmptyChild, insertionPoint);
+1790:        morphNode(newEmptyChild, newChild, ctx);
+1791-        ctx.callbacks.afterNodeAdded(newEmptyChild);
+1792-        return newEmptyChild;
+1793-      } else {
+1794-        const newClonedChild = document.importNode(newChild, true);
+1795-        oldParent.insertBefore(newClonedChild, insertionPoint);
+--
+1889-        }
+1890-      } else {
+1891-        parentNode.insertBefore(element, after);
+1892-      }
+1893-    }
+1894:    return morphChildren;
+1895-  }();
+1896:  const morphNode = function() {
+1897:    function morphNode(oldNode, newContent, ctx) {
+1898-      if (ctx.ignoreActive && oldNode === document.activeElement) {
+1899-        return null;
+1900-      }
+1901-      if (ctx.callbacks.beforeNodeMorphed(oldNode, newContent) === false) {
+1902-        return oldNode;
+1903-      }
+1904:      if (oldNode instanceof HTMLHeadElement && ctx.head.ignore) ; else if (oldNode instanceof HTMLHeadElement && ctx.head.style !== "morph") {
+1905-        handleHeadElement(oldNode, newContent, ctx);
+1906-      } else {
+1907:        morphAttributes(oldNode, newContent, ctx);
+1908-        if (!ignoreValueOfActiveElement(oldNode, ctx)) {
+1909:          morphChildren(ctx, oldNode, newContent);
+1910-        }
+1911-      }
+1912-      ctx.callbacks.afterNodeMorphed(oldNode, newContent);
+1913-      return oldNode;
+1914-    }
+1915:    function morphAttributes(oldNode, newNode, ctx) {
+1916-      let type = newNode.nodeType;
+1917-      if (type === 1) {
+1918-        const oldElt = oldNode;
+1919-        const newElt = newNode;
+1920-        const oldAttributes = oldElt.attributes;
+--
+2005-      return ctx.callbacks.beforeAttributeUpdated(attr, element, updateType) === false;
+2006-    }
+2007-    function ignoreValueOfActiveElement(possibleActiveElement, ctx) {
+2008-      return !!ctx.ignoreActiveValue && possibleActiveElement === document.activeElement && possibleActiveElement !== document.body;
+2009-    }
+2010:    return morphNode;
+2011-  }();
+2012-  function withHeadBlocking(ctx, oldNode, newNode, callback) {
+2013-    if (ctx.head.block) {
+2014-      const oldHead = oldNode.querySelector("head");
+2015-      const newHead = newNode.querySelector("head");
+--
+2096-  }
+2097-  const createMorphContext = function() {
+2098-    function createMorphContext(oldNode, newContent, config) {
+2099-      const {persistentIds: persistentIds, idMap: idMap} = createIdMaps(oldNode, newContent);
+2100-      const mergedConfig = mergeDefaults(config);
+2101:      const morphStyle = mergedConfig.morphStyle || "outerHTML";
+2102:      if (![ "innerHTML", "outerHTML" ].includes(morphStyle)) {
+2103:        throw `Do not understand how to morph style ${morphStyle}`;
+2104-      }
+2105-      return {
+2106-        target: oldNode,
+2107-        newContent: newContent,
+2108-        config: mergedConfig,
+2109:        morphStyle: morphStyle,
+2110-        ignoreActive: mergedConfig.ignoreActive,
+2111-        ignoreActiveValue: mergedConfig.ignoreActiveValue,
+2112-        restoreFocus: mergedConfig.restoreFocus,
+2113-        idMap: idMap,
+2114-        persistentIds: persistentIds,
+--
+2172-      const oldIdElements = findIdElements(oldContent);
+2173-      const newIdElements = findIdElements(newContent);
+2174-      const persistentIds = createPersistentIds(oldIdElements, newIdElements);
+2175-      let idMap = new Map;
+2176-      populateIdMapWithTree(idMap, persistentIds, oldContent, oldIdElements);
+2177:      const newRoot = newContent.__idiomorphRoot || newContent;
+2178-      populateIdMapWithTree(idMap, persistentIds, newRoot, newIdElements);
+2179-      return {
+2180-        persistentIds: persistentIds,
+2181-        idMap: idMap
+2182-      };
+--
+2205-      return persistentIds;
+2206-    }
+2207-    return createMorphContext;
+2208-  }();
+2209-  const {normalizeElement: normalizeElement, normalizeParent: normalizeParent} = function() {
+2210:    const generatedByIdiomorph = new WeakSet;
+2211-    function normalizeElement(content) {
+2212-      if (content instanceof Document) {
+2213-        return content.documentElement;
+2214-      } else {
+2215-        return content;
+--
+2218-    function normalizeParent(newContent) {
+2219-      if (newContent == null) {
+2220-        return document.createElement("div");
+2221-      } else if (typeof newContent === "string") {
+2222-        return normalizeParent(parseContent(newContent));
+2223:      } else if (generatedByIdiomorph.has(newContent)) {
+2224-        return newContent;
+2225-      } else if (newContent instanceof Node) {
+2226-        if (newContent.parentNode) {

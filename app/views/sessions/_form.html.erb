@@ -1,0 +1,18 @@
+<%= render "shared/modal", title: "Вход" do %>
+  <% if flash[:alert].present? %>
+    <div class="flash alert"><%= flash[:alert] %></div>
+  <% end %>
+  <%= form_with url: session_path, method: :post, data: { turbo_frame: "_top" } do %>
+    <div class="field">
+      <label for="username">Имя пользователя</label>
+      <input type="text" name="username" id="username" value="<%= params[:username] %>" required />
+    </div>
+    <div class="field">
+      <label for="password">Пароль</label>
+      <input type="password" name="password" id="password" required />
+    </div>
+    <div class="actions">
+      <%= submit_tag "Войти", class: "primary-button" %>
+    </div>
+  <% end %>
+<% end %>

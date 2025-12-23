@@ -28,4 +28,19 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M:%S"
+  views:
+    pagination:
+      first: "&laquo; Первая"
+      last: "Последняя &raquo;"
+      previous: "&lsaquo; Назад"
+      next: "Вперед &rsaquo;"
+      truncate: "&hellip;"
+  events:
+    captures_count:
+      one: "1 запись"
+      few: "%{count} записи"
+      many: "%{count} записей"
+      other: "%{count} записей"

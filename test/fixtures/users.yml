@@ -1,0 +1,7 @@
+user_one:
+  username: "user1"
+  password_digest: <%= BCrypt::Password.create('secret') %>
+
+user_two:
+  username: "user2"
+  password_digest: <%= BCrypt::Password.create('secret') %>
