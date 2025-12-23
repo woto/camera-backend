@@ -63,5 +63,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   # NOTE: Downgrade due to the bug https://github.com/rails/rails/issues/56406
-  gem "minitest", "~> 5"
+  gem "minitest", "~> 6"
 end
