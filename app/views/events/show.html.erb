@@ -4,81 +4,82 @@
      data-video-switcher-captures-value="<%= @switcher_captures.to_json %>"
      data-video-switcher-current-id-value="<%= @base_capture&.id %>">
   
-  <div class="flex flex-wrap justify-between items-center gap-6 mb-12">
-    <div class="flex items-center gap-6">
-      <%= link_to events_path, class: "group flex items-center gap-3.5 text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white transition-all duration-500" do %>
-        <div class="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50 group-hover:shadow-lg group-hover:shadow-accent-purple/20 transition-all duration-500 group-hover:-translate-x-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  <div class="flex flex-wrap justify-between items-center gap-4 md:gap-6 mb-8 md:mb-12">
+    <div class="flex items-center gap-4 md:gap-6">
+      <%= link_to events_path, class: "group flex items-center gap-2.5 md:gap-3.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white transition-all duration-500" do %>
+        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50 group-hover:shadow-lg group-hover:shadow-accent-purple/20 transition-all duration-500 group-hover:-translate-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </div>
-        <span>Все события</span>
+        <span class="hidden sm:inline">Все события</span>
+        <span class="sm:hidden">Назад</span>
       <% end %>
 
-      <div class="h-8 w-px bg-white/5"></div>
+      <div class="h-6 md:h-8 w-px bg-white/5"></div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 md:gap-3">
         <% if @next_event %>
-          <%= link_to event_path(@next_event), class: "w-10 h-10 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Новее" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          <%= link_to event_path(@next_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Новее" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
           <% end %>
         <% end %>
         <% if @prev_event %>
-          <%= link_to event_path(@prev_event), class: "w-10 h-10 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Старее" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <%= link_to event_path(@prev_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Старее" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           <% end %>
         <% end %>
       </div>
     </div>
 
     <% if current_user %>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 md:gap-3 w-full sm:w-auto">
         <%= button_to set_visibility_event_path(@event, hidden: !@event.hidden?),
           method: :patch,
-          class: "btn-secondary text-xs font-black uppercase tracking-widest px-6" do %>
-          <%= @event.hidden? ? "Сделать открытым" : "Скрыть" %>
+          class: "btn-secondary text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-6 py-2.5 md:py-3 flex-grow sm:flex-grow-0" do %>
+          <%= @event.hidden? ? "Открыть" : "Скрыть" %>
         <% end %>
         <%= button_to event_path(@event), 
           method: :delete, 
           data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, 
-          class: "w-11 h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-300" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+          class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-300" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
         <% end %>
       </div>
     <% end %>
   </div>
 
-  <div class="mb-12 relative">
-    <div class="flex items-center gap-5 mb-4">
-      <h1 class="text-4xl font-black text-white m-0 tracking-tighter leading-tight">Запись от <%= l(@event.captured_at, format: :long) %></h1>
-      <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[11px] px-4 py-2">
+  <div class="mb-8 md:mb-12 relative">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mb-4">
+      <h1 class="text-2xl md:text-4xl font-black text-white m-0 tracking-tighter leading-tight">Запись от <%= l(@event.captured_at, format: :long) %></h1>
+      <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[10px] md:text-[11px] px-3 md:px-4 py-1.5 md:py-2 self-start sm:self-auto">
         <%= @event.hidden? ? "Конфиденциально" : "Публично" %>
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <div class="h-1.5 w-24 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full"></div>
-      <div class="h-1.5 w-1.5 bg-white/20 rounded-full"></div>
-      <div class="h-1.5 w-1.5 bg-white/10 rounded-full"></div>
+      <div class="h-1 md:h-1.5 w-16 md:w-24 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full"></div>
+      <div class="h-1 md:h-1.5 w-1 md:h-1.5 bg-white/20 rounded-full"></div>
+      <div class="h-1 md:h-1.5 w-1 md:h-1.5 bg-white/10 rounded-full"></div>
     </div>
   </div>
 
   <% if @captures.any? %>
-    <div class="card p-1.5 mb-12 shadow-2xl relative overflow-visible group/player bg-white/[0.02]">
+    <div class="card p-1 md:p-1.5 mb-12 shadow-2xl relative overflow-visible group/player bg-white/[0.02]">
       <div class="absolute -top-12 -left-12 w-64 h-64 bg-accent-purple/10 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover/player:opacity-100 transition-opacity duration-1000"></div>
       
-      <div class="p-8 pb-4 flex justify-between items-end relative z-10">
+      <div class="p-4 md:p-8 pb-4 flex flex-col sm:flex-row justify-between sm:items-end gap-4 relative z-10">
         <div class="flex flex-col">
-          <div class="flex items-center gap-2 mb-2">
+          <div class="flex items-center gap-2 mb-1 md:mb-2">
             <div class="w-2 h-2 rounded-full bg-accent-green animate-pulse shadow-[0_0_8px_rgba(16,185,129,1)]"></div>
-            <span class="text-[10px] font-black uppercase tracking-[0.4em] text-accent-purple">Источник сигнала</span>
+            <span class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-accent-purple">Источник сигнала</span>
           </div>
-          <span class="font-black text-xl text-white tracking-tighter" data-video-switcher-target="label">Загрузка…</span>
+          <span class="font-black text-lg md:text-xl text-white tracking-tighter leading-tight" data-video-switcher-target="label">Загрузка…</span>
         </div>
-        <div class="text-[11px] font-black text-white/40 bg-white/5 px-4 py-2 rounded-2xl border border-white/5 uppercase tracking-widest backdrop-blur-md">
+        <div class="text-[10px] md:text-[11px] font-black text-white/40 bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-xl md:rounded-2xl border border-white/5 uppercase tracking-widest backdrop-blur-md self-start sm:self-auto">
           <%= l(@base_capture.created_at, format: :default) if @base_capture&.created_at %>
         </div>
       </div>
 
-      <div class="p-4 pt-0">
-        <div class="player-container">
+      <div class="p-2 md:p-4 pt-0">
+        <div class="player-container !rounded-2xl md:!rounded-[2rem]">
           <%= video_tag "",
             controls: true,
             preload: "metadata",
@@ -86,7 +87,6 @@
             data: { video_switcher_target: "player" } %>
         </div>
       </div>
-
     </div>
   <% else %>
     <div class="card p-12 flex flex-col items-center justify-center border-dashed text-text-secondary">
