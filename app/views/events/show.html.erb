@@ -5,113 +5,150 @@
   <script defer src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 <% end %>
 
-<div class="container" data-controller="video-switcher"
+<div class="max-w-5xl mx-auto" data-controller="video-switcher"
      data-video-switcher-captures-value="<%= @switcher_captures.to_json %>"
      data-video-switcher-current-id-value="<%= @base_capture&.id %>">
-  <div class="page-actions">
-    <div class="navigation-links">
-      <%= link_to events_path, class: "back-button" do %>
-        Все события
+  
+  <div class="flex flex-wrap justify-between items-center gap-6 mb-12">
+    <div class="flex items-center gap-6">
+      <%= link_to events_path, class: "group flex items-center gap-3.5 text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white transition-all duration-500" do %>
+        <div class="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50 group-hover:shadow-lg group-hover:shadow-accent-purple/20 transition-all duration-500 group-hover:-translate-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </div>
+        <span>Все события</span>
       <% end %>
 
-      <div class="prev-next-links">
+      <div class="h-8 w-px bg-white/5"></div>
+
+      <div class="flex items-center gap-3">
         <% if @next_event %>
-          <%= link_to "« Новее", event_path(@next_event), class: "nav-link" %>
+          <%= link_to event_path(@next_event), class: "w-10 h-10 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Новее" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          <% end %>
         <% end %>
         <% if @prev_event %>
-          <%= link_to "Старее »", event_path(@prev_event), class: "nav-link" %>
+          <%= link_to event_path(@prev_event), class: "w-10 h-10 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Старее" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <% end %>
         <% end %>
       </div>
     </div>
+
     <% if current_user %>
-      <div class="page-actions-buttons">
-        <%= button_to(@event.hidden? ? "Сделать открытым" : "Скрыть событие",
-          set_visibility_event_path(@event, hidden: !@event.hidden?),
+      <div class="flex items-center gap-3">
+        <%= button_to set_visibility_event_path(@event, hidden: !@event.hidden?),
           method: :patch,
-          class: "secondary-button") %>
-        <%= button_to "Удалить событие", event_path(@event), method: :delete, data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, class: "danger-button" %>
+          class: "btn-secondary text-xs font-black uppercase tracking-widest px-6" do %>
+          <%= @event.hidden? ? "Сделать открытым" : "Скрыть" %>
+        <% end %>
+        <%= button_to event_path(@event), 
+          method: :delete, 
+          data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, 
+          class: "w-11 h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-300" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+        <% end %>
       </div>
     <% end %>
   </div>
 
-  <h1>
-    Событие <%= l(@event.captured_at) %>
-    <span class="event-badge <%= @event.hidden? ? "is-hidden" : "is-open" %>">
-      <%= @event.hidden? ? "Скрыто" : "Открыто" %>
-    </span>
-  </h1>
+  <div class="mb-12 relative">
+    <div class="flex items-center gap-5 mb-4">
+      <h1 class="text-5xl font-black text-white m-0 tracking-tighter leading-tight">Запись от <%= l(@event.captured_at, format: :long) %></h1>
+      <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[11px] px-4 py-2">
+        <%= @event.hidden? ? "Конфиденциально" : "Публично" %>
+      </span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="h-1.5 w-24 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full"></div>
+      <div class="h-1.5 w-1.5 bg-white/20 rounded-full"></div>
+      <div class="h-1.5 w-1.5 bg-white/10 rounded-full"></div>
+    </div>
+  </div>
 
   <% if @captures.any? %>
-    <div class="capture-card">
-      <div class="capture-header">
-        <span data-video-switcher-target="label">Загрузка…</span>
-        <span class="capture-time"><%= l(@base_capture.created_at) if @base_capture&.created_at %></span>
+    <div class="card p-1.5 mb-12 shadow-2xl relative overflow-visible group/player bg-white/[0.02]">
+      <div class="absolute -top-12 -left-12 w-64 h-64 bg-accent-purple/10 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover/player:opacity-100 transition-opacity duration-1000"></div>
+      
+      <div class="p-8 pb-4 flex justify-between items-end relative z-10">
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-2 h-2 rounded-full bg-accent-green animate-pulse shadow-[0_0_8px_rgba(16,185,129,1)]"></div>
+            <span class="text-[10px] font-black uppercase tracking-[0.4em] text-accent-purple">Источник сигнала</span>
+          </div>
+          <span class="font-black text-3xl text-white tracking-tighter" data-video-switcher-target="label">Загрузка…</span>
+        </div>
+        <div class="text-[11px] font-black text-white/40 bg-white/5 px-4 py-2 rounded-2xl border border-white/5 uppercase tracking-widest backdrop-blur-md">
+          <%= l(@base_capture.created_at, format: :default) if @base_capture&.created_at %>
+        </div>
       </div>
 
-      <div class="capture-video">
-        <%= video_tag "",
-          controls: true,
-          preload: "metadata",
-          class: "video-player",
-          data: { video_switcher_target: "player" } %>
+      <div class="p-4 pt-0">
+        <div class="player-container">
+          <%= video_tag "",
+            controls: true,
+            preload: "metadata",
+            class: "player-video",
+            data: { video_switcher_target: "player" } %>
+        </div>
       </div>
 
-      <div class="camera-switcher">
-        <% @captures.each do |capture| %>
-          <button type="button"
-                  class="ghost-button"
-                  data-action="click->video-switcher#switch"
-                  data-video-switcher-id-param="<%= capture.id %>">
-            Камера <%= capture.id %><%= capture == @base_capture ? " (база)" : "" %>
-          </button>
-        <% end %>
-      </div>
     </div>
   <% else %>
-    <p>Записей для этого события нет.</p>
+    <div class="card p-12 flex flex-col items-center justify-center border-dashed text-text-secondary">
+      <span class="text-4xl mb-4">🔇</span>
+      <p class="font-medium">Записей для этого события нет.</p>
+    </div>
   <% end %>
 
   <% if current_user && @captures.any? %>
-    <div class="admin-tools">
-      <h3>Админ · Синхронизация</h3>
-      <div class="admin-actions">
-        <% @captures.each do |capture| %>
-          <%= button_to "Сделать базой ##{capture.id}", set_base_event_path(@event, capture_id: capture.id), method: :post, class: "secondary-button" %>
-        <% end %>
-      </div>
+    <div class="mt-20 pt-10 border-t border-border-dim">
+      <h2 class="text-xl font-bold text-white mb-6">Панель управления</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div>
+          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4">Синхронизация</h3>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <% @captures.each do |capture| %>
+              <%= button_to "Сделать базой ##{capture.id}", set_base_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
+            <% end %>
+          </div>
 
-      <div class="admin-actions">
-        <%= form_with url: sync_offsets_event_path(@event), method: :post, local: true do |f| %>
-          <div class="form-row">
-            <label>Базовый ролик</label>
-            <%= select_tag :capture_id, options_from_collection_for_select(@captures, :id, :id, @base_capture&.id), include_blank: false %>
-          </div>
-          <div class="form-row">
-            <label>Длительность анализа (сек)</label>
-            <%= number_field_tag :analyze_duration, 90, step: 1 %>
-          </div>
-          <div class="form-row">
-            <label>Sample rate (Hz)</label>
-          <%= number_field_tag :sample_rate, 8000, step: 1000 %>
+          <%= form_with url: sync_offsets_event_path(@event), method: :post, local: true, class: "space-y-4" do |f| %>
+            <div class="grid grid-cols-1 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">Базовый ролик</label>
+                <%= select_tag :capture_id, options_from_collection_for_select(@captures, :id, :id, @base_capture&.id), class: "bg-sidebar-active border border-border-dim text-white rounded-lg p-2 text-sm outline-none focus:border-accent-purple" %>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">Длительность анализа (сек)</label>
+                <%= number_field_tag :analyze_duration, 90, class: "bg-sidebar-active border border-border-dim text-white rounded-lg p-2 text-sm outline-none focus:border-accent-purple" %>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">Sample rate (Hz)</label>
+                <%= number_field_tag :sample_rate, 8000, class: "bg-sidebar-active border border-border-dim text-white rounded-lg p-2 text-sm outline-none focus:border-accent-purple" %>
+              </div>
+            </div>
+            <%= f.submit "Запустить синхронизацию", class: "btn-primary w-full text-xs" %>
+          <% end %>
         </div>
-        <%= f.submit "Запустить синхронизацию", class: "primary-button" %>
-      <% end %>
-      </div>
 
-      <h3>Админ · Ориентация</h3>
-      <div class="admin-actions">
-        <% @captures.each do |capture| %>
-          <div class="form-row">
-            <div class="form-label">
-              Capture ##<%= capture.id %> (текущая: <%= capture.rotation_degrees || 0 %>°)
-            </div>
-            <div class="form-controls">
-              <% [0, 90, 180, 270].each do |deg| %>
-                <%= button_to "#{deg}°", set_rotation_event_path(@event, capture_id: capture.id, rotation: deg), method: :patch, class: "ghost-button" %>
-              <% end %>
-            </div>
+        <div>
+          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4">Ориентация</h3>
+          <div class="space-y-4">
+            <% @captures.each do |capture| %>
+              <div class="bg-zinc-900/50 p-4 rounded-xl border border-border-dim">
+                <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3">
+                  Capture ##<%= capture.id %> <span class="text-accent-purple ml-2">(<%= capture.rotation_degrees || 0 %>°)</span>
+                </div>
+                <div class="flex gap-2">
+                  <% [0, 90, 180, 270].each do |deg| %>
+                    <%= button_to "#{deg}°", set_rotation_event_path(@event, capture_id: capture.id, rotation: deg), method: :patch, class: "btn-ghost flex-1 py-1 text-[10px]" %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
     </div>
   <% end %>

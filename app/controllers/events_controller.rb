@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   helper_method :room_param
 
   def index
-    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(5)
+    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(12)
   end
 
   def show

@@ -169,14 +169,14 @@ export default class extends Controller {
     if (existing) existing.remove()
 
     const wrapper = document.createElement("div")
-    wrapper.className = "plyr__controls__item plyr-source-buttons"
+    wrapper.className = "plyr__controls__item plyr-source-buttons custom-scrollbar"
 
     this.capturesValue.forEach((capture) => {
       const button = document.createElement("button")
       button.type = "button"
       button.className = "plyr__controls__item plyr-source-button"
       button.dataset.captureId = capture.id
-      button.textContent = capture.label || `#${capture.id}`
+      button.textContent = `CAM ${capture.id}`
       button.addEventListener("click", () => this.switchTo(Number(capture.id)))
       wrapper.appendChild(button)
     })

@@ -1,14 +1,17 @@
 <%= render "shared/modal", title: "Выбрать комнату" do %>
   <% if local_assigns[:error].present? %>
-    <div class="flash alert"><%= error %></div>
-  <% end %>
-  <%= form_with url: room_selection_path, method: :post, data: { turbo_frame: "_top" } do %>
-    <div class="field">
-      <label for="room">Код комнаты</label>
-      <input type="text" name="room" id="room" value="<%= current_room_name %>" placeholder="room-123" />
+    <div class="bg-red-500/10 border border-red-500/20 text-red-500 p-3 rounded-lg text-sm font-medium mb-4">
+      <%= error %>
     </div>
-    <div class="actions">
-      <%= submit_tag "Сохранить", class: "primary-button" %>
+  <% end %>
+  <%= form_with url: room_selection_path, method: :post, data: { turbo_frame: "_top" }, class: "space-y-6" do %>
+    <div class="flex flex-col gap-3">
+      <label for="room" class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-1">Код комнаты</label>
+      <input type="text" name="room" id="room" value="<%= current_room_name %>" placeholder="room-123"
+             class="input-field" />
+    </div>
+    <div class="pt-6">
+      <%= submit_tag "Выбрать комнату", class: "btn-primary w-full py-4 shadow-[0_20px_40px_rgba(157,80,255,0.3)]" %>
     </div>
   <% end %>
 <% end %>
