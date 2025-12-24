@@ -78,13 +78,72 @@
       </div>
 
       <div class="p-2 md:p-4 pt-0">
-        <div class="player-container !rounded-2xl md:!rounded-[2rem]">
+        <div class="player-container group/player !rounded-2xl md:!rounded-[2rem]">
           <%= video_tag "",
-            controls: true,
             preload: "metadata",
             class: "player-video",
-            data: { video_switcher_target: "player" } %>
+            data: { 
+              video_switcher_target: "player",
+              action: "click->video-switcher#togglePlay timeupdate->video-switcher#updateProgress loadedmetadata->video-switcher#onLoadedMetadata play->video-switcher#onPlay pause->video-switcher#onPause volumechange->video-switcher#onVolumeChange"
+            } %>
+
+          <div class="absolute inset-0 flex flex-col justify-end opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none">
+            <div class="p-4 md:p-8 pointer-events-auto">
+              <!-- Progress -->
+              <div class="relative w-full h-1.5 md:h-2 bg-white/10 rounded-full mb-6 cursor-pointer group/progress">
+                <input type="range" min="0" max="100" value="0" step="0.01"
+                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  data-video-switcher-target="progress"
+                  data-action="input->video-switcher#onProgressInput change->video-switcher#onProgressChange">
+                <div class="absolute top-0 left-0 h-full bg-accent-purple rounded-full" 
+                  data-video-switcher-target="progressBar" style="width: 0%"></div>
+                <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full shadow-xl opacity-0 group-hover/progress:opacity-100 transition-opacity"
+                  data-video-switcher-target="progressHandle" style="left: 0%"></div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4 md:gap-8">
+                  <button type="button" data-action="video-switcher#togglePlay" class="text-white hover:text-accent-purple transition-all transform active:scale-90">
+                    <div data-video-switcher-target="playIcon">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div data-video-switcher-target="pauseIcon" class="hidden">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </div>
+                  </button>
+
+                  <div class="text-[10px] md:text-xs font-black text-white uppercase tracking-[0.2em] flex items-center gap-2">
+                    <span data-video-switcher-target="currentTime">00:00</span>
+                    <span class="text-white/20">/</span>
+                    <span data-video-switcher-target="duration">00:00</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4 md:gap-8">
+                  <div class="flex items-center gap-3 group/volume">
+                    <button type="button" data-action="video-switcher#toggleMute" class="text-white hover:text-accent-purple transition-colors">
+                      <div data-video-switcher-target="volumeIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                      </div>
+                      <div data-video-switcher-target="muteIcon" class="hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                      </div>
+                    </button>
+                    <input type="range" min="0" max="1" step="0.01" value="1"
+                      class="w-0 group-hover/volume:w-16 md:group-hover/volume:w-24 transition-all duration-300 opacity-0 group-hover/volume:opacity-100 h-1 bg-white/10 accent-accent-purple cursor-pointer"
+                      data-video-switcher-target="volumeSlider"
+                      data-action="input->video-switcher#onVolumeInput">
+                  </div>
+
+                  <button type="button" data-action="video-switcher#toggleFullscreen" class="text-white hover:text-accent-purple transition-all transform active:scale-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="mt-4 source-buttons" data-video-switcher-target="controls"></div>
       </div>
     </div>
   <% else %>

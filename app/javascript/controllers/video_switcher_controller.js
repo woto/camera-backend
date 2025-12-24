@@ -2,9 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Shows one video at a time and keeps playback aligned using stored offsets.
 // Offsets are relative to a base capture (offset_seconds = 0 for base).
-// Uses Plyr when available; otherwise falls back to native video element.
 export default class extends Controller {
-  static targets = ["player", "label"]
+  static targets = ["player", "label", "controls", "progress", "progressBar", "progressHandle", "currentTime", "duration", "playIcon", "pauseIcon", "volumeIcon", "muteIcon", "volumeSlider"]
   static values = {
     captures: Array,
     currentId: Number
@@ -21,9 +20,113 @@ export default class extends Controller {
     if (!this.currentIdValue && this.capturesValue.length > 0) {
       this.currentIdValue = this.capturesValue[0].id
     }
-    this.setupPlyr()
-    this.setupSourceButtons()
+    this.renderSourceButtons()
     this.loadCurrent(false)
+    this.updateVolumeUI()
+  }
+
+  // Playback Controls
+  togglePlay() {
+    const video = this.playerTarget
+    if (video.paused) {
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+    }
+  }
+
+  onPlay() {
+    this.playIconTarget.classList.add("hidden")
+    this.pauseIconTarget.classList.remove("hidden")
+  }
+
+  onPause() {
+    this.playIconTarget.classList.remove("hidden")
+    this.pauseIconTarget.classList.add("hidden")
+  }
+
+  updateProgress() {
+    const video = this.playerTarget
+    if (!video || !this.hasProgressTarget) return
+
+    const percent = (video.currentTime / video.duration) * 100
+    if (Number.isFinite(percent)) {
+      this.progressTarget.value = percent
+      this.progressBarTarget.style.width = `${percent}%`
+      this.progressHandleTarget.style.left = `${percent}%`
+    }
+    this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
+  }
+
+  onProgressInput(e) {
+    const percent = parseFloat(e.target.value)
+    this.progressBarTarget.style.width = `${percent}%`
+    this.progressHandleTarget.style.left = `${percent}%`
+
+    const video = this.playerTarget
+    if (video && video.duration) {
+      const time = (percent / 100) * video.duration
+      this.currentTimeTarget.textContent = this.formatTime(time)
+    }
+  }
+
+  onProgressChange(e) {
+    const video = this.playerTarget
+    const percent = parseFloat(e.target.value)
+    video.currentTime = (percent / 100) * video.duration
+  }
+
+  onLoadedMetadata() {
+    this.durationTarget.textContent = this.formatTime(this.playerTarget.duration)
+    this.updateProgress()
+  }
+
+  formatTime(seconds) {
+    if (!Number.isFinite(seconds)) return "00:00"
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = Math.floor(seconds % 60)
+    if (h > 0) {
+      return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+    }
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+  }
+
+  toggleMute() {
+    this.playerTarget.muted = !this.playerTarget.muted
+    this.updateVolumeUI()
+  }
+
+  onVolumeInput(e) {
+    const val = parseFloat(e.target.value)
+    this.playerTarget.volume = val
+    this.playerTarget.muted = (val === 0)
+    this.updateVolumeUI()
+  }
+
+  onVolumeChange() {
+    this.updateVolumeUI()
+  }
+
+  updateVolumeUI() {
+    const video = this.playerTarget
+    if (!video) return
+    const isMuted = video.muted || video.volume === 0
+    
+    this.volumeIconTarget.classList.toggle("hidden", isMuted)
+    this.muteIconTarget.classList.toggle("hidden", !isMuted)
+    if (this.hasVolumeSliderTarget) {
+      this.volumeSliderTarget.value = video.muted ? 0 : video.volume
+    }
+  }
+
+  toggleFullscreen() {
+    const container = this.playerTarget.closest('.player-container')
+    if (!document.fullscreenElement) {
+      container.requestFullscreen().catch(() => {})
+    } else {
+      document.exitFullscreen()
+    }
   }
 
   switch(event) {
@@ -43,6 +146,7 @@ export default class extends Controller {
     const nextOffset = this.offsetSeconds(next)
     const baseTime = current ? currentTime + currentOffset : currentTime
     const targetTime = Math.max(baseTime - nextOffset - this.rewindSeconds(), 0)
+    
     console.log("[video-switcher] switchTo", {
       currentId: this.currentIdValue,
       nextId,
@@ -57,7 +161,6 @@ export default class extends Controller {
 
     this.currentIdValue = nextId
     this.updateLabel(next)
-    this.applyRotation(next)
     this.updateActiveSourceButton()
     this.loadVideo(next, targetTime, wasPlaying).catch(() => {})
   }
@@ -67,25 +170,20 @@ export default class extends Controller {
     const current = this.capturesById.get(this.currentIdValue)
     if (!current) return
     this.updateLabel(current)
-    this.applyRotation(current)
     this.loadVideo(current, 0, autoPlay).catch(() => {})
   }
 
   loadVideo(capture, targetTime, autoPlay) {
-    const video = this.mediaElement()
-    if (!video) return
-    const src = capture.url
+    const video = this.playerTarget
+    if (!video) return Promise.resolve()
+
     console.log("[video-switcher] loadVideo", {
       captureId: capture.id,
-      src,
+      src: capture.url,
       currentSrc: video.currentSrc
     })
 
-    // Apply rotation immediately before any source changes; Plyr may rebuild controls/video.
-    this.applyRotation(capture)
-
-    return this.loadSource(capture)
-      .catch(() => {})
+    return this.loadNative(video, capture.url, capture)
       .finally(() => {
         this.seekAndMaybePlay(targetTime, autoPlay)
       })
@@ -98,124 +196,58 @@ export default class extends Controller {
     this.labelTarget.textContent = `${capture.label} (${basePart})`
   }
 
-  setupPlyr() {
-    if (window.Plyr) {
-      if (!this.plyr) {
-        this.plyr = new Plyr(this.playerTarget, {
-          controls: ["play", "progress", "current-time", "mute", "volume", "settings", "fullscreen"]
-        })
-        this.setupSourceButtons()
-        this.loadCurrent(false)
-      }
-    } else {
-      this.plyrRetryCount = (this.plyrRetryCount || 0) + 1
-      if (this.plyrRetryCount < 50) { // 5 seconds max
-        setTimeout(() => this.setupPlyr(), 100)
-      }
-    }
-  }
-
-  mediaElement() {
-    if (this.plyr && this.plyr.media) return this.plyr.media
-    if (this.hasPlayerTarget) return this.playerTarget
-    return this.element.querySelector("video")
-  }
-
-  loadSource(capture) {
-    const src = capture.url
-    const video = this.mediaElement()
-    if (!video) return Promise.resolve()
-
-    if (this.plyr) {
-      return this.loadWithPlyr(src, capture)
-    }
-
-    return this.loadNative(video, src, capture)
-  }
-
-  seekAndMaybePlay(targetTime, autoPlay) {
-    const video = this.mediaElement()
-    if (!video) return
-    const duration = Number.isFinite(video.duration) ? video.duration : targetTime
-    video.currentTime = Math.min(targetTime, duration || targetTime)
-    if (autoPlay) {
-      video.play().catch(() => {})
-    }
-  }
-
   getCurrentTime() {
-    if (this.plyr) return this.plyr.currentTime
-    const video = this.mediaElement()
-    return video ? video.currentTime : 0
+    return this.playerTarget ? this.playerTarget.currentTime : 0
   }
 
   isPlaying() {
-    if (this.plyr) return !this.plyr.paused && !this.plyr.ended
-    const video = this.mediaElement()
-    return video ? !video.paused && !video.ended : false
-  }
-
-  // No-op logger kept to avoid errors if stray debug calls remain.
-  log() {}
-
-  setupSourceButtons() {
-    if (this.plyr && this.plyr.ready) {
-      this.renderSourceButtons()
-      return
-    }
-    if (this.plyr && this.plyr.on) {
-      this.plyr.on("ready", () => this.renderSourceButtons())
-    } else {
-      // Fallback if Plyr isn't available; try once after a tick.
-      setTimeout(() => this.renderSourceButtons(), 0)
-    }
+    return this.playerTarget ? !this.playerTarget.paused && !this.playerTarget.ended : false
   }
 
   renderSourceButtons() {
-    const controls = this.controlsElement()
-    if (!controls) return
-    const existing = controls.querySelector(".plyr-source-buttons")
-    if (existing) existing.remove()
-
-    const wrapper = document.createElement("div")
-    wrapper.className = "plyr__controls__item plyr-source-buttons custom-scrollbar"
-
+    if (!this.hasControlsTarget) return
+    
+    this.controlsTarget.innerHTML = ""
+    
     this.capturesValue.forEach((capture) => {
       const button = document.createElement("button")
       button.type = "button"
-      button.className = "plyr__controls__item plyr-source-button"
+      button.className = "source-button"
       button.dataset.captureId = capture.id
       button.textContent = `CAM ${capture.id}`
       button.addEventListener("click", () => this.switchTo(Number(capture.id)))
-      wrapper.appendChild(button)
+      this.controlsTarget.appendChild(button)
     })
 
-    controls.appendChild(wrapper)
     this.updateActiveSourceButton()
   }
 
   updateActiveSourceButton() {
-    const controls = this.controlsElement()
-    if (!controls) return
-    const buttons = controls.querySelectorAll(".plyr-source-button")
+    if (!this.hasControlsTarget) return
+    const buttons = this.controlsTarget.querySelectorAll(".source-button")
     buttons.forEach((btn) => {
       const id = Number(btn.dataset.captureId)
       btn.classList.toggle("is-active", id === this.currentIdValue)
     })
   }
 
-  controlsElement() {
-    if (this.plyr && this.plyr.elements && this.plyr.elements.controls) return this.plyr.elements.controls
-    const root = this.playerTarget?.closest(".plyr")
-    if (root) return root.querySelector(".plyr__controls")
-    return null
-  }
-
   applyRotation(capture) {
-    const video = this.mediaElement()
+    const video = this.playerTarget
     if (!video) return
     const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
-    video.style.transform = `rotate(${deg}deg)`
+    
+    let transform = `rotate(${deg}deg)`
+    
+    // For 90/270 deg we need to scale down to fit container height
+    if (deg === 90 || deg === 270) {
+      const container = video.parentElement
+      if (container && container.clientWidth > 0) {
+        const scale = container.clientHeight / container.clientWidth
+        transform += ` scale(${scale.toFixed(4)})`
+      }
+    }
+    
+    video.style.transform = transform
   }
 
   offsetSeconds(capture) {
@@ -234,46 +266,6 @@ export default class extends Controller {
       offset_seconds: this.offsetSeconds(capture),
       rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0
     }
-  }
-
-  loadWithPlyr(src, capture) {
-    return new Promise((resolve) => {
-      if (!this.plyr) return resolve()
-
-      const cleanup = () => {
-        if (this.plyr?.off && readyHandler) this.plyr.off("ready", readyHandler)
-        clearTimeout(timeout)
-      }
-
-      const done = () => {
-        if (finished) return
-        finished = true
-        cleanup()
-        this.applyRotation(capture)
-        resolve()
-      }
-
-      let finished = false
-      const readyHandler = () => {
-        this.waitForMetadata(this.mediaElement()).then(done)
-      }
-      const timeout = setTimeout(done, 2000)
-
-      if (this.plyr.once) {
-        this.plyr.once("ready", readyHandler)
-      } else {
-        readyHandler()
-      }
-
-      this.plyr.source = {
-        type: "video",
-        sources: [{ src, type: "video/mp4" }]
-      }
-
-      // Plyr rebuilds controls when source changes; re-add custom buttons after that cycle.
-      setTimeout(() => this.renderSourceButtons(), 0)
-      setTimeout(() => this.applyRotation(capture), 0)
-    })
   }
 
   loadNative(video, src, capture) {
@@ -302,23 +294,13 @@ export default class extends Controller {
     })
   }
 
-  waitForMetadata(video) {
-    return new Promise((resolve) => {
-      if (!video) return resolve()
-      if (video.readyState >= 1 && Number.isFinite(video.duration)) return resolve()
-
-      const cleanup = () => {
-        clearTimeout(timeout)
-        video.removeEventListener("loadedmetadata", onReady)
-      }
-
-      const onReady = () => {
-        cleanup()
-        resolve()
-      }
-
-      const timeout = setTimeout(onReady, 1500)
-      video.addEventListener("loadedmetadata", onReady, { once: true })
-    })
+  seekAndMaybePlay(targetTime, autoPlay) {
+    const video = this.playerTarget
+    if (!video) return
+    const duration = Number.isFinite(video.duration) ? video.duration : targetTime
+    video.currentTime = Math.min(targetTime, duration || targetTime)
+    if (autoPlay) {
+      video.play().catch(() => {})
+    }
   }
 }
