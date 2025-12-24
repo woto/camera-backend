@@ -111,28 +111,19 @@
     @apply bg-white/5 border border-white/10 rounded-xl;
   }
   .player-container {
-    /* Remove forced aspect ratio so portrait videos can size naturally and be centered */
-    @apply relative w-full max-h-[90vh] bg-black rounded-xl border border-white/10 overflow-hidden flex items-center justify-center;
+    @apply relative w-full max-h-[70vh] aspect-video bg-black rounded-xl border border-white/10 overflow-hidden;
+    /* @apply relative w-full bg-black rounded-xl border border-white/10 overflow-hidden; */
   }
   .player-video {
-    /* Allow video to size by height for portrait videos while keeping object-contain */
-    @apply max-h-[80vh] h-auto w-full object-contain transition-transform duration-500 ease-in-out;
-    transform-origin: center center;
-  }
-
-  /* Ensure Plyr native controls are visible above overlays and inside fullscreen */
-  .player-container .plyr__controls {
-    @apply z-40;
-  }
-  .player-container:fullscreen .plyr__controls {
-    z-index: 99998;
+    @apply w-full h-full object-contain transition-transform duration-500 ease-in-out;
+    /* @apply max-h-[50vh] h-full w-full object-contain transition-transform duration-500 ease-in-out; */
   }
 
   /* Custom range reset for volume slider */
   .player-container input[type="range"] {
     @apply cursor-pointer;
   }
-
+  
   /* Fullscreen styles to ensure controls stay on top */
   .player-container:fullscreen {
     @apply w-full h-full max-h-none rounded-none border-none;
