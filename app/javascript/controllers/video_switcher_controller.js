@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Shows one video at a time and keeps playback aligned using stored offsets.
 // Offsets are relative to a base capture (offset_seconds = 0 for base).
 export default class extends Controller {
-  static targets = ["player", "label", "controls", "progress", "progressBar", "progressHandle", "currentTime", "duration", "playIcon", "pauseIcon", "volumeIcon", "muteIcon", "volumeSlider"]
+  static targets = ["player", "label", "controls", "progress", "progressBar", "progressHandle", "currentTime", "duration", "playIcon", "pauseIcon", "volumeIcon", "muteIcon", "volumeSlider", "controlsOverlay"]
   static values = {
     captures: Array,
     currentId: Number
@@ -23,6 +23,31 @@ export default class extends Controller {
     this.renderSourceButtons()
     this.loadCurrent(false)
     this.updateVolumeUI()
+    this.showControls()
+  }
+
+  showControls() {
+    if (!this.hasControlsOverlayTarget) return
+    
+    this.controlsOverlayTarget.classList.remove("opacity-0", "invisible")
+    
+    if (this.controlsTimeout) {
+      clearTimeout(this.controlsTimeout)
+    }
+    
+    // Don't auto-hide if video is paused
+    if (this.playerTarget.paused) return
+
+    this.controlsTimeout = setTimeout(() => {
+      this.hideControls()
+    }, 3000)
+  }
+
+  hideControls() {
+    if (!this.hasControlsOverlayTarget) return
+    if (this.playerTarget.paused) return
+    
+    this.controlsOverlayTarget.classList.add("opacity-0", "invisible")
   }
 
   // Playback Controls
@@ -38,11 +63,13 @@ export default class extends Controller {
   onPlay() {
     this.playIconTarget.classList.add("hidden")
     this.pauseIconTarget.classList.remove("hidden")
+    this.showControls()
   }
 
   onPause() {
     this.playIconTarget.classList.remove("hidden")
     this.pauseIconTarget.classList.add("hidden")
+    this.showControls()
   }
 
   updateProgress() {
@@ -59,6 +86,7 @@ export default class extends Controller {
   }
 
   onProgressInput(e) {
+    this.showControls()
     const percent = parseFloat(e.target.value)
     this.progressBarTarget.style.width = `${percent}%`
     this.progressHandleTarget.style.left = `${percent}%`
@@ -71,6 +99,7 @@ export default class extends Controller {
   }
 
   onProgressChange(e) {
+    this.showControls()
     const video = this.playerTarget
     const percent = parseFloat(e.target.value)
     video.currentTime = (percent / 100) * video.duration
@@ -98,6 +127,7 @@ export default class extends Controller {
   }
 
   onVolumeInput(e) {
+    this.showControls()
     const val = parseFloat(e.target.value)
     this.playerTarget.volume = val
     this.playerTarget.muted = (val === 0)
@@ -137,6 +167,7 @@ export default class extends Controller {
   }
 
   switchTo(nextId) {
+    this.showControls()
     const next = this.capturesById.get(nextId)
     if (!next) return
 

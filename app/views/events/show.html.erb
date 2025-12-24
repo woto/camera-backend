@@ -78,7 +78,8 @@
       </div>
 
       <div class="p-2 md:p-4 pt-0">
-        <div class="player-container group/player !rounded-2xl md:!rounded-[2rem]">
+        <div class="player-container group/player !rounded-2xl md:!rounded-[2rem]"
+             data-action="mousemove->video-switcher#showControls touchstart->video-switcher#showControls mouseenter->video-switcher#showControls">
           <%= video_tag "",
             preload: "metadata",
             class: "player-video",
@@ -87,7 +88,8 @@
               action: "click->video-switcher#togglePlay timeupdate->video-switcher#updateProgress loadedmetadata->video-switcher#onLoadedMetadata play->video-switcher#onPlay pause->video-switcher#onPause volumechange->video-switcher#onVolumeChange"
             } %>
 
-          <div class="absolute inset-0 flex flex-col justify-end opacity-0 group-hover/player:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none">
+          <div class="absolute inset-0 z-20 flex flex-col justify-end opacity-0 invisible transition-all duration-300 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"
+               data-video-switcher-target="controlsOverlay">
             <div class="p-4 md:p-8 pointer-events-auto">
               <!-- Progress -->
               <div class="relative w-full h-1.5 md:h-2 bg-white/10 rounded-full mb-6 cursor-pointer group/progress">
