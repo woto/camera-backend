@@ -27,17 +27,19 @@ class ApplicationController < ActionController::Base
   def current_room
     return @current_room if defined?(@current_room)
 
-    param_room = params[:room].presence
-    if param_room
-      @room_from_params = true
-      @current_room = Room.find_by(name: param_room)
+    # Сначала проверяем параметр room (по имени)
+    if params[:room].present?
+      @current_room = Room.find_by(name: params[:room])
       return @current_room
     end
 
-    @current_room =
-      if session[:room_id]
-        Room.find_by(id: session[:room_id])
-      end
+    # Затем проверяем сессию (по ID)
+    if session[:room_id].present?
+      @current_room = Room.find_by(id: session[:room_id])
+      return @current_room
+    end
+
+    @current_room = nil
   end
 
   def current_room_name
@@ -49,25 +51,15 @@ class ApplicationController < ActionController::Base
   end
 
   def events_scope
-    # Доверенные комнаты (сессия)
-    trusted_room_ids = [ session[:room_id] ].compact.uniq
+    # 1. Публичные события всегда видны
+    scope = Event.where(hidden: false)
 
-    # Все открытые события видны всегда
-    open_events = Event.where(hidden: false)
-
-    # Скрытые события видны только в доверенных комнатах
-    accessible_hidden_events = Event.where(hidden: true, room_id: trusted_room_ids)
-
-    # Если выбрана конкретная комната, фильтруем только скрытые события по ней.
-    # Открытые события показываем всегда, как просил пользователь.
+    # 2. Приватные события видны только если есть текущая комната
     if current_room
-      accessible_hidden_events = accessible_hidden_events.where(room_id: current_room.id)
-    elsif @room_from_params && current_room.nil?
-      # Если в параметрах указана несуществующая комната,
-      # мы всё равно показываем открытые события, но скрытых не будет.
-      accessible_hidden_events = Event.none
+      private_events = Event.where(hidden: true, room_id: current_room.id)
+      scope = scope.or(private_events)
     end
 
-    open_events.or(accessible_hidden_events)
+    scope
   end
 end

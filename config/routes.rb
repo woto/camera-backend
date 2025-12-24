@@ -12,12 +12,14 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "events#latest"
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [ :new, :create, :destroy ]
   get "/login", to: "sessions#new"
   delete "/logout", to: "sessions#destroy"
 
-  resources :events, only: [:index, :show, :destroy] 
-  resources :events, only: [] do
+  resources :events, only: [ :index, :show, :destroy ] do
+    collection do
+      get :latest
+    end
     member do
       post :set_base
       post :sync_offsets
@@ -30,5 +32,5 @@ Rails.application.routes.draw do
   post "/recorder/upload", to: "recorder#upload"
   post "/recorder/trigger", to: "recorder#trigger"
 
-  resource :room_selection, only: [:new, :create], controller: "room_selections"
+  resource :room_selection, only: [ :new, :create ], controller: "room_selections"
 end

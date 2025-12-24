@@ -2,7 +2,7 @@ require "open3"
 
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
-  before_action :set_event, only: [:show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest, :set_visibility]
+  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest, :set_visibility ]
   helper_method :room_param
 
   def index
@@ -88,7 +88,7 @@ class EventsController < ApplicationController
   def set_rotation
     capture = @event.captures.find(params[:capture_id])
     rotation = params[:rotation].to_i
-    allowed = [0, 90, 180, 270]
+    allowed = [ 0, 90, 180, 270 ]
     unless allowed.include?(rotation)
       return redirect_to event_path(@event), alert: "Недопустимый угол (разрешены: #{allowed.join(", ")})"
     end
@@ -152,7 +152,7 @@ class EventsController < ApplicationController
   end
 
   def compute_offsets_for_event(event, base_capture, options = {})
-    files = [base_capture] + event.captures.order(:created_at).where.not(id: base_capture.id).to_a
+    files = [ base_capture ] + event.captures.order(:created_at).where.not(id: base_capture.id).to_a
     if files.empty?
       raise "Нет файлов для анализа"
     end
@@ -172,7 +172,7 @@ class EventsController < ApplicationController
     raise "camera.sh failed: #{stderr_str.presence || stdout_str}" unless status.success?
 
     json = JSON.parse(stdout_str)
-    offsets_by_path = json["files"].to_h { |entry| [entry["file"], entry["offset_sec"]] }
+    offsets_by_path = json["files"].to_h { |entry| [ entry["file"], entry["offset_sec"] ] }
 
     updated = 0
     skipped = []
