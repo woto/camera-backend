@@ -236,29 +236,32 @@ export default class extends Controller {
   }
 
   renderSourceButtons() {
-    if (!this.hasControlsTarget) return
-    
-    this.controlsTarget.innerHTML = ""
-    
-    this.capturesValue.forEach((capture) => {
-      const button = document.createElement("button")
-      button.type = "button"
-      button.className = "source-button"
-      button.dataset.captureId = capture.id
-      button.textContent = `CAM ${capture.id}`
-      button.addEventListener("click", () => this.switchTo(Number(capture.id)))
-      this.controlsTarget.appendChild(button)
+    this.controlsTargets.forEach((container) => {
+      container.innerHTML = ""
+      this.capturesValue.forEach((capture) => {
+        const button = document.createElement("button")
+        button.type = "button"
+        button.className = "source-button"
+        button.dataset.captureId = capture.id
+        button.textContent = `CAM ${capture.id}`
+        button.addEventListener("click", (e) => {
+          e.stopPropagation()
+          this.switchTo(Number(capture.id))
+        })
+        container.appendChild(button)
+      })
     })
 
     this.updateActiveSourceButton()
   }
 
   updateActiveSourceButton() {
-    if (!this.hasControlsTarget) return
-    const buttons = this.controlsTarget.querySelectorAll(".source-button")
-    buttons.forEach((btn) => {
-      const id = Number(btn.dataset.captureId)
-      btn.classList.toggle("is-active", id === this.currentIdValue)
+    this.controlsTargets.forEach((container) => {
+      const buttons = container.querySelectorAll(".source-button")
+      buttons.forEach((btn) => {
+        const id = Number(btn.dataset.captureId)
+        btn.classList.toggle("is-active", id === this.currentIdValue)
+      })
     })
   }
 
