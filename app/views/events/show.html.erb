@@ -6,8 +6,8 @@
   
   <div class="flex flex-wrap justify-between items-center gap-4 md:gap-6 mb-8 md:mb-12">
     <div class="flex items-center gap-4 md:gap-6">
-      <%= link_to events_path, class: "group flex items-center gap-2.5 md:gap-3.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white transition-all duration-500" do %>
-        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50 group-hover:shadow-lg group-hover:shadow-accent-purple/20 transition-all duration-500 group-hover:-translate-x-1">
+      <%= link_to events_path, class: "group flex items-center gap-2.5 md:gap-3.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white" do %>
+        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </div>
         <span class="hidden sm:inline">Все события</span>
@@ -18,12 +18,12 @@
 
       <div class="flex items-center gap-2 md:gap-3">
         <% if @next_event %>
-          <%= link_to event_path(@next_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Новее" do %>
+          <%= link_to event_path(@next_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10", title: "Новее" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
           <% end %>
         <% end %>
         <% if @prev_event %>
-          <%= link_to event_path(@prev_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10 transition-all duration-300", title: "Старее" do %>
+          <%= link_to event_path(@prev_event), class: "w-8 h-8 md:w-10 md:h-10 bg-white/5 rounded-lg md:rounded-xl border border-white/5 flex items-center justify-center text-text-secondary hover:text-white hover:bg-white/10", title: "Старее" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           <% end %>
         <% end %>
@@ -40,7 +40,7 @@
         <%= button_to event_path(@event), 
           method: :delete, 
           data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, 
-          class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-300" do %>
+          class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
         <% end %>
       </div>
@@ -55,25 +55,24 @@
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <div class="h-1 md:h-1.5 w-16 md:w-24 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full"></div>
+      <div class="h-1 md:h-1.5 w-16 md:w-24 bg-accent-purple rounded-full"></div>
       <div class="h-1 md:h-1.5 w-1 md:h-1.5 bg-white/20 rounded-full"></div>
       <div class="h-1 md:h-1.5 w-1 md:h-1.5 bg-white/10 rounded-full"></div>
     </div>
   </div>
 
   <% if @captures.any? %>
-    <div class="card p-1 md:p-1.5 mb-12 shadow-2xl relative overflow-visible group/player bg-white/[0.02]">
-      <div class="absolute -top-12 -left-12 w-64 h-64 bg-accent-purple/10 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover/player:opacity-100 transition-opacity duration-1000"></div>
+    <div class="card p-1 md:p-1.5 mb-12 relative overflow-visible group/player bg-white/[0.02]">
       
       <div class="p-4 md:p-8 pb-4 flex flex-col sm:flex-row justify-between sm:items-end gap-4 relative z-10">
         <div class="flex flex-col">
           <div class="flex items-center gap-2 mb-1 md:mb-2">
-            <div class="w-2 h-2 rounded-full bg-accent-green animate-pulse shadow-[0_0_8px_rgba(16,185,129,1)]"></div>
+            <div class="w-2 h-2 rounded-full bg-accent-green"></div>
             <span class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-accent-purple">Источник сигнала</span>
           </div>
           <span class="font-black text-lg md:text-xl text-white tracking-tighter leading-tight" data-video-switcher-target="label">Загрузка…</span>
         </div>
-        <div class="text-[10px] md:text-[11px] font-black text-white/40 bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-xl md:rounded-2xl border border-white/5 uppercase tracking-widest backdrop-blur-md self-start sm:self-auto">
+        <div class="text-[10px] md:text-[11px] font-black text-white/40 bg-white/5 px-3 md:px-4 py-1.5 md:py-2 rounded-xl md:rounded-2xl border border-white/5 uppercase tracking-widest self-start sm:self-auto">
           <%= l(@base_capture.created_at, format: :default) if @base_capture&.created_at %>
         </div>
       </div>

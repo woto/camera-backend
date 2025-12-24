@@ -16,12 +16,12 @@ class EventVisibilityTest < ActionDispatch::IntegrationTest
   test "guest sees all visible events even if room is selected" do
     get events_path
     assert_response :success
-    assert_select "li.event-card", 2 # visible_living, visible_bedroom
+    assert_select ".card", 2 # visible_living, visible_bedroom
 
     get events_path(room: @living_room.name)
     assert_response :success
     # Should see BOTH visible events even when living_room is selected
-    assert_select "li.event-card", 2
+    assert_select ".card", 2
     assert_match I18n.l(@visible_living.captured_at, format: :long), response.body
     assert_match I18n.l(@visible_bedroom.captured_at, format: :long), response.body
     assert_no_match I18n.l(@hidden_living.captured_at, format: :long), response.body
@@ -33,18 +33,18 @@ class EventVisibilityTest < ActionDispatch::IntegrationTest
     # After login, no room is selected automatically anymore
     get events_path
     # visible_living, visible_bedroom
-    assert_select "li.event-card", 2
+    assert_select ".card", 2
     
     # Select living room
     post room_selection_path, params: { room: @living_room.name }
 
     get events_path
     # visible_living, visible_bedroom, AND hidden_living
-    assert_select "li.event-card", 3
+    assert_select ".card", 3
 
     get events_path(room: @bedroom.name)
     # visible_living, visible_bedroom, but NO hidden_bedroom (because session has living_room)
-    assert_select "li.event-card", 2
+    assert_select ".card", 2
     assert_no_match I18n.l(@hidden_bedroom.captured_at, format: :long), response.body
   end
 
@@ -55,7 +55,7 @@ class EventVisibilityTest < ActionDispatch::IntegrationTest
     # Now guest should see hidden events in living_room + all visible
     get events_path
     # visible_living, visible_bedroom, hidden_living
-    assert_select "li.event-card", 3
+    assert_select ".card", 3
     
     get event_path(@hidden_living)
     assert_response :success

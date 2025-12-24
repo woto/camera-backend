@@ -9,7 +9,7 @@
     <div class="w-full sm:w-auto">
       <%= button_to "Сохранить запись",
         recorder_trigger_path(room: current_room_name),
-        class: "btn-primary w-full sm:w-auto shadow-2xl shadow-accent-purple/40",
+        class: "btn-primary w-full sm:w-auto",
         method: :post,
         disabled: current_room_name.blank?,
         data: { turbo_disable_with: "Сохранение..." } %>
@@ -19,22 +19,22 @@
   <% if @events.any? %>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% @events.each do |event| %>
-        <div class="card group cursor-pointer border-white/5 hover:border-accent-purple/30 hover:shadow-[0_20px_50px_rgba(157,80,255,0.15)] transition-all duration-700 hover:-translate-y-2 relative">
+        <div class="card group cursor-pointer border-white/5 hover:border-accent-purple/30 relative">
           <%= link_to event_path(event), class: "block h-full" do %>
             <div class="relative aspect-[16/10] bg-zinc-950 overflow-hidden rounded-t-3xl">
               <div class="flex h-full items-center justify-center">
                 <% event.captures.each do |capture| %>
                   <% capture.thumbnails.first(1).each do |thumb| %>
-                    <%= image_tag url_for(thumb), class: "h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105", alt: "Thumbnail" %>
+                    <%= image_tag url_for(thumb), class: "h-full w-full object-cover", alt: "Thumbnail" %>
                   <% end %>
                 <% end %>
               </div>
               
               <!-- Glass Overlay Meta -->
-              <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-90"></div>
               
               <div class="absolute top-4 left-4">
-                <div class="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/80">
+                <div class="bg-black/40 px-3 py-1.5 rounded-xl border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/80">
                   ID: <%= event.id %>
                 </div>
               </div>
@@ -42,7 +42,7 @@
               <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
                 <div class="flex flex-col">
                   <div class="flex items-center gap-2 mb-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent-purple shadow-[0_0_8px_rgba(157,80,255,1)]"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-purple"></span>
                     <span class="text-[9px] font-black uppercase tracking-[0.2em] text-accent-purple">Запись</span>
                   </div>
                   <span class="text-base font-black text-white leading-tight tracking-tight"><%= l(event.captured_at, format: :long) if event.captured_at %></span>
@@ -62,7 +62,7 @@
                   <%= t("events.captures_count", count: event.captures.size) %>
                 </span>
               </div>
-              <div class="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:text-white group-hover:bg-accent-purple group-hover:shadow-lg group-hover:shadow-accent-purple/40 transition-all duration-500 transform group-hover:rotate-12">
+              <div class="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:text-white group-hover:bg-accent-purple">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
               </div>
             </div>

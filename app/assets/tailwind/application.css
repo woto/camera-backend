@@ -3,21 +3,13 @@
   --color-bg: #0b0b0f;
   --color-sidebar-bg: #121217;
   --color-sidebar-active: #1e1e26;
-  --color-card-bg: rgba(23, 23, 28, 0.7);
+  --color-card-bg: #17171c;
   --color-accent-purple: #9d50ff;
   --color-accent-purple-hover: #b070ff;
   --color-accent-blue: #3b82f6;
   --color-accent-green: #10b981;
   --color-border-dim: rgba(255, 255, 255, 0.08);
   --color-text-secondary: #9494b8;
-
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
 }
 @layer base {
   body {
@@ -33,48 +25,48 @@
     @apply bg-transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+    @apply bg-white/10 rounded-full hover:bg-white/20;
   }
 }
 @layer components {
   .btn-primary {
-    @apply bg-gradient-to-r from-accent-purple to-accent-blue hover:from-accent-purple-hover hover:to-blue-400 text-white font-black py-2.5 md:py-3 px-6 md:px-8 rounded-xl transition-all duration-500 shadow-lg shadow-accent-purple/25 hover:shadow-accent-purple/40 hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-[10px] md:text-[11px];
+    @apply bg-accent-purple hover:bg-accent-purple-hover text-white font-bold py-2.5 px-6 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-[10px] md:text-[11px];
   }
   .btn-secondary {
-    @apply bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-xl transition-all duration-300 backdrop-blur-md;
+    @apply bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold py-2.5 px-6 rounded-xl;
   }
   .btn-danger {
-    @apply bg-red-500/10 hover:bg-red-500 border border-red-500/20 text-red-500 hover:text-white font-bold py-2 px-6 rounded-xl transition-all duration-300;
+    @apply bg-red-500/10 hover:bg-red-500 border border-red-500/20 text-red-500 hover:text-white font-bold py-2 px-6 rounded-xl;
   }
   .btn-ghost {
-    @apply bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/5 py-2 px-6 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-300;
+    @apply bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/5 py-2 px-6 rounded-xl text-[11px] font-black uppercase tracking-widest;
   }
   .card {
-    @apply bg-card-bg border border-border-dim rounded-3xl overflow-hidden backdrop-blur-2xl transition-all duration-500 hover:border-white/10;
+    @apply bg-card-bg border border-border-dim rounded-2xl overflow-hidden;
   }
   .badge {
-    @apply px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] backdrop-blur-md;
+    @apply px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.15em];
   }
   .badge-hidden {
-    @apply bg-red-500/10 text-red-400 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)];
+    @apply bg-red-500/10 text-red-400 border border-red-500/20;
   }
   .badge-open {
-    @apply bg-accent-green/10 text-accent-green border border-accent-green/20 shadow-[0_0_15px_rgba(16,185,129,0.1)];
+    @apply bg-accent-green/10 text-accent-green border border-accent-green/20;
   }
   .input-field {
-    @apply bg-white/[0.03] border border-white/10 text-white rounded-2xl p-4 text-sm outline-none focus:border-accent-purple focus:bg-white/[0.06] transition-all duration-500 placeholder:text-white/10 ring-0 focus:ring-4 focus:ring-accent-purple/10;
+    @apply bg-white/[0.03] border border-white/10 text-white rounded-xl p-4 text-sm outline-none focus:border-accent-purple focus:bg-white/[0.06] placeholder:text-white/10;
   }
 
   /* Kaminari Pagination Styling */
   .pagination {
     @apply flex items-center gap-2;
     & .page, & .first, & .last, & .prev, & .next {
-      @apply bg-white/5 border border-white/5 rounded-xl transition-all duration-300;
+      @apply bg-white/5 border border-white/5 rounded-xl;
       & a {
         @apply block px-4 py-2.5 text-xs font-black uppercase tracking-widest text-text-secondary hover:text-white hover:bg-white/5;
       }
       &.current {
-        @apply bg-accent-purple border-accent-purple shadow-lg shadow-accent-purple/30 text-white px-4 py-2.5 text-xs font-black uppercase tracking-widest;
+        @apply bg-accent-purple border-accent-purple text-white px-4 py-2.5 text-xs font-black uppercase tracking-widest;
       }
       &.disabled {
         @apply opacity-30 pointer-events-none;
@@ -91,9 +83,9 @@
     @apply flex gap-2 ml-4 overflow-x-auto items-center py-2;
   }
   .plyr-source-button {
-    @apply px-4 py-1.5 rounded-xl bg-white/10 border border-white/5 text-[10px] font-black uppercase tracking-widest text-text-secondary hover:text-white hover:bg-white/20 transition-all duration-500 backdrop-blur-md cursor-pointer whitespace-nowrap;
+    @apply px-4 py-1.5 rounded-xl bg-white/10 border border-white/5 text-[10px] font-black uppercase tracking-widest text-text-secondary hover:text-white hover:bg-white/20 cursor-pointer whitespace-nowrap;
     &.is-active {
-      @apply bg-accent-purple text-white border-accent-purple shadow-[0_0_20px_rgba(157,80,255,0.4)];
+      @apply bg-accent-purple text-white border-accent-purple;
     }
   }
 }
@@ -106,31 +98,15 @@
     scrollbar-width: none;
   }
   .glass-panel {
-    @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl;
-  }
-  .nebula-gradient {
-    background: radial-gradient(circle at top right, rgba(157, 80, 255, 0.15), transparent 40%),
-                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent 40%);
+    @apply bg-white/5 border border-white/10 rounded-xl;
   }
   .player-container {
-    @apply relative w-full max-h-[70vh] aspect-video bg-black rounded-[2rem] shadow-2xl shadow-black/80 ring-1 ring-white/10 overflow-hidden;
+    @apply relative w-full max-h-[70vh] aspect-video bg-black rounded-xl border border-white/10 overflow-hidden;
     & .plyr {
       @apply h-full;
     }
   }
   .player-video {
     @apply w-full h-full object-contain;
-  }
-  .stars-bg {
-    background-image:
-      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 80px 120px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 110px 40px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 150px 150px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: 0.15;
   }
 }

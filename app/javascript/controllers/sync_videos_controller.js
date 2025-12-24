@@ -9,7 +9,6 @@ export default class extends Controller {
   static targets = ["video", "status"]
 
   connect() {
-    alert('sync_videos_controller connected')
     this.anchorTimes = new Map() // index -> seconds
     this.manuallyPaused = true
     this.blockedByBuffering = false
