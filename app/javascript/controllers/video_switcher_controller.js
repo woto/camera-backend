@@ -15,6 +15,7 @@ export default class extends Controller {
       hasPlayerTarget: this.hasPlayerTarget,
       currentIdValue: this.currentIdValue
     })
+    this.isScrubbing = false
     this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
     if (!this.hasPlayerTarget) return
     if (!this.currentIdValue && this.capturesValue.length > 0) {
@@ -76,6 +77,9 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video || !this.hasProgressTarget) return
 
+    // Avoid fighting user input while they are scrubbing the seek bar
+    if (this.isScrubbing) return
+
     const percent = (video.currentTime / video.duration) * 100
     if (Number.isFinite(percent)) {
       this.progressTarget.value = percent
@@ -87,6 +91,7 @@ export default class extends Controller {
 
   onProgressInput(e) {
     this.showControls()
+    this.isScrubbing = true
     const percent = parseFloat(e.target.value)
     this.progressBarTarget.style.width = `${percent}%`
     this.progressHandleTarget.style.left = `${percent}%`
@@ -100,9 +105,12 @@ export default class extends Controller {
 
   onProgressChange(e) {
     this.showControls()
+    this.isScrubbing = false
     const video = this.playerTarget
     const percent = parseFloat(e.target.value)
-    video.currentTime = (percent / 100) * video.duration
+    if (video && Number.isFinite(video.duration)) {
+      video.currentTime = (percent / 100) * video.duration
+    }
   }
 
   onLoadedMetadata() {
