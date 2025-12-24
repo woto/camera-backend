@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import Plyr from "plyr"
 
 // Shows one video at a time and keeps playback aligned using stored offsets.
 // Offsets are relative to a base capture (offset_seconds = 0 for base).
@@ -18,6 +19,26 @@ export default class extends Controller {
     this.isScrubbing = false
     this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
     if (!this.hasPlayerTarget) return
+    // initialize Plyr with no built-in controls (we use custom controls)
+    try {
+      // Use Plyr default controls to get a standard appearance
+      // Ensure fullscreen uses the surrounding .player-container so
+      // any absolutely positioned UI inside the container (like the
+      // source buttons) is included in fullscreen.
+      // Use selector string for fullscreen container to avoid passing a DOM
+      // element (Plyr expects a selector or will attempt selector ops).
+      const fullscreenSelector = '.player-container'
+      this.plyr = new Plyr(this.playerTarget, {
+        settings: ['captions', 'quality', 'speed', 'loop'],
+        speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
+        tooltips: { controls: true, seek: true },
+        keyboard: { focused: true, global: false },
+        fullscreen: { container: fullscreenSelector }
+      })
+    } catch (e) {
+      console.warn("[video-switcher] Plyr init failed", e)
+      this.plyr = null
+    }
     if (!this.currentIdValue && this.capturesValue.length > 0) {
       this.currentIdValue = this.capturesValue[0].id
     }
@@ -27,15 +48,23 @@ export default class extends Controller {
     this.showControls()
   }
 
+  disconnect() {
+    if (this.plyr && typeof this.plyr.destroy === 'function') {
+      this.plyr.destroy()
+      this.plyr = null
+    }
+  }
+  
+
   showControls() {
     if (!this.hasControlsOverlayTarget) return
-    
+
     this.controlsOverlayTarget.classList.remove("opacity-0", "invisible")
-    
+
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout)
     }
-    
+
     // Don't auto-hide if video is paused
     if (this.playerTarget.paused) return
 
@@ -47,7 +76,7 @@ export default class extends Controller {
   hideControls() {
     if (!this.hasControlsOverlayTarget) return
     if (this.playerTarget.paused) return
-    
+
     this.controlsOverlayTarget.classList.add("opacity-0", "invisible")
   }
 
@@ -62,14 +91,14 @@ export default class extends Controller {
   }
 
   onPlay() {
-    this.playIconTarget.classList.add("hidden")
-    this.pauseIconTarget.classList.remove("hidden")
+    if (this.hasPlayIconTarget) this.playIconTarget.classList.add("hidden")
+    if (this.hasPauseIconTarget) this.pauseIconTarget.classList.remove("hidden")
     this.showControls()
   }
 
   onPause() {
-    this.playIconTarget.classList.remove("hidden")
-    this.pauseIconTarget.classList.add("hidden")
+    if (this.hasPlayIconTarget) this.playIconTarget.classList.remove("hidden")
+    if (this.hasPauseIconTarget) this.pauseIconTarget.classList.add("hidden")
     this.showControls()
   }
 
@@ -86,7 +115,7 @@ export default class extends Controller {
       this.progressBarTarget.style.width = `${percent}%`
       this.progressHandleTarget.style.left = `${percent}%`
     }
-    this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
+    if (this.hasCurrentTimeTarget) this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
   }
 
   onProgressInput(e) {
@@ -114,7 +143,7 @@ export default class extends Controller {
   }
 
   onLoadedMetadata() {
-    this.durationTarget.textContent = this.formatTime(this.playerTarget.duration)
+    if (this.hasDurationTarget) this.durationTarget.textContent = this.formatTime(this.playerTarget.duration)
     this.updateProgress()
   }
 
@@ -150,12 +179,10 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video) return
     const isMuted = video.muted || video.volume === 0
-    
-    this.volumeIconTarget.classList.toggle("hidden", isMuted)
-    this.muteIconTarget.classList.toggle("hidden", !isMuted)
-    if (this.hasVolumeSliderTarget) {
-      this.volumeSliderTarget.value = video.muted ? 0 : video.volume
-    }
+
+    if (this.hasVolumeIconTarget) this.volumeIconTarget.classList.toggle("hidden", isMuted)
+    if (this.hasMuteIconTarget) this.muteIconTarget.classList.toggle("hidden", !isMuted)
+    if (this.hasVolumeSliderTarget) this.volumeSliderTarget.value = video.muted ? 0 : video.volume
   }
 
   toggleFullscreen() {
@@ -185,7 +212,7 @@ export default class extends Controller {
     const nextOffset = this.offsetSeconds(next)
     const baseTime = current ? currentTime + currentOffset : currentTime
     const targetTime = Math.max(baseTime - nextOffset - this.rewindSeconds(), 0)
-    
+
     console.log("[video-switcher] switchTo", {
       currentId: this.currentIdValue,
       nextId,
@@ -277,9 +304,9 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video) return
     const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
-    
+
     let transform = `rotate(${deg}deg)`
-    
+
     // For 90/270 deg we need to scale down to fit container height
     if (deg === 90 || deg === 270) {
       const container = video.parentElement
@@ -288,7 +315,8 @@ export default class extends Controller {
         transform += ` scale(${scale.toFixed(4)})`
       }
     }
-    
+
+    video.style.transformOrigin = 'center center'
     video.style.transform = transform
   }
 
