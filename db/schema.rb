@@ -47,7 +47,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_23_050935) do
     t.integer "offset_base_capture_id"
     t.integer "rotation_degrees"
     t.integer "room_id"
+    t.string "hls_manifest_path"
+    t.datetime "hls_processed_at"
+    t.boolean "hls_processing", default: false, null: false
+    t.text "hls_error"
     t.index ["event_id"], name: "index_captures_on_event_id"
+    t.index ["hls_manifest_path"], name: "index_captures_on_hls_manifest_path"
     t.index ["offset_base_capture_id"], name: "index_captures_on_offset_base_capture_id"
     t.index ["room_id"], name: "index_captures_on_room_id"
   end

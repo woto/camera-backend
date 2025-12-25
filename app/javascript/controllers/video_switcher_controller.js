@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import * as HlsModule from "hls.js"
 
 // Shows one video at a time and keeps playback aligned using stored offsets.
 // Offsets are relative to a base capture (offset_seconds = 0 for base).
@@ -312,6 +313,13 @@ export default class extends Controller {
 
   loadNative(video, src, capture) {
     return new Promise((resolve) => {
+      const isHls = /\.m3u8($|\?)/i.test(String(src))
+
+      const cleanup = () => {
+        clearTimeout(timeout)
+        video.removeEventListener("loadedmetadata", done)
+      }
+
       const done = () => {
         if (finished) return
         finished = true
@@ -320,20 +328,49 @@ export default class extends Controller {
         resolve()
       }
 
-      const cleanup = () => {
-        clearTimeout(timeout)
-        video.removeEventListener("loadedmetadata", done)
+      // timeout fallback in case loadedmetadata never fires
+      const timeout = setTimeout(done, 5000)
+
+      // destroy any previous hls instance
+      if (this.hls) {
+        try { this.hls.destroy() } catch (e) { /* ignore */ }
+        this.hls = null
       }
 
       let finished = false
-      const timeout = setTimeout(done, 2000)
 
-      video.addEventListener("loadedmetadata", done, { once: true })
-      video.src = src
-      video.load()
+      // If source looks like HLS and hls.js is supported, use it
+      const Hls = HlsModule.default ?? HlsModule.Hls ?? HlsModule
+      if (isHls && Hls && Hls.isSupported && Hls.isSupported()) {
+        this.hls = new Hls()
+        this.hls.attachMedia(video)
+        // When media is attached, load the source
+        this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+          try {
+            this.hls.loadSource(src)
+          } catch (e) {
+            // fallback to native src assignment on error
+            video.src = src
+            video.load()
+          }
+        })
 
-      if (video.readyState >= 1) done()
+        // resolve when native loadedmetadata fires
+        video.addEventListener("loadedmetadata", done, { once: true })
+      } else {
+        video.addEventListener("loadedmetadata", done, { once: true })
+        video.src = src
+        video.load()
+        if (video.readyState >= 1) done()
+      }
     })
+  }
+
+  disconnect() {
+    if (this.hls) {
+      try { this.hls.destroy() } catch (e) { /* ignore */ }
+      this.hls = null
+    }
   }
 
   seekAndMaybePlay(targetTime, autoPlay) {

@@ -2,7 +2,7 @@ require "open3"
 
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
-  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :latest, :set_visibility ]
+  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :generate_hls, :generate_hls_all, :set_visibility ]
   helper_method :room_param
 
   def index
@@ -99,6 +99,42 @@ class EventsController < ApplicationController
     redirect_to event_path(@event), alert: "Не удалось обновить ориентацию: #{e.message}"
   end
 
+  def generate_hls
+    capture = @event.captures.find(params[:capture_id])
+
+    unless capture.video.attached?
+      return redirect_to event_path(@event), alert: "У Capture ##{capture.id} нет прикреплённого видео."
+    end
+
+    if capture.hls_manifest_path.present?
+      return redirect_to event_path(@event), notice: "Для Capture ##{capture.id} HLS уже готово."
+    end
+
+    if capture.hls_processing?
+      return redirect_to event_path(@event), notice: "Для Capture ##{capture.id} уже идёт обработка HLS."
+    end
+
+    GenerateHlsJob.perform_later(capture.id)
+    redirect_to event_path(@event), notice: "Запущена генерация HLS для Capture ##{capture.id}."
+  rescue => e
+    redirect_to event_path(@event), alert: "Не удалось запустить генерацию HLS: #{e.message}"
+  end
+
+  def generate_hls_all
+    captures = @event.captures.joins(:video_attachment).where(hls_manifest_path: nil)
+    if captures.empty?
+      return redirect_to event_path(@event), notice: "Нет роликов, требующих генерации HLS."
+    end
+
+    captures.find_each do |capture|
+      GenerateHlsJob.perform_later(capture.id)
+    end
+
+    redirect_to event_path(@event), notice: "Запущена генерация HLS для #{captures.count} роликов." 
+  rescue => e
+    redirect_to event_path(@event), alert: "Не удалось запустить массовую генерацию HLS: #{e.message}"
+  end
+
   def set_visibility
     hidden = ActiveModel::Type::Boolean.new.cast(params[:hidden])
 
@@ -144,7 +180,10 @@ class EventsController < ApplicationController
   end
 
   def set_event
-    @event = scoped_events.find(params[:id]) if params[:id]
+    @event = scoped_events.find_by(id: params[:id])
+    return if @event
+
+    redirect_to events_path, alert: "Событие не найдено."
   end
 
   def sync_params
@@ -228,9 +267,14 @@ class EventsController < ApplicationController
       {
         id: capture.id,
         offset_seconds: offset,
-        url: url_for(capture.video),
+        url: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : url_for(capture.video),
         label: "Запись ##{capture.id}",
-        rotation_degrees: rotation
+        rotation_degrees: rotation,
+        hls: {
+          manifest: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : nil,
+          processing: capture.hls_processing?,
+          error: capture.hls_error
+        }
       }
     end
   end
