@@ -228,8 +228,8 @@ class EventsController < ApplicationController
       {
         id: capture.id,
         offset_seconds: offset,
-        # url: rails_blob_path(capture.video),
-        url: rails_storage_proxy_path(capture.video),
+        url: rails_blob_path(capture.video, disposition: :inline),
+        # url: rails_storage_proxy_path(capture.video),
         label: "Запись ##{capture.id}",
         rotation_degrees: rotation
       }
