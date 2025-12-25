@@ -1,5 +1,3 @@
-require "open3"
-
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest ]
   before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :generate_hls, :generate_hls_all, :set_visibility ]
@@ -76,7 +74,12 @@ class EventsController < ApplicationController
       return redirect_to event_path(@event), alert: "Нет роликов для синхронизации."
     end
 
-    result = compute_offsets_for_event(@event, capture, sync_params)
+    result = OffsetsSyncer.new(
+      @event,
+      base_capture: capture,
+      analyze_duration: sync_params[:analyze_duration],
+      sample_rate: sync_params[:sample_rate]
+    ).call
     notice = "Смещения обновлены: #{result[:updated]} шт."
     notice += " (пропущено: #{result[:skipped].join(", ")})" if result[:skipped].any?
 
@@ -193,49 +196,6 @@ class EventsController < ApplicationController
 
   def sync_params
     params.permit(:analyze_duration, :sample_rate)
-  end
-
-  def compute_offsets_for_event(event, base_capture, options = {})
-    files = [ base_capture ] + event.captures.order(:created_at).where.not(id: base_capture.id).to_a
-    if files.empty?
-      raise "Нет файлов для анализа"
-    end
-
-    paths_map = files.index_with { |cap| video_path_for(cap) }
-    analyze_duration = options[:analyze_duration].presence || "90"
-    sample_rate = options[:sample_rate].presence || "8000"
-
-    cmd = [
-      Rails.root.join("bin/camera.sh").to_s,
-      "-d", analyze_duration.to_s,
-      "-r", sample_rate.to_s,
-      *paths_map.values
-    ]
-
-    stdout_str, stderr_str, status = Open3.capture3(*cmd)
-    raise "camera.sh failed: #{stderr_str.presence || stdout_str}" unless status.success?
-
-    json = JSON.parse(stdout_str)
-    offsets_by_path = json["files"].to_h { |entry| [ entry["file"], entry["offset_sec"] ] }
-
-    updated = 0
-    skipped = []
-    ActiveRecord::Base.transaction do
-      event.update!(base_capture: base_capture)
-      event.captures.update_all(offset_base_capture_id: base_capture.id)
-
-      paths_map.each do |cap, path|
-        offset = offsets_by_path[path]
-        if offset.nil?
-          skipped << "Capture ##{cap.id}"
-          next
-        end
-        cap.update!(offset_seconds: offset.to_f, offset_base_capture_id: base_capture.id)
-        updated += 1
-      end
-    end
-
-    { updated: updated, skipped: skipped }
   end
 
   def video_path_for(capture)
