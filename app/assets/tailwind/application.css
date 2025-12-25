@@ -123,7 +123,7 @@
   .player-container input[type="range"] {
     @apply cursor-pointer;
   }
-  
+
   /* Fullscreen styles to ensure controls stay on top */
   .player-container:fullscreen {
     @apply w-full h-full max-h-none rounded-none border-none;

@@ -29,13 +29,13 @@ export default class extends Controller {
 
   showControls() {
     if (!this.hasControlsOverlayTarget) return
-    
+
     this.controlsOverlayTarget.classList.remove("opacity-0", "invisible")
-    
+
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout)
     }
-    
+
     // Don't auto-hide if video is paused
     if (this.playerTarget.paused) return
 
@@ -47,7 +47,7 @@ export default class extends Controller {
   hideControls() {
     if (!this.hasControlsOverlayTarget) return
     if (this.playerTarget.paused) return
-    
+
     this.controlsOverlayTarget.classList.add("opacity-0", "invisible")
   }
 
@@ -150,7 +150,7 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video) return
     const isMuted = video.muted || video.volume === 0
-    
+
     this.volumeIconTarget.classList.toggle("hidden", isMuted)
     this.muteIconTarget.classList.toggle("hidden", !isMuted)
     if (this.hasVolumeSliderTarget) {
@@ -185,7 +185,7 @@ export default class extends Controller {
     const nextOffset = this.offsetSeconds(next)
     const baseTime = current ? currentTime + currentOffset : currentTime
     const targetTime = Math.max(baseTime - nextOffset - this.rewindSeconds(), 0)
-    
+
     console.log("[video-switcher] switchTo", {
       currentId: this.currentIdValue,
       nextId,
@@ -277,9 +277,9 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video) return
     const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
-    
+
     let transform = `rotate(${deg}deg)`
-    
+
     // For 90/270 deg we need to scale down to fit container height
     if (deg === 90 || deg === 270) {
       const container = video.parentElement
@@ -288,7 +288,7 @@ export default class extends Controller {
         transform += ` scale(${scale.toFixed(4)})`
       }
     }
-    
+
     video.style.transform = transform
   }
 
