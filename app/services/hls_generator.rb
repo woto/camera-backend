@@ -24,26 +24,34 @@ class HlsGenerator
 
       master = File.join(out_dir, "master.m3u8")
 
-      # Keep a single, compatible rendition optimized for mobile/desktop decode
-      # - cap resolution to 1080p to reduce decode load on phones
-      # - enforce keyframe interval for smoother HLS seeking
       cmd = [
         "ffmpeg", "-hide_banner", "-y",
+        "-fflags", "+genpts",
         "-i", src,
+
+        # video
+        "-vf", "scale='min(1280,iw)':'-2'",
+        "-vsync", "cfr", "-r", "30",
         "-c:v", "libx264",
+        "-pix_fmt", "yuv420p",
         "-profile:v", "main",
         "-level:v", "4.0",
-        "-vf", "scale='min(1280,iw)':'-2'",
-        "-maxrate", "3500k",
-        "-bufsize", "5000k",
-        "-g", "60",          # keyframe every ~2s at 30fps
-        "-keyint_min", "60",
-        "-force_key_frames", "expr:gte(t,n_forced*6)",
-        "-sc_threshold", "0",
         "-preset", "veryfast",
         "-crf", "23",
+        "-maxrate", "3000k",
+        "-bufsize", "6000k",
+        "-g", "180",
+        "-keyint_min", "180",
+        "-sc_threshold", "0",
+        "-force_key_frames", "expr:gte(t,n_forced*6)",
+        "-x264-params", "nal-hrd=vbr:force-cfr=1",
+
+        # audio
         "-c:a", "aac",
         "-b:a", "128k",
+        "-af", "aresample=async=1:first_pts=0",
+
+        # hls
         "-hls_time", "6",
         "-hls_list_size", "0",
         "-hls_flags", "independent_segments",
