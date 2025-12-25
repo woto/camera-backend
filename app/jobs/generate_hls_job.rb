@@ -6,7 +6,6 @@ class GenerateHlsJob < ApplicationJob
     return unless capture
 
     return if capture.hls_processing?
-    return if capture.hls_manifest_path.present?
 
     capture.update!(hls_processing: true, hls_error: nil)
     begin

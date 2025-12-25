@@ -121,16 +121,25 @@ class EventsController < ApplicationController
   end
 
   def generate_hls_all
-    captures = @event.captures.joins(:video_attachment).where(hls_manifest_path: nil)
+    captures = @event.captures.joins(:video_attachment).to_a
+
     if captures.empty?
       return redirect_to event_path(@event), notice: "Нет роликов, требующих генерации HLS."
     end
 
-    captures.find_each do |capture|
+    captures.each do |capture|
+      public_dir = Rails.root.join("public", "hls", "capture-#{capture.id}")
+      FileUtils.rm_rf(public_dir) if Dir.exist?(public_dir)
+      capture.update_columns(
+        hls_manifest_path: nil,
+        hls_processed_at: nil,
+        hls_processing: false,
+        hls_error: nil
+      )
       GenerateHlsJob.perform_later(capture.id)
     end
 
-    redirect_to event_path(@event), notice: "Запущена генерация HLS для #{captures.count} роликов." 
+    redirect_to event_path(@event), notice: "Запущена генерация HLS для #{captures.count} роликов."
   rescue => e
     redirect_to event_path(@event), alert: "Не удалось запустить массовую генерацию HLS: #{e.message}"
   end

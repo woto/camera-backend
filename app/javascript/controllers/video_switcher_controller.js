@@ -377,7 +377,16 @@ export default class extends Controller {
       // If source looks like HLS and hls.js is supported, use it
       const Hls = HlsModule.default ?? HlsModule.Hls ?? HlsModule
       if (isHls && Hls && Hls.isSupported && Hls.isSupported()) {
-        this.hls = new Hls()
+        this.mediaErrorRecoveries = 0
+        this.hls = new Hls({
+          enableWorker: true,
+          capLevelToPlayerSize: true,
+          startLevel: -1,
+          overrideNative: true,
+          backBufferLength: 10,
+          maxBufferLength: 12,
+          maxBufferHole: 0.5
+        })
         this.hls.attachMedia(video)
         // When media is attached, load the source
         this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
@@ -389,6 +398,7 @@ export default class extends Controller {
             video.load()
           }
         })
+        this.setupHlsErrorRecovery(this.hls, video, src)
 
         // resolve when native loadedmetadata fires
         video.addEventListener("loadedmetadata", done, { once: true })
@@ -416,5 +426,32 @@ export default class extends Controller {
     if (autoPlay) {
       video.play().catch(() => {})
     }
+  }
+
+  setupHlsErrorRecovery(hls, video, src) {
+    if (!hls) return
+
+    hls.on(Hls.Events.ERROR, (_event, data) => {
+      if (!data?.fatal) return
+
+      if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+        hls.startLoad()
+        return
+      }
+
+      if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+        this.mediaErrorRecoveries = (this.mediaErrorRecoveries || 0) + 1
+        if (this.mediaErrorRecoveries <= 3) {
+          hls.recoverMediaError()
+          return
+        }
+      }
+
+      // Fallback to native playback if recovery failed
+      try { hls.destroy() } catch (e) { /* ignore */ }
+      this.hls = null
+      video.src = src
+      video.load()
+    })
   }
 }

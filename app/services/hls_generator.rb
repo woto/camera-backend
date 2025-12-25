@@ -24,16 +24,30 @@ class HlsGenerator
 
       master = File.join(out_dir, "master.m3u8")
 
+      # Keep a single, compatible rendition optimized for mobile/desktop decode
+      # - cap resolution to 1080p to reduce decode load on phones
+      # - enforce keyframe interval for smoother HLS seeking
       cmd = [
         "ffmpeg", "-hide_banner", "-y",
         "-i", src,
         "-c:v", "libx264",
+        "-profile:v", "main",
+        "-level:v", "4.0",
+        "-vf", "scale='min(1280,iw)':'-2'",
+        "-maxrate", "3500k",
+        "-bufsize", "5000k",
+        "-g", "60",          # keyframe every ~2s at 30fps
+        "-keyint_min", "60",
+        "-force_key_frames", "expr:gte(t,n_forced*6)",
+        "-sc_threshold", "0",
         "-preset", "veryfast",
         "-crf", "23",
         "-c:a", "aac",
         "-b:a", "128k",
         "-hls_time", "6",
         "-hls_list_size", "0",
+        "-hls_flags", "independent_segments",
+        "-hls_playlist_type", "vod",
         "-hls_segment_filename", File.join(out_dir, "segment_%03d.ts"),
         master
       ]

@@ -83,6 +83,9 @@
           <%= video_tag "",
             preload: "metadata",
             class: "player-video",
+            playsinline: true,
+            webkitplaysinline: true,
+            crossorigin: "anonymous",
             data: {
               video_switcher_target: "player",
               action: "click->video-switcher#togglePlay timeupdate->video-switcher#updateProgress loadedmetadata->video-switcher#onLoadedMetadata play->video-switcher#onPlay pause->video-switcher#onPause volumechange->video-switcher#onVolumeChange"
