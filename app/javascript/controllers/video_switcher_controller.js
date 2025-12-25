@@ -84,8 +84,7 @@ export default class extends Controller {
     const percent = (video.currentTime / video.duration) * 100
     if (Number.isFinite(percent)) {
       this.progressTarget.value = percent
-      this.progressBarTarget.style.width = `${percent}%`
-      this.progressHandleTarget.style.left = `${percent}%`
+      this.updateProgressUI(percent)
     }
     this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
   }
@@ -94,8 +93,7 @@ export default class extends Controller {
     this.showControls()
     this.isScrubbing = true
     const percent = parseFloat(e.target.value)
-    this.progressBarTarget.style.width = `${percent}%`
-    this.progressHandleTarget.style.left = `${percent}%`
+    this.updateProgressUI(percent)
 
     const video = this.playerTarget
     if (video && video.duration) {
@@ -107,10 +105,47 @@ export default class extends Controller {
   onProgressChange(e) {
     this.showControls()
     this.isScrubbing = false
-    const video = this.playerTarget
     const percent = parseFloat(e.target.value)
+    this.seekToPercent(percent)
+  }
+
+  onProgressClick(event) {
+    this.showControls()
+    if (event.target === this.progressTarget) return
+
+    const track = this.progressBarTarget?.parentElement || this.progressTarget
+    if (!track) return
+
+    const clientX = event.clientX ?? event.touches?.[0]?.clientX
+    if (clientX === undefined) return
+
+    const rect = track.getBoundingClientRect()
+    if (!rect.width) return
+
+    const percent = ((clientX - rect.left) / rect.width) * 100
+    this.seekToPercent(percent)
+  }
+
+  updateProgressUI(percent) {
+    if (this.hasProgressBarTarget) {
+      this.progressBarTarget.style.width = `${percent}%`
+    }
+    if (this.hasProgressHandleTarget) {
+      this.progressHandleTarget.style.left = `${percent}%`
+    }
+  }
+
+  seekToPercent(percent) {
+    const clamped = Math.min(Math.max(percent, 0), 100)
+    if (this.hasProgressTarget) {
+      this.progressTarget.value = clamped
+    }
+    this.updateProgressUI(clamped)
+
+    const video = this.playerTarget
     if (video && Number.isFinite(video.duration)) {
-      video.currentTime = (percent / 100) * video.duration
+      video.currentTime = (clamped / 100) * video.duration
+      this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
     }
   }
 
