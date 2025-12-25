@@ -106,10 +106,6 @@ class EventsController < ApplicationController
       return redirect_to event_path(@event), alert: "У Capture ##{capture.id} нет прикреплённого видео."
     end
 
-    if capture.hls_manifest_path.present?
-      return redirect_to event_path(@event), notice: "Для Capture ##{capture.id} HLS уже готово."
-    end
-
     if capture.hls_processing?
       return redirect_to event_path(@event), notice: "Для Capture ##{capture.id} уже идёт обработка HLS."
     end
