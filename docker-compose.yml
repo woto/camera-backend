@@ -2,30 +2,38 @@ version: "3.7"
 
 services:
   camera:
-    image: camera
-    container_name: camera
+    env_file:
+      - .env
 
     build:
       context: .
+    image: camera
+    container_name: camera
 
-    env_file:
-      - .env
+    # Persist data across redeploys
+    volumes:
+      - "camera_storage:/rails/storage"
+      - "camera_hls:/rails/public/hls"
 
     restart: always
 
     labels:
       - "traefik.enable=true"
 
-      # Только camera.boxhoster.com
+      # Only camera.boxhoster.com
       - "traefik.http.routers.camera.rule=Host(`camera.boxhoster.com`)"
       - "traefik.http.routers.camera.entrypoints=websecure"
       - "traefik.http.routers.camera.tls.certresolver=production"
 
-      # Внутренний порт контейнера
+      # Internal container port
       - "traefik.http.services.camera.loadbalancer.server.port=80"
 
     networks:
       - traefik
+
+volumes:
+  camera_storage:
+  camera_hls:
 
 networks:
   traefik:
