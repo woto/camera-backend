@@ -35,7 +35,7 @@
         <%= button_to set_visibility_event_path(@event, hidden: !@event.hidden?),
           method: :patch,
           class: "btn-secondary text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-6 py-2.5 md:py-3 flex-grow sm:flex-grow-0" do %>
-          <%= @event.hidden? ? "Открыть" : "Скрыть" %>
+          <%= @event.hidden? ? "Опулибковать" : "Скрыть" %>
         <% end %>
         <%= button_to event_path(@event), 
           method: :delete, 
@@ -51,7 +51,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mb-4">
       <h1 class="text-2xl md:text-4xl font-black text-white m-0 tracking-tighter leading-tight">Запись от <%= l(@event.captured_at, format: :long) %></h1>
       <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[10px] md:text-[11px] px-3 md:px-4 py-1.5 md:py-2 self-start sm:self-auto">
-        <%= @event.hidden? ? "Конфиденциально" : "Публично" %>
+        <%= @event.hidden? ? "Скрыто" : "Опубликовано" %>
       </span>
     </div>
     <div class="flex items-center gap-2">
