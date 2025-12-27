@@ -65,8 +65,8 @@ class RecorderController < ApplicationController
     room = room_from_param
     unless room
       return respond_to do |format|
-        format.json { render json: { success: false, message: "Room is required" }, status: :bad_request }
-        format.html { redirect_back fallback_location: events_path, alert: "Room is required" }
+        format.json { render json: { success: false, message: "Укажите код комнаты, чтобы сохранить запись." }, status: :bad_request }
+        format.html { redirect_back fallback_location: events_path, alert: "Укажите код комнаты, чтобы сохранить запись." }
       end
     end
 

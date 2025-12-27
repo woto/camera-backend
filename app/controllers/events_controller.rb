@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  skip_before_action :require_login, only: [ :index, :show, :latest ]
+  skip_before_action :require_login, only: [ :index, :show, :latest, :set_visibility, :destroy ]
   before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :generate_hls, :generate_hls_all, :set_visibility ]
   helper_method :room_param
 
@@ -32,6 +32,8 @@ class EventsController < ApplicationController
 
     @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
     assign_switcher_data!(@captures)
+    @prev_event = scoped_events.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
+    @from_latest = true
 
     respond_to do |format|
       format.html { render :show }
@@ -40,6 +42,14 @@ class EventsController < ApplicationController
   end
 
   def destroy
+    unless current_room
+      return redirect_back fallback_location: event_path(@event), alert: "Укажите код комнаты, чтобы удалить это событие."
+    end
+
+    unless same_room_as_event?
+      return redirect_back fallback_location: event_path(@event), alert: "Код комнаты не подходит для удаления события."
+    end
+
     @older_event = Event.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
 
     if @event.destroy
@@ -144,10 +154,18 @@ class EventsController < ApplicationController
   end
 
   def set_visibility
+    unless current_room
+      return redirect_back fallback_location: event_path(@event), alert: "Укажите код комнаты, чтобы изменить видимость события."
+    end
+
+    unless same_room_as_event?
+      return redirect_back fallback_location: event_path(@event), alert: "Код комнаты не подходит для изменения видимости события."
+    end
+
     hidden = ActiveModel::Type::Boolean.new.cast(params[:hidden])
 
     if @event.update(hidden: hidden)
-      status_text = hidden ? "скрыто" : "открыто"
+      status_text = hidden ? "скрыто" : "опубликовано"
       redirect_back fallback_location: event_path(@event), notice: "Событие теперь #{status_text}."
     else
       redirect_back fallback_location: event_path(@event), alert: "Не удалось обновить видимость события."
@@ -250,5 +268,9 @@ class EventsController < ApplicationController
 
   def room_param
     params[:room].presence || current_room_name
+  end
+
+  def same_room_as_event?
+    current_room.present? && @event.room_id == current_room.id
   end
 end

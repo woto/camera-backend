@@ -1,3 +1,28 @@
 <% flash.each do |type, message| %>
-  <div class="flash <%= type %>"><%= message %></div>
+  <% type = type.to_s %>
+  <% base_classes = "mb-4 rounded-2xl border px-4 py-3 md:px-5 md:py-4 backdrop-blur-md shadow-lg flex items-center gap-3 text-sm md:text-base font-bold tracking-tight" %>
+  <% type_classes = case type
+     when "notice"
+       "bg-emerald-500/10 border-emerald-400/30 text-emerald-100"
+     when "alert", "error"
+       "bg-rose-500/10 border-rose-400/30 text-rose-100"
+     else
+       "bg-white/5 border-white/10 text-white/90"
+     end %>
+  <% icon = case type
+     when "notice"
+       '<path d="M20 6 9 17l-5-5"/>'
+     when "alert", "error"
+       '<path d="M12 8v5"/><path d="M12 16h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>'
+     else
+       '<path d="M12 8v4"/><path d="M12 16h.01"/><circle cx="12" cy="12" r="9"/>'
+     end %>
+  <div class="<%= base_classes %> <%= type_classes %>" role="status">
+    <span class="inline-flex h-8 w-8 p-2 items-center justify-center rounded-xl bg-white/10 border border-white/10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <%= icon.html_safe %>
+      </svg>
+    </span>
+    <span class="leading-snug"><%= message %></span>
+  </div>
 <% end %>
