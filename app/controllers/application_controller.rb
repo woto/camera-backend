@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :load_current_room
 
-  helper_method :current_user, :current_room, :current_room_name, :events_scope
+  helper_method :current_user, :current_room, :current_room_name, :events_scope, :websocket_connections_count
 
   private
 
@@ -61,5 +61,9 @@ class ApplicationController < ActionController::Base
     end
 
     scope
+  end
+
+  def websocket_connections_count
+    Rails.cache.read("ws_connections_count").to_i
   end
 end
