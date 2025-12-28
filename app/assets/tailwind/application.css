@@ -57,6 +57,52 @@
     @apply bg-white/[0.03] border border-white/10 text-white rounded-xl p-4 text-sm outline-none focus:border-accent-purple focus:bg-white/[0.06] placeholder:text-white/10;
   }
 
+  .markdown-body {
+    @apply text-base leading-relaxed text-white/90;
+  }
+  .markdown-body > :first-child {
+    margin-top: 0;
+  }
+  .markdown-body h1 {
+    @apply text-3xl md:text-4xl font-black text-white tracking-tight mt-6;
+  }
+  .markdown-body h2 {
+    @apply text-2xl font-black text-white tracking-tight mt-6;
+  }
+  .markdown-body h3 {
+    @apply text-xl font-black text-white tracking-tight mt-6;
+  }
+  .markdown-body p {
+    @apply mt-4 text-white/80;
+  }
+  .markdown-body ul {
+    @apply mt-4 list-disc pl-5 text-white/80;
+  }
+  .markdown-body ol {
+    @apply mt-4 list-decimal pl-5 text-white/80;
+  }
+  .markdown-body li {
+    @apply mt-2;
+  }
+  .markdown-body a {
+    @apply text-accent-purple hover:text-accent-purple-hover underline;
+  }
+  .markdown-body code {
+    @apply bg-black/40 border border-white/10 rounded px-1.5 py-0.5 text-[0.95em];
+  }
+  .markdown-body pre {
+    @apply mt-4 bg-black/40 border border-white/10 rounded-xl p-4 overflow-x-auto;
+  }
+  .markdown-body pre code {
+    @apply bg-transparent border-0 p-0 text-sm;
+  }
+  .markdown-body blockquote {
+    @apply mt-4 border-l-4 border-accent-purple/60 pl-4 text-white/70;
+  }
+  .markdown-body hr {
+    @apply my-6 border-white/10;
+  }
+
   /* Kaminari Pagination Styling */
   .pagination {
     @apply flex items-center gap-2;
