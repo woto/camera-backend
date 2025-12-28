@@ -4,7 +4,12 @@ class EventsController < ApplicationController
   helper_method :room_param
 
   def index
-    @events = scoped_events.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(12)
+    @selected_date = parsed_date
+    scoped = scoped_events
+    if @selected_date
+      scoped = scoped.where(captured_at: @selected_date.beginning_of_day..@selected_date.end_of_day)
+    end
+    @events = scoped.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(12)
   end
 
   def show
@@ -272,5 +277,13 @@ class EventsController < ApplicationController
 
   def same_room_as_event?
     current_room.present? && @event.room_id == current_room.id
+  end
+
+  def parsed_date
+    return if params[:date].blank?
+
+    Date.iso8601(params[:date])
+  rescue ArgumentError
+    nil
   end
 end

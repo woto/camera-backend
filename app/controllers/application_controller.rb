@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :load_current_room
 
-  helper_method :current_user, :current_room, :current_room_name, :events_scope, :websocket_connections_count
+  helper_method :current_user, :current_room, :current_room_name, :events_scope, :event_dates, :websocket_connections_count
 
   private
 
@@ -61,6 +61,14 @@ class ApplicationController < ActionController::Base
     end
 
     scope
+  end
+
+  def event_dates
+    @event_dates ||= events_scope
+      .group(Arel.sql("date(captured_at)"))
+      .order(Arel.sql("date(captured_at) desc"))
+      .pluck(Arel.sql("date(captured_at)"))
+      .map { |date| Date.iso8601(date) }
   end
 
   def websocket_connections_count
