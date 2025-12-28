@@ -28,8 +28,8 @@
   <body class="h-screen overflow-hidden relative selection:bg-accent-purple/30 selection:text-white bg-bg">
     <div class="flex h-screen w-screen relative z-10 overflow-hidden" data-controller="sidebar">
       <!-- Overlay for mobile sidebar -->
-      <div class="fixed inset-0 bg-black/60 z-40 hidden" 
-           data-sidebar-target="overlay" 
+      <div class="fixed inset-0 bg-black/60 z-40 hidden"
+           data-sidebar-target="overlay"
            data-action="click->sidebar#close"></div>
 
       <aside class="fixed inset-y-0 left-0 z-50 w-72 bg-sidebar-bg border-r border-white/5 flex flex-col shrink-0 transform -translate-x-full lg:relative lg:translate-x-0"
@@ -42,7 +42,7 @@
             <span class="text-3xl font-black tracking-tighter text-white">Volley Cam</span>
           </div>
         </div>
-        
+
         <!-- Mobile Sidebar Close Button -->
         <div class="lg:hidden p-6 flex justify-between items-center border-b border-white/5">
           <div class="flex items-center gap-3">
@@ -60,6 +60,7 @@
 
         <nav class="flex-grow px-6 py-6 lg:py-0 relative z-10 overflow-y-auto custom-scrollbar">
           <%= render "layouts/nav" %>
+          <div class="pointer-events-none sticky bottom-0 h-10 -mt-8 bg-gradient-to-b from-transparent to-sidebar-bg"></div>
         </nav>
         <div class="px-6 pb-4">
           <div class="flex items-center justify-between gap-4 px-5 py-3.5 rounded-2xl font-black text-text-secondary bg-accent-blue/10 border border-accent-blue/30">
