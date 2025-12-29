@@ -19,6 +19,7 @@ class EventsController < ApplicationController
     @next_event = scope.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
     @prev_event = scope.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
     assign_switcher_data!(@captures)
+    assign_share_metadata!(@captures)
 
     respond_to do |format|
       format.html
@@ -37,6 +38,7 @@ class EventsController < ApplicationController
 
     @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
     assign_switcher_data!(@captures)
+    assign_share_metadata!(@captures)
     @prev_event = scoped_events.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
     @from_latest = true
 
@@ -264,6 +266,19 @@ class EventsController < ApplicationController
           error: capture.hls_error
         }
       }
+    end
+  end
+
+  def assign_share_metadata!(captures)
+    @meta_title = "Событие ##{@event.id}"
+    @meta_description = "Запись от #{I18n.l(@event.captured_at, format: :long)}"
+    @meta_url = request.original_url
+
+    thumb = captures.find { |capture| capture.thumbnails.attached? }&.thumbnails&.first
+    @meta_image_url = if thumb
+      url_for(thumb)
+    else
+      "#{request.base_url}/icon.png"
     end
   end
 

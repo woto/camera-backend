@@ -1,4 +1,16 @@
 <% content_for :title, "Событие ##{@event.id}" %>
+<% content_for :head do %>
+  <meta name="description" content="<%= @meta_description %>">
+  <meta property="og:title" content="<%= @meta_title %>">
+  <meta property="og:description" content="<%= @meta_description %>">
+  <meta property="og:url" content="<%= @meta_url %>">
+  <meta property="og:type" content="video.other">
+  <meta property="og:image" content="<%= @meta_image_url %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @meta_title %>">
+  <meta name="twitter:description" content="<%= @meta_description %>">
+  <meta name="twitter:image" content="<%= @meta_image_url %>">
+<% end %>
 
 <div class="max-w-5xl mx-auto" data-controller="video-switcher"
      data-video-switcher-captures-value="<%= @switcher_captures.to_json %>"
