@@ -34,6 +34,6 @@ class RoomSelectionsController < ApplicationController
   end
 
   def load_events_for_current_page
-    @events = events_scope.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(5)
+    @events = events_scope.order(captured_at: :desc).includes(captures: [ { thumbnails_attachments: :blob }, { preview_thumbnails_attachments: :blob } ]).page(params[:page]).per(5)
   end
 end

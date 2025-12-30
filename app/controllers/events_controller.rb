@@ -9,7 +9,7 @@ class EventsController < ApplicationController
     if @selected_date
       scoped = scoped.where(captured_at: @selected_date.beginning_of_day..@selected_date.end_of_day)
     end
-    @events = scoped.order(captured_at: :desc).includes(captures: { thumbnails_attachments: :blob }).page(params[:page]).per(12)
+    @events = scoped.order(captured_at: :desc).includes(captures: [ { thumbnails_attachments: :blob }, { preview_thumbnails_attachments: :blob } ]).page(params[:page]).per(12)
   end
 
   def show

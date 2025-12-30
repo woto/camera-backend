@@ -20,7 +20,7 @@
       <% @events.each do |event| %>
         <div class="card group cursor-pointer border-white/5 hover:border-accent-purple/30 relative">
           <%= link_to event_path(event), class: "block h-full" do %>
-            <% frames = event.captures.flat_map(&:thumbnails) %>
+            <% frames = event.captures.flat_map { |capture| capture.preview_thumbnails.attached? ? capture.preview_thumbnails : capture.thumbnails } %>
             <% frame_urls = frames.first(12).map { |thumb| url_for(thumb) } %>
             <div class="relative aspect-[16/10] bg-zinc-950 overflow-hidden rounded-t-3xl"
                  data-controller="hover-preview"

@@ -21,6 +21,7 @@ class RecorderController < ApplicationController
     end
 
     thumbnails = []
+    preview_thumbnails = []
     response_payload = {}
     event = nil
     capture = nil
@@ -34,8 +35,23 @@ class RecorderController < ApplicationController
       attach_video!(capture, video_file)
       capture.save!
 
-      thumbnails = ThumbnailGenerator.new(video_file.tempfile.path).generate
+      thumbnails = ThumbnailGenerator.new(
+        video_file.tempfile.path,
+        capture_count: 5,
+        # Target resolution for LilyGO T-Display S3; loremflickr 170x320 worked on device.
+        target_width: 170,
+        target_height: 320,
+        quality: 7
+      ).generate
       attach_thumbnails!(capture, thumbnails, safe_filename(video_file))
+      preview_thumbnails = ThumbnailGenerator.new(
+        video_file.tempfile.path,
+        capture_count: 12,
+        target_width: 640,
+        target_height: 400,
+        quality: 3
+      ).generate
+      attach_preview_thumbnails!(capture, preview_thumbnails, safe_filename(video_file))
 
       response_payload = {
         success: true,
@@ -59,6 +75,7 @@ class RecorderController < ApplicationController
     render json: { success: false, message: e.message }, status: :internal_server_error
   ensure
     thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
+    preview_thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
   end
 
   def trigger
@@ -136,6 +153,21 @@ class RecorderController < ApplicationController
     end
 
     raise "Failed to save thumbnails" unless capture.thumbnails.count >= files.size
+  end
+
+  def attach_preview_thumbnails!(capture, files, base_filename)
+    files.each_with_index do |thumbnail_file, index|
+      data = File.binread(thumbnail_file.path)
+      io = StringIO.new(data)
+
+      capture.preview_thumbnails.attach(
+        io: io,
+        filename: "preview_thumb_#{index + 1}_#{base_filename}.jpg",
+        content_type: "image/jpeg"
+      )
+    end
+
+    raise "Failed to save preview thumbnails" unless capture.preview_thumbnails.count >= files.size
   end
 
   def blob_payload(attached_file)

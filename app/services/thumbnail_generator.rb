@@ -5,12 +5,12 @@ require "tempfile"
 class ThumbnailGenerator
   class Error < StandardError; end
 
-  def initialize(source_path, capture_count: 12)
+  def initialize(source_path, capture_count:, target_width:, target_height:, quality:)
     @source_path = source_path
     @capture_count = capture_count
-    # Target resolution for LilyGO T-Display S3; loremflickr 170x320 worked on device.
-    @target_width = 170
-    @target_height = 320
+    @target_width = target_width
+    @target_height = target_height
+    @quality = quality
   end
 
   def generate
@@ -24,7 +24,7 @@ class ThumbnailGenerator
 
   private
 
-  attr_reader :source_path, :capture_count, :target_width, :target_height
+  attr_reader :source_path, :capture_count, :target_width, :target_height, :quality
 
   def video_duration
     stdout, status = Open3.capture2("ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", source_path)
@@ -54,7 +54,7 @@ class ThumbnailGenerator
       "-map_metadata", "-1", # strip metadata that some decoders choke on
       "-vf", resize_filter,
       "-pix_fmt", "yuv420p", # baseline-friendly for embedded JPEG decoders
-      "-q:v", "7", # smaller payload to reduce memory pressure
+      "-q:v", quality.to_s, # smaller payload to reduce memory pressure
       tempfile.path
     ]
 
