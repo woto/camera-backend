@@ -5,7 +5,7 @@ require "tempfile"
 class ThumbnailGenerator
   class Error < StandardError; end
 
-  def initialize(source_path, capture_count: 2)
+  def initialize(source_path, capture_count: 12)
     @source_path = source_path
     @capture_count = capture_count
     # Target resolution for LilyGO T-Display S3; loremflickr 170x320 worked on device.
@@ -35,7 +35,7 @@ class ThumbnailGenerator
     nil
   end
 
-  # For two thumbnails this yields 1/3 and 2/3 of the duration.
+  # Evenly space thumbnails across the duration.
   def capture_points(duration)
     stride = duration / (capture_count + 1)
     (1..capture_count).map { |index| (stride * index).round(3) }
