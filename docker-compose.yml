@@ -20,8 +20,8 @@ services:
     labels:
       - "traefik.enable=true"
 
-      # Only camera.boxhoster.com
-      - "traefik.http.routers.camera.rule=Host(`camera.boxhoster.com`)"
+      # Only volleycam.com
+      - "traefik.http.routers.camera.rule=Host(`volleycam.com`)"
       - "traefik.http.routers.camera.entrypoints=websecure"
       - "traefik.http.routers.camera.tls.certresolver=production"
 
