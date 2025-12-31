@@ -1,0 +1,6 @@
+<div id="event-switcher-data" class="hidden"
+     data-video-switcher-target="switcherData"
+     data-video-switcher-captures-value="<%= @switcher_captures.to_json %>"
+     data-video-switcher-current-id-value="<%= @base_capture&.id %>"
+     data-video-switcher-prev-event-url-value="<%= @prev_event ? event_path(@prev_event, room: current_room_name) : "" %>"
+     data-video-switcher-next-event-url-value="<%= @next_event ? event_path(@next_event, room: current_room_name) : "" %>"></div>

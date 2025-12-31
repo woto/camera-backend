@@ -18,11 +18,11 @@
   <% if @events.any? %>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% @events.each do |event| %>
-        <div class="card group cursor-pointer border-white/5 hover:border-accent-purple/30 relative">
+        <div class="card group cursor-pointer border-2 border-white/5 hover:border-accent-purple/30 relative">
           <%= link_to event_path(event), class: "block h-full" do %>
             <% frames = event.captures.flat_map { |capture| capture.preview_thumbnails.attached? ? capture.preview_thumbnails : capture.thumbnails } %>
             <% frame_urls = frames.first(12).map { |thumb| url_for(thumb) } %>
-            <div class="relative aspect-[16/10] bg-zinc-950 overflow-hidden rounded-t-3xl"
+            <div class="relative aspect-[16/10] bg-zinc-950 overflow-hidden rounded-t-2xl"
                  data-controller="hover-preview"
                  data-hover-preview-frames-value="<%= frame_urls.to_json %>"
                  data-hover-preview-interval-value="320"
@@ -50,7 +50,15 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-purple"></span>
                     <span class="text-[9px] font-black uppercase tracking-[0.2em] text-accent-purple">Запись</span>
                   </div>
-                  <span class="text-base font-black text-white leading-tight tracking-tight"><%= l(event.captured_at, format: :long) if event.captured_at %></span>
+                  <span class="text-base font-black text-white leading-tight tracking-tight">
+                    <% if event.captured_at %>
+                      <span data-controller="local-time"
+                            data-local-time-iso-value="<%= event.captured_at.utc.iso8601 %>"
+                            data-local-time-format-value="long">
+                        <%= l(event.captured_at.utc, format: :long) %>
+                      </span>
+                    <% end %>
+                  </span>
                 </div>
                 <span class="badge <%= event.hidden? ? "badge-hidden" : "badge-open" %>">
                   <% if event.hidden? %>

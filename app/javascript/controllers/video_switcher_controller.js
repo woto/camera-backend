@@ -1,13 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 import * as HlsModule from "hls.js"
 
 // Shows one video at a time and keeps playback aligned using stored offsets.
 // Offsets are relative to a base capture (offset_seconds = 0 for base).
 export default class extends Controller {
-  static targets = ["player", "label", "controls", "progress", "progressBar", "progressHandle", "currentTime", "duration", "playIcon", "pauseIcon", "volumeIcon", "muteIcon", "volumeSlider", "controlsOverlay"]
+  static targets = ["player", "label", "controls", "progress", "progressBar", "progressHandle", "currentTime", "duration", "playIcon", "pauseIcon", "volumeIcon", "muteIcon", "volumeSlider", "controlsOverlay", "speedButton", "speedMenu", "speedBadge", "speedBadgeValue", "preview", "previewImage", "previewTime", "prevEventLink", "nextEventLink", "switcherData"]
   static values = {
     captures: Array,
-    currentId: Number
+    currentId: Number,
+    prevEventUrl: String,
+    nextEventUrl: String
   }
 
   connect() {
@@ -17,21 +20,154 @@ export default class extends Controller {
       currentIdValue: this.currentIdValue
     })
     this.isScrubbing = false
+    this.isSpeedBoosting = false
+    this.suppressNextClick = false
+    this.speedBoostTimer = null
+    this.speedBoostStartX = 0
+    this.speedBoostCenterRate = 2
+    this.basePlaybackRate = 1
+    this.speedOptions = [0.25, 0.5, 1, 2, 3]
+    this.previewUrls = []
     this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
-    if (!this.hasPlayerTarget) return
+    if (!this.hasPlayerTarget) {
+      this.waitForPlayerTarget()
+      return
+    }
+    this.finishConnect()
+  }
+
+  finishConnect() {
     if (!this.currentIdValue && this.capturesValue.length > 0) {
       this.currentIdValue = this.capturesValue[0].id
     }
     this.renderSourceButtons()
+    this.updateEventNav()
     this.loadCurrent(false)
+    this.restoreVolume()
     this.updateVolumeUI()
+    this.updateSpeedUI()
     this.showControls()
+    this.syncFromSwitcherData()
+    this.bindGlobalHandlers()
+  }
+
+  switcherDataTargetConnected() {
+    this.syncFromSwitcherData()
+  }
+
+  syncFromSwitcherData() {
+    if (!this.hasSwitcherDataTarget) return
+    const data = this.switcherDataTarget.dataset
+    let captures = this.capturesValue
+    if (data.videoSwitcherCapturesValue) {
+      try {
+        captures = JSON.parse(data.videoSwitcherCapturesValue)
+      } catch (e) { /* ignore */ }
+    }
+    const currentIdRaw = data.videoSwitcherCurrentIdValue
+    const currentId = Number(currentIdRaw)
+    const prevUrl = data.videoSwitcherPrevEventUrlValue || ""
+    const nextUrl = data.videoSwitcherNextEventUrlValue || ""
+
+    const signature = JSON.stringify([captures.map((c) => c.id), currentId, prevUrl, nextUrl])
+    if (signature === this.lastSwitcherSignature) return
+    this.lastSwitcherSignature = signature
+
+    this.capturesValue = captures
+    if (Number.isFinite(currentId) && currentId > 0) {
+      this.currentIdValue = currentId
+    } else if (captures.length > 0) {
+      this.currentIdValue = captures[0].id
+    }
+    this.prevEventUrlValue = prevUrl
+    this.nextEventUrlValue = nextUrl
+    this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
+    if (!this.capturesById.has(this.currentIdValue) && this.capturesValue.length > 0) {
+      this.currentIdValue = this.capturesValue[0].id
+    }
+    this.renderSourceButtons()
+    this.updateEventNav()
+    if (this.hasPlayerTarget) {
+      if (this.hasLabelTarget) {
+        this.labelTarget.textContent = "Загрузка…"
+      }
+      this.loadCurrent(false)
+      this.syncPlayPauseUI()
+    }
+  }
+
+  labelTargetConnected() {
+    const current = this.capturesById?.get(this.currentIdValue)
+    if (current) {
+      this.updateLabel(current)
+    }
+  }
+
+  waitForPlayerTarget() {
+    if (this.playerTargetWait) return
+    this.playerTargetWait = true
+    const tick = () => {
+      if (this.hasPlayerTarget) {
+        this.playerTargetWait = false
+        this.finishConnect()
+        return
+      }
+      this.playerTargetWait = requestAnimationFrame(tick)
+    }
+    this.playerTargetWait = requestAnimationFrame(tick)
+  }
+
+  updateEventNav() {
+    this.updateEventLink(this.hasPrevEventLinkTarget ? this.prevEventLinkTarget : null, this.prevEventUrlValue)
+    this.updateEventLink(this.hasNextEventLinkTarget ? this.nextEventLinkTarget : null, this.nextEventUrlValue)
+  }
+
+  updateEventLink(link, url) {
+    if (!link) return
+    if (url && url.length > 0) {
+      link.href = url
+      link.classList.remove("hidden")
+      link.setAttribute("aria-hidden", "false")
+    } else {
+      link.removeAttribute("href")
+      link.classList.add("hidden")
+      link.setAttribute("aria-hidden", "true")
+    }
+  }
+
+  navigateEvent(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    const link = event.currentTarget
+    const url = link?.getAttribute("href")
+    if (!url || url === "#") return
+    if (this.isNavigating) return
+    this.isNavigating = true
+    if (this.hasLabelTarget) {
+      this.labelTarget.textContent = "Загрузка…"
+    }
+    fetch(url, {
+      headers: {
+        Accept: "text/vnd.turbo-stream.html",
+        "X-Event-Stream": "1"
+      }
+    })
+      .then((response) => response.text())
+      .then((html) => {
+        Turbo.renderStreamMessage(html)
+        history.pushState({}, "", url)
+      })
+      .catch(() => {})
+      .finally(() => {
+        this.isNavigating = false
+      })
   }
 
   showControls() {
     if (!this.hasControlsOverlayTarget) return
 
     this.controlsOverlayTarget.classList.remove("opacity-0", "invisible")
+    this.controlsOverlayTarget.classList.remove("pointer-events-none")
 
     if (this.controlsTimeout) {
       clearTimeout(this.controlsTimeout)
@@ -50,10 +186,16 @@ export default class extends Controller {
     if (this.playerTarget.paused) return
 
     this.controlsOverlayTarget.classList.add("opacity-0", "invisible")
+    this.controlsOverlayTarget.classList.add("pointer-events-none")
+    this.hideSpeedMenu()
   }
 
   // Playback Controls
   togglePlay() {
+    if (this.suppressNextClick) {
+      this.suppressNextClick = false
+      return
+    }
     const video = this.playerTarget
     if (video.paused) {
       video.play().catch(() => {})
@@ -72,6 +214,87 @@ export default class extends Controller {
     this.playIconTarget.classList.remove("hidden")
     this.pauseIconTarget.classList.add("hidden")
     this.showControls()
+  }
+
+  syncPlayPauseUI() {
+    if (!this.hasPlayIconTarget || !this.hasPauseIconTarget || !this.hasPlayerTarget) return
+    if (this.playerTarget.paused) {
+      this.playIconTarget.classList.remove("hidden")
+      this.pauseIconTarget.classList.add("hidden")
+    } else {
+      this.playIconTarget.classList.add("hidden")
+      this.pauseIconTarget.classList.remove("hidden")
+    }
+  }
+
+  startSpeedBoost(event) {
+    if (event.pointerType === "mouse" && event.button !== 0) return
+    if (event.target?.closest?.(".player-nav")) return
+    if (event.target?.closest?.(".player-controls")) return
+    this.showControls()
+    this.speedBoostStartX = event.clientX ?? 0
+    try {
+      this.playerTarget.setPointerCapture(event.pointerId)
+    } catch (e) { /* ignore */ }
+    if (this.speedBoostTimer) {
+      clearTimeout(this.speedBoostTimer)
+    }
+    this.speedBoostTimer = setTimeout(() => {
+      this.speedBoostTimer = null
+      this.enableSpeedBoost()
+    }, 150)
+  }
+
+  updateSpeedBoost(event) {
+    if (!this.isSpeedBoosting) return
+    if (event.target?.closest?.(".player-nav")) return
+    if (event.target?.closest?.(".player-controls")) return
+    const video = this.playerTarget
+    if (!video) return
+    const container = video.parentElement
+    const width = container?.clientWidth || 1
+    const delta = (event.clientX ?? 0) - this.speedBoostStartX
+    const normalized = Math.max(Math.min(delta / (width / 2), 1), -1)
+    const centerIndex = this.speedOptions.indexOf(this.speedBoostCenterRate)
+    const maxLeft = centerIndex
+    const maxRight = this.speedOptions.length - 1 - centerIndex
+    const step = normalized < 0
+      ? -Math.round(Math.abs(normalized) * maxLeft)
+      : Math.round(normalized * maxRight)
+    const nextIndex = Math.min(Math.max(centerIndex + step, 0), this.speedOptions.length - 1)
+    const target = this.speedOptions[nextIndex]
+    video.playbackRate = target
+    this.basePlaybackRate = target
+    this.updateSpeedUI()
+    this.updateSpeedBadge(target)
+  }
+
+  stopSpeedBoost(event) {
+    if (this.speedBoostTimer) {
+      clearTimeout(this.speedBoostTimer)
+      this.speedBoostTimer = null
+    }
+    if (!this.isSpeedBoosting) return
+    this.isSpeedBoosting = false
+    this.hideSpeedBadge()
+    this.suppressNextClick = true
+    if (event?.pointerId) {
+      try {
+        this.playerTarget.releasePointerCapture(event.pointerId)
+      } catch (e) { /* ignore */ }
+    }
+  }
+
+  enableSpeedBoost() {
+    const video = this.playerTarget
+    if (!video || this.isSpeedBoosting) return
+    this.basePlaybackRate = video.playbackRate || 1
+    const closest = this.speedOptions.reduce((best, rate) => {
+      return Math.abs(rate - this.basePlaybackRate) < Math.abs(best - this.basePlaybackRate) ? rate : best
+    }, this.speedOptions[0])
+    this.speedBoostCenterRate = closest
+    this.isSpeedBoosting = true
+    this.updateSpeedBadge(video.playbackRate)
   }
 
   updateProgress() {
@@ -165,6 +388,118 @@ export default class extends Controller {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
   }
 
+  toggleSpeedMenu() {
+    this.showControls()
+    if (!this.hasSpeedMenuTarget) return
+    this.speedMenuTarget.classList.toggle("hidden")
+  }
+
+  setPlaybackRate(event) {
+    this.showControls()
+    const rate = parseFloat(event.params.rate || event.currentTarget?.dataset?.rate)
+    if (!Number.isFinite(rate)) return
+    this.basePlaybackRate = rate
+    if (!this.isSpeedBoosting && this.playerTarget) {
+      this.playerTarget.playbackRate = rate
+    }
+    this.updateSpeedUI()
+    this.hideSpeedMenu()
+  }
+
+  hideSpeedMenu() {
+    if (!this.hasSpeedMenuTarget) return
+    this.speedMenuTarget.classList.add("hidden")
+  }
+
+  bindGlobalHandlers() {
+    if (this.boundGlobalPointerDown) return
+    this.boundGlobalPointerDown = (event) => {
+      if (!this.hasSpeedMenuTarget || this.speedMenuTarget.classList.contains("hidden")) return
+      const inMenu = this.speedMenuTarget.contains(event.target)
+      const inButton = this.hasSpeedButtonTarget && this.speedButtonTarget.contains(event.target)
+      if (inMenu || inButton) return
+      this.hideSpeedMenu()
+    }
+    document.addEventListener("pointerdown", this.boundGlobalPointerDown, true)
+  }
+
+  updateSpeedUI() {
+    if (this.hasSpeedButtonTarget) {
+      this.speedButtonTarget.textContent = `${this.basePlaybackRate || 1}x`
+    }
+    if (this.hasSpeedMenuTarget) {
+      const buttons = this.speedMenuTarget.querySelectorAll("button[data-video-switcher-rate-param]")
+      buttons.forEach((button) => {
+        const rate = parseFloat(button.dataset.videoSwitcherRateParam)
+        const isActive = Number.isFinite(rate) && Math.abs(rate - (this.basePlaybackRate || 1)) < 0.001
+        button.classList.toggle("bg-white/10", isActive)
+        button.classList.toggle("text-white", isActive)
+        button.classList.toggle("text-white/70", !isActive)
+      })
+    }
+  }
+
+  updateSpeedBadge(rate) {
+    if (!this.hasSpeedBadgeTarget || !this.hasSpeedBadgeValueTarget) return
+    this.speedBadgeValueTarget.textContent = `${rate.toFixed(2)}x`
+    this.speedBadgeTarget.classList.remove("opacity-0", "invisible")
+  }
+
+  hideSpeedBadge() {
+    if (!this.hasSpeedBadgeTarget) return
+    this.speedBadgeTarget.classList.add("opacity-0", "invisible")
+  }
+
+  onProgressHover(event) {
+    this.showControls()
+    if (this.isScrubbing) return
+    if (!this.previewUrls.length) return
+    const track = this.progressBarTarget?.parentElement || this.progressTarget
+    if (!track) return
+    const clientX = event.clientX ?? event.touches?.[0]?.clientX
+    if (clientX === undefined) return
+    const rect = track.getBoundingClientRect()
+    if (!rect.width) return
+    const percent = ((clientX - rect.left) / rect.width) * 100
+    this.showPreviewAtPercent(percent, rect)
+  }
+
+  showPreviewAtPercent(percent, trackRect) {
+    if (!this.previewUrls.length) return
+    const video = this.playerTarget
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return
+    const clamped = Math.min(Math.max(percent, 0), 100)
+    const time = (clamped / 100) * video.duration
+    const index = Math.min(Math.floor((time / video.duration) * this.previewUrls.length), this.previewUrls.length - 1)
+    const url = this.previewUrls[index]
+    if (!url || !this.hasPreviewTarget || !this.hasPreviewImageTarget || !this.hasPreviewTimeTarget) return
+
+    this.previewImageTarget.src = url
+    this.previewTimeTarget.textContent = this.formatTime(time)
+    this.previewTarget.classList.remove("opacity-0", "invisible")
+
+    const trackWidth = trackRect?.width || this.previewTarget.parentElement?.clientWidth || 1
+    const previewWidth = this.previewTarget.getBoundingClientRect().width || 1
+    const leftPx = (clamped / 100) * trackWidth
+    const boundedLeft = Math.min(Math.max(leftPx, previewWidth / 2), trackWidth - previewWidth / 2)
+    const leftPercent = (boundedLeft / trackWidth) * 100
+    this.previewTarget.style.left = `${leftPercent}%`
+  }
+
+  hidePreview() {
+    if (!this.hasPreviewTarget) return
+    this.previewTarget.classList.add("opacity-0", "invisible")
+  }
+
+  stopEvent(event) {
+    const target = event.target
+    const isRange = target?.tagName === "INPUT" && target.type === "range"
+    event.stopPropagation()
+    if (!isRange) {
+      event.preventDefault()
+    }
+  }
+
   toggleMute() {
     this.playerTarget.muted = !this.playerTarget.muted
     this.updateVolumeUI()
@@ -175,10 +510,12 @@ export default class extends Controller {
     const val = parseFloat(e.target.value)
     this.playerTarget.volume = val
     this.playerTarget.muted = (val === 0)
+    this.persistVolume()
     this.updateVolumeUI()
   }
 
   onVolumeChange() {
+    this.persistVolume()
     this.updateVolumeUI()
   }
 
@@ -192,6 +529,33 @@ export default class extends Controller {
     if (this.hasVolumeSliderTarget) {
       this.volumeSliderTarget.value = video.muted ? 0 : video.volume
     }
+  }
+
+  persistVolume() {
+    const video = this.playerTarget
+    if (!video) return
+    const payload = { volume: video.volume, muted: video.muted }
+    try {
+      localStorage.setItem("playerVolume", JSON.stringify(payload))
+    } catch (e) { /* ignore */ }
+  }
+
+  restoreVolume() {
+    const video = this.playerTarget
+    if (!this.hasPlayerTarget) return
+    if (!video) return
+    try {
+      const raw = localStorage.getItem("playerVolume")
+      if (!raw) return
+      const data = JSON.parse(raw)
+      const volume = parseFloat(data?.volume)
+      if (Number.isFinite(volume)) {
+        video.volume = Math.min(Math.max(volume, 0), 1)
+      }
+      if (typeof data?.muted === "boolean") {
+        video.muted = data.muted
+      }
+    } catch (e) { /* ignore */ }
   }
 
   toggleFullscreen() {
@@ -242,7 +606,11 @@ export default class extends Controller {
 
   loadCurrent(autoPlay = false) {
     console.log("[video-switcher] loadCurrent", { autoPlay, currentId: this.currentIdValue })
-    const current = this.capturesById.get(this.currentIdValue)
+    let current = this.capturesById.get(this.currentIdValue)
+    if (!current && this.capturesValue.length > 0) {
+      this.currentIdValue = this.capturesValue[0].id
+      current = this.capturesById.get(this.currentIdValue)
+    }
     if (!current) return
     this.updateLabel(current)
     this.loadVideo(current, 0, autoPlay).catch(() => {})
@@ -258,9 +626,13 @@ export default class extends Controller {
       currentSrc: video.currentSrc
     })
 
+    this.setPreviewForCapture(capture)
+
     return this.loadNative(video, capture.url, capture)
       .finally(() => {
+        this.applyBasePlaybackRate()
         this.seekAndMaybePlay(targetTime, autoPlay)
+        this.syncPlayPauseUI()
       })
   }
 
@@ -288,6 +660,12 @@ export default class extends Controller {
         button.className = "source-button"
         button.dataset.captureId = capture.id
         button.textContent = `CAM ${capture.id}`
+        button.addEventListener("pointerdown", (e) => {
+          e.stopPropagation()
+        })
+        button.addEventListener("pointerup", (e) => {
+          e.stopPropagation()
+        })
         button.addEventListener("click", (e) => {
           e.stopPropagation()
           this.switchTo(Number(capture.id))
@@ -342,8 +720,22 @@ export default class extends Controller {
     return {
       ...capture,
       offset_seconds: this.offsetSeconds(capture),
-      rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0
+      rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0,
+      preview_thumbnails: Array.isArray(capture.preview_thumbnails) ? capture.preview_thumbnails : []
     }
+  }
+
+  setPreviewForCapture(capture) {
+    this.previewUrls = Array.isArray(capture?.preview_thumbnails) ? capture.preview_thumbnails : []
+    if (!this.previewUrls.length) {
+      this.hidePreview()
+    }
+  }
+
+  applyBasePlaybackRate() {
+    if (!this.playerTarget || this.isSpeedBoosting) return
+    this.playerTarget.playbackRate = this.basePlaybackRate || 1
+    this.updateSpeedUI()
   }
 
   loadNative(video, src, capture) {
@@ -412,6 +804,19 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.speedBoostTimer) {
+      clearTimeout(this.speedBoostTimer)
+      this.speedBoostTimer = null
+    }
+    if (this.playerTargetWait) {
+      cancelAnimationFrame(this.playerTargetWait)
+      this.playerTargetWait = null
+    }
+    if (this.boundGlobalPointerDown) {
+      document.removeEventListener("pointerdown", this.boundGlobalPointerDown, true)
+      this.boundGlobalPointerDown = null
+    }
+    this.hidePreview()
     if (this.hls) {
       try { this.hls.destroy() } catch (e) { /* ignore */ }
       this.hls = null

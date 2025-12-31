@@ -13,7 +13,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :asc)
+    force_html_for_non_event_stream!
+    @captures = @event.captures.with_attached_thumbnails.with_attached_preview_thumbnails.with_attached_video.order(created_at: :asc)
     backfill_rotations!(@captures)
     scope = scoped_events
     @next_event = scope.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
@@ -23,11 +24,13 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.turbo_stream
       format.json { render json: thumbnails_payload(@event, @captures) }
     end
   end
 
   def latest
+    force_html_for_non_event_stream!
     @event = scoped_events.order(captured_at: :desc).first
     unless @event
       return respond_to do |format|
@@ -36,7 +39,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @captures = @event.captures.with_attached_thumbnails.with_attached_video.order(created_at: :desc)
+    @captures = @event.captures.with_attached_thumbnails.with_attached_preview_thumbnails.with_attached_video.order(created_at: :desc)
     assign_switcher_data!(@captures)
     assign_share_metadata!(@captures)
     @prev_event = scoped_events.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
@@ -44,6 +47,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html { render :show }
+      format.turbo_stream { render :show }
       format.json { render json: thumbnails_payload(@event, @captures) }
     end
   end
@@ -181,6 +185,13 @@ class EventsController < ApplicationController
 
   private
 
+  def force_html_for_non_event_stream!
+    return unless request.format.turbo_stream?
+    return if request.headers["X-Event-Stream"] == "1"
+
+    request.format = :html
+  end
+
   def thumbnails_payload(event, captures)
     {
       event_id: event.id,
@@ -254,12 +265,19 @@ class EventsController < ApplicationController
       next unless capture.video.attached?
       offset = capture.offset_seconds&.to_f || 0.0
       rotation = capture.rotation_degrees || 0
+      preview_thumbs = if capture.preview_thumbnails.attached?
+        capture.preview_thumbnails
+      else
+        capture.thumbnails
+      end
+
       {
         id: capture.id,
         offset_seconds: offset,
         url: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : url_for(capture.video),
         label: "Запись ##{capture.id}",
         rotation_degrees: rotation,
+        preview_thumbnails: preview_thumbs.map { |thumb| url_for(thumb) },
         hls: {
           manifest: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : nil,
           processing: capture.hls_processing?,

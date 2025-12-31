@@ -181,4 +181,13 @@
   .player-container:fullscreen .absolute {
     @apply z-50;
   }
+  .player-container:fullscreen .player-nav {
+    z-index: 60;
+  }
+  .player-controls button,
+  .player-controls input,
+  .player-nav,
+  .source-button {
+    cursor: pointer;
+  }
 }
