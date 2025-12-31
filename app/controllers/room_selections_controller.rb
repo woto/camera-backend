@@ -9,7 +9,7 @@ class RoomSelectionsController < ApplicationController
     room = find_or_create_room
     session[:room_id] = room.id
     @current_room = room
-    redirect_back fallback_location: events_path, notice: "Комната выбрана: #{room.name}", status: :see_other
+    redirect_back fallback_location: events_path, notice: t("room.selected", name: room.name), status: :see_other
   rescue => e
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.update("modal", method: :morph, partial: "room_selections/form", locals: { error: e.message }) }
@@ -21,7 +21,7 @@ class RoomSelectionsController < ApplicationController
 
   def find_or_create_room
     name = params[:room].to_s.strip
-    raise "Укажите код комнаты" if name.blank?
+    raise t("room.missing_code") if name.blank?
 
     Room.find_or_create_by!(name: name)
   end

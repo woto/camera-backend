@@ -13,6 +13,9 @@ module Camera
 
     config.i18n.default_locale = :ru
     config.time_zone = "UTC"
+    config.i18n.available_locales = %i[en zh es ar id pt fr ja ru de]
+    config.i18n.default_locale = :ru
+    config.i18n.fallbacks = [ :en ]
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

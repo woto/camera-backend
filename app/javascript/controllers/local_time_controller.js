@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     iso: String,
+    locale: String,
     format: { type: String, default: "long" }
   }
 
@@ -19,9 +20,10 @@ export default class extends Controller {
   }
 
   formatterFor(style) {
+    const locale = this.hasLocaleValue ? this.localeValue : undefined
     switch (style) {
       case "short":
-        return new Intl.DateTimeFormat(undefined, {
+        return new Intl.DateTimeFormat(locale, {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
@@ -29,18 +31,18 @@ export default class extends Controller {
           minute: "2-digit"
         })
       case "date":
-        return new Intl.DateTimeFormat(undefined, {
+        return new Intl.DateTimeFormat(locale, {
           year: "numeric",
           month: "long",
           day: "numeric"
         })
       case "time":
-        return new Intl.DateTimeFormat(undefined, {
+        return new Intl.DateTimeFormat(locale, {
           hour: "2-digit",
           minute: "2-digit"
         })
       default:
-        return new Intl.DateTimeFormat(undefined, {
+        return new Intl.DateTimeFormat(locale, {
           year: "numeric",
           month: "long",
           day: "numeric",

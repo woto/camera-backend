@@ -11,13 +11,13 @@ class RecorderController < ApplicationController
 
     unless video_file.present? && raw_timestamp.present?
       Rails.logger.warn("[RecorderController#upload] Missing required params: video=#{video_file.present?}, timestamp=#{raw_timestamp.present?}")
-      return render json: { success: false, message: "Missing video/timestamp params" }, status: :bad_request
+      return render json: { success: false, message: t("recorder.errors.missing_params") }, status: :bad_request
     end
 
     captured_at = parse_timestamp(raw_timestamp)
     unless captured_at
       Rails.logger.warn("[RecorderController#upload] Invalid timestamp: #{raw_timestamp.inspect}")
-      return render json: { success: false, message: "Invalid timestamp" }, status: :bad_request
+      return render json: { success: false, message: t("recorder.errors.invalid_timestamp") }, status: :bad_request
     end
 
     thumbnails = []
@@ -55,8 +55,9 @@ class RecorderController < ApplicationController
 
       response_payload = {
         success: true,
-        message: "Video uploaded",
+        message: t("recorder.notices.uploaded"),
         event_id: event.id,
+        event_url: event_url(event, room: room&.name),
         event_timestamp: event.captured_at.iso8601,
         capture_id: capture.id,
         video: blob_payload(capture.video),
@@ -82,8 +83,8 @@ class RecorderController < ApplicationController
     room = room_from_param
     unless room
       return respond_to do |format|
-        format.json { render json: { success: false, message: "Укажите код комнаты, чтобы сохранить запись." }, status: :bad_request }
-        format.html { redirect_back fallback_location: events_path, alert: "Укажите код комнаты, чтобы сохранить запись." }
+        format.json { render json: { success: false, message: t("recorder.errors.room_required") }, status: :bad_request }
+        format.html { redirect_back fallback_location: events_path, alert: t("recorder.errors.room_required") }
       end
     end
 
@@ -92,13 +93,13 @@ class RecorderController < ApplicationController
     broadcast_to_room({ action: "capture", timestamp: timestamp.iso8601, room: room&.name }, room)
 
     respond_to do |format|
-      format.json { render json: { success: true, timestamp: timestamp.iso8601, room: room&.name, message: "Сигнал записи отправлен" }, status: :ok }
-      format.html { redirect_back fallback_location: root_path, notice: "Сигнал записи отправлен в #{timestamp.strftime("%H:%M:%S")}" }
+      format.json { render json: { success: true, timestamp: timestamp.iso8601, room: room&.name, message: t("recorder.signal_sent") }, status: :ok }
+      format.html { redirect_back fallback_location: root_path, notice: t("recorder.signal_sent_at", time: timestamp.strftime("%H:%M:%S")) }
     end
   rescue => e
     respond_to do |format|
       format.json { render json: { success: false, message: e.message }, status: :internal_server_error }
-      format.html { redirect_back fallback_location: root_path, alert: "Failed to send capture signal: #{e.message}" }
+      format.html { redirect_back fallback_location: root_path, alert: t("recorder.errors.signal_failed", error: e.message) }
     end
   end
 
@@ -195,6 +196,7 @@ class RecorderController < ApplicationController
     payload = {
       action: "upload_success",
       event_id: event.id,
+      event_url: event_url(event, room: event.room&.name),
       event_timestamp: event.captured_at&.iso8601,
       capture_id: capture.id,
       video: blob_payload(capture.video),

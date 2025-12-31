@@ -1,9 +1,9 @@
-# Privacy Policy for Volley Cam
+# Privacy Policy for VolleyCam
 
-**Last Updated:** 28 December 2025.
+**Last Updated:** 31 December 2025.
 
 ## 1. Overview
-Volley Cam is an Android application designed to record volleyball games using a "dashcam" style buffering mechanism. The app allows users to join a specific "room" using a 6-digit code and record video clips triggered by game events.
+VolleyCam is an Android application designed to record volleyball games using a "dashcam" style buffering mechanism. The app allows users to join a specific "room" using a 6-digit code and record video clips triggered by game events.
 
 ## 2. Information We Collect
 

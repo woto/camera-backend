@@ -34,7 +34,7 @@ class EventsController < ApplicationController
     @event = scoped_events.order(captured_at: :desc).first
     unless @event
       return respond_to do |format|
-        format.html { redirect_to events_path, alert: "Событий пока нет." }
+        format.html { redirect_to events_path, alert: t("events.index.empty") }
         format.json { render json: { event_id: nil, thumbnails: [] }, status: :ok }
       end
     end
@@ -54,23 +54,23 @@ class EventsController < ApplicationController
 
   def destroy
     unless current_room
-      return redirect_back fallback_location: event_path(@event), alert: "Укажите код комнаты, чтобы удалить это событие."
+      return redirect_back fallback_location: event_path(@event), alert: t("events.permissions.room_required_delete")
     end
 
     unless same_room_as_event?
-      return redirect_back fallback_location: event_path(@event), alert: "Код комнаты не подходит для удаления события."
+      return redirect_back fallback_location: event_path(@event), alert: t("events.permissions.room_mismatch_delete")
     end
 
     @older_event = Event.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
 
     if @event.destroy
       if @older_event
-        redirect_to event_path(@older_event), notice: "Событие удалено. Показано более старое событие."
+        redirect_to event_path(@older_event), notice: t("events.notices.deleted_showing_older")
       else
-        redirect_to events_path, notice: "Событие удалено."
+        redirect_to events_path, notice: t("events.notices.deleted")
       end
     else
-      redirect_to event_path(@event), alert: "Не удалось удалить событие."
+      redirect_to event_path(@event), alert: t("events.errors.delete_failed")
     end
   end
 
@@ -84,15 +84,15 @@ class EventsController < ApplicationController
       capture.update!(offset_seconds: 0.0)
     end
 
-    redirect_to event_path(@event), notice: "Базовый ролик установлен (Capture ##{capture.id})."
+    redirect_to event_path(@event), notice: t("events.notices.base_set", id: capture.id)
   rescue => e
-    redirect_to event_path(@event), alert: "Не удалось установить базовый ролик: #{e.message}"
+    redirect_to event_path(@event), alert: t("events.errors.base_set_failed", error: e.message)
   end
 
   def sync_offsets
     capture = params[:capture_id].present? ? @event.captures.find(params[:capture_id]) : (@event.base_capture || @event.captures.first)
     unless capture
-      return redirect_to event_path(@event), alert: "Нет роликов для синхронизации."
+      return redirect_to event_path(@event), alert: t("events.errors.no_captures_to_sync")
     end
 
     result = OffsetsSyncer.new(
@@ -101,12 +101,12 @@ class EventsController < ApplicationController
       analyze_duration: sync_params[:analyze_duration],
       sample_rate: sync_params[:sample_rate]
     ).call
-    notice = "Смещения обновлены: #{result[:updated]} шт."
-    notice += " (пропущено: #{result[:skipped].join(", ")})" if result[:skipped].any?
+    notice = t("events.notices.offsets_updated", count: result[:updated])
+    notice += " (#{t("events.notices.offsets_skipped", ids: result[:skipped].join(", "))})" if result[:skipped].any?
 
     redirect_to event_path(@event), notice: notice
   rescue => e
-    redirect_to event_path(@event), alert: "Ошибка синхронизации: #{e.message}"
+    redirect_to event_path(@event), alert: t("events.errors.sync_failed", error: e.message)
   end
 
   def set_rotation
@@ -114,37 +114,37 @@ class EventsController < ApplicationController
     rotation = params[:rotation].to_i
     allowed = [ 0, 90, 180, 270 ]
     unless allowed.include?(rotation)
-      return redirect_to event_path(@event), alert: "Недопустимый угол (разрешены: #{allowed.join(", ")})"
+      return redirect_to event_path(@event), alert: t("events.errors.invalid_rotation", allowed: allowed.join(", "))
     end
 
     capture.update!(rotation_degrees: rotation)
-    redirect_to event_path(@event), notice: "Ориентация Capture ##{capture.id} установлена на #{rotation}°."
+    redirect_to event_path(@event), notice: t("events.notices.rotation_set", id: capture.id, rotation: rotation)
   rescue => e
-    redirect_to event_path(@event), alert: "Не удалось обновить ориентацию: #{e.message}"
+    redirect_to event_path(@event), alert: t("events.errors.rotation_failed", error: e.message)
   end
 
   def generate_hls
     capture = @event.captures.find(params[:capture_id])
 
     unless capture.video.attached?
-      return redirect_to event_path(@event), alert: "У Capture ##{capture.id} нет прикреплённого видео."
+      return redirect_to event_path(@event), alert: t("events.errors.no_video", id: capture.id)
     end
 
     if capture.hls_processing?
-      return redirect_to event_path(@event), notice: "Для Capture ##{capture.id} уже идёт обработка HLS."
+      return redirect_to event_path(@event), notice: t("events.notices.hls_already_processing", id: capture.id)
     end
 
     GenerateHlsJob.perform_later(capture.id)
-    redirect_to event_path(@event), notice: "Запущена генерация HLS для Capture ##{capture.id}."
+    redirect_to event_path(@event), notice: t("events.notices.hls_started", id: capture.id)
   rescue => e
-    redirect_to event_path(@event), alert: "Не удалось запустить генерацию HLS: #{e.message}"
+    redirect_to event_path(@event), alert: t("events.errors.hls_start_failed", error: e.message)
   end
 
   def generate_hls_all
     captures = @event.captures.joins(:video_attachment).to_a
 
     if captures.empty?
-      return redirect_to event_path(@event), notice: "Нет роликов, требующих генерации HLS."
+      return redirect_to event_path(@event), notice: t("events.notices.hls_none")
     end
 
     captures.each do |capture|
@@ -159,27 +159,27 @@ class EventsController < ApplicationController
       GenerateHlsJob.perform_later(capture.id)
     end
 
-    redirect_to event_path(@event), notice: "Запущена генерация HLS для #{captures.count} роликов."
+    redirect_to event_path(@event), notice: t("events.notices.hls_bulk_started", count: captures.count)
   rescue => e
-    redirect_to event_path(@event), alert: "Не удалось запустить массовую генерацию HLS: #{e.message}"
+    redirect_to event_path(@event), alert: t("events.errors.hls_bulk_failed", error: e.message)
   end
 
   def set_visibility
     unless current_room
-      return redirect_back fallback_location: event_path(@event), alert: "Укажите код комнаты, чтобы изменить видимость события."
+      return redirect_back fallback_location: event_path(@event), alert: t("events.permissions.room_required_visibility")
     end
 
     unless same_room_as_event?
-      return redirect_back fallback_location: event_path(@event), alert: "Код комнаты не подходит для изменения видимости события."
+      return redirect_back fallback_location: event_path(@event), alert: t("events.permissions.room_mismatch_visibility")
     end
 
     hidden = ActiveModel::Type::Boolean.new.cast(params[:hidden])
 
     if @event.update(hidden: hidden)
-      status_text = hidden ? "скрыто" : "опубликовано"
-      redirect_back fallback_location: event_path(@event), notice: "Событие теперь #{status_text}."
+      status_text = hidden ? t("events.labels.hidden") : t("events.labels.published")
+      redirect_back fallback_location: event_path(@event), notice: t("events.notices.visibility_changed", status: status_text)
     else
-      redirect_back fallback_location: event_path(@event), alert: "Не удалось обновить видимость события."
+      redirect_back fallback_location: event_path(@event), alert: t("events.errors.visibility_failed")
     end
   end
 
@@ -227,7 +227,7 @@ class EventsController < ApplicationController
     @event = scoped_events.find_by(id: params[:id])
     return if @event
 
-    redirect_to events_path, alert: "Событие не найдено."
+    redirect_to events_path, alert: t("events.errors.not_found")
   end
 
   def sync_params
@@ -236,7 +236,7 @@ class EventsController < ApplicationController
 
   def video_path_for(capture)
     blob = capture.video&.blob
-    raise "Capture ##{capture.id} без видео" unless blob
+    raise t("events.errors.capture_no_video", id: capture.id) unless blob
 
     service = ActiveStorage::Blob.service
     if service.respond_to?(:path_for)
@@ -275,7 +275,7 @@ class EventsController < ApplicationController
         id: capture.id,
         offset_seconds: offset,
         url: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : url_for(capture.video),
-        label: "Запись ##{capture.id}",
+        label: t("events.labels.capture", id: capture.id),
         rotation_degrees: rotation,
         preview_thumbnails: preview_thumbs.map { |thumb| url_for(thumb) },
         hls: {
@@ -288,8 +288,8 @@ class EventsController < ApplicationController
   end
 
   def assign_share_metadata!(captures)
-    @meta_title = "Событие ##{@event.id}"
-    @meta_description = "Запись от #{I18n.l(@event.captured_at, format: :long)}"
+    @meta_title = t("events.meta.title", id: @event.id)
+    @meta_description = t("events.meta.description", time: I18n.l(@event.captured_at, format: :long))
     @meta_url = request.original_url
 
     thumb = captures.find { |capture| capture.thumbnails.attached? }&.thumbnails&.first

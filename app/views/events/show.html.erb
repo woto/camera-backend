@@ -1,4 +1,4 @@
-<% content_for :title, "Событие ##{@event.id}" %>
+<% content_for :title, t("events.meta.title", id: @event.id) %>
 <% content_for :head do %>
   <meta name="description" content="<%= @meta_description %>">
   <meta property="og:title" content="<%= @meta_title %>">

@@ -11,7 +11,13 @@ class ApplicationController < ActionController::Base
   private
 
   def set_locale
-    I18n.locale = :ru
+    locale = params[:locale].presence || cookies[:locale]
+    locale = locale&.to_sym
+    locale = I18n.default_locale unless I18n.available_locales.include?(locale)
+    I18n.locale = locale
+    if params[:locale].present?
+      cookies[:locale] = { value: locale, expires: 1.year.from_now }
+    end
   end
 
   def current_user
@@ -21,7 +27,7 @@ class ApplicationController < ActionController::Base
   def require_login
     return if current_user
 
-    redirect_to new_session_path, alert: "Пожалуйста, войдите в систему."
+    redirect_to new_session_path, alert: t("auth.login_required")
   end
 
   def current_room

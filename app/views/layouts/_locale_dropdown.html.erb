@@ -1,0 +1,29 @@
+<% flags = { en: "🇺🇸", zh: "🇨🇳", es: "🇪🇸", ar: "🇸🇦", id: "🇮🇩", pt: "🇵🇹", fr: "🇫🇷", ja: "🇯🇵", ru: "🇷🇺", de: "🇩🇪" } %>
+<% current_locale = I18n.locale.to_sym %>
+
+<details class="group relative">
+  <summary class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-text-secondary hover:text-white hover:bg-white/10 cursor-pointer list-none">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-lg">
+        <%= flags[current_locale] %>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-[9px] text-text-secondary/70 font-black uppercase tracking-[0.2em]"><%= t("nav.language") %></span>
+        <span class="text-[13px] tracking-tight text-white"><%= t("locales.#{current_locale}") %></span>
+      </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-secondary/70 group-open:rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+  </summary>
+  <div class="absolute bottom-full left-0 right-0 mb-2 rounded-xl border border-white/10 bg-sidebar-bg p-3 shadow-xl z-50">
+    <%= form_with url: locale_path, method: :patch, data: { turbo: false }, class: "grid grid-cols-2 gap-2" do %>
+      <% I18n.available_locales.each do |loc| %>
+        <button type="submit" name="locale" value="<%= loc %>"
+                class="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-[12px] font-bold tracking-tight transition
+                       <%= loc.to_sym == current_locale ? 'bg-white/10 text-white border border-white/20' : 'bg-transparent text-text-secondary hover:text-white hover:bg-white/5 border border-transparent' %>">
+          <span class="text-lg"><%= flags[loc.to_sym] %></span>
+          <span><%= t("locales.#{loc}") %></span>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</details>

@@ -1,17 +1,17 @@
-<% content_for :title, "События" %>
+<% content_for :title, t("events.index.title") %>
 
 <div id="events_page" class="max-w-6xl mx-auto">
   <div class="flex flex-wrap justify-between items-center gap-6 mb-8 md:mb-12">
     <div>
-      <h1 class="text-2xl md:text-4xl font-black tracking-tight text-white m-0">События</h1>
-      <p class="text-text-secondary mt-1 text-sm md:text-base font-bold tracking-tight">Просмотр и управление записями</p>
+      <h1 class="text-2xl md:text-4xl font-black tracking-tight text-white m-0"><%= t("events.index.title") %></h1>
+      <p class="text-text-secondary mt-1 text-sm md:text-base font-bold tracking-tight"><%= t("events.index.subtitle") %></p>
     </div>
     <div class="w-full sm:w-auto">
-      <%= button_to "Сохранить запись",
+      <%= button_to t("events.index.save_recording"),
         recorder_trigger_path(room: current_room_name),
         class: "btn-primary w-full sm:w-auto",
         method: :post,
-        data: { turbo_disable_with: "Сохранение..." } %>
+        data: { turbo_disable_with: t("events.index.saving") } %>
     </div>
   </div>
 
@@ -31,7 +31,7 @@
                 <% if frame_urls.any? %>
                   <%= image_tag frame_urls.first, class: "h-full w-full object-cover", alt: "Thumbnail", data: { hover_preview_target: "image" } %>
                 <% else %>
-                  <div class="text-xs text-white/40">Нет превью</div>
+                  <div class="text-xs text-white/40"><%= t("events.index.no_preview") %></div>
                 <% end %>
               </div>
               
@@ -40,7 +40,7 @@
               
               <div class="absolute top-4 left-4">
                 <div class="bg-black/40 px-3 py-1.5 rounded-xl border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/80">
-                  ID: <%= event.id %>
+                  <%= t("events.index.id") %>: <%= event.id %>
                 </div>
               </div>
 
@@ -48,12 +48,13 @@
                 <div class="flex flex-col">
                   <div class="flex items-center gap-2 mb-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-accent-purple"></span>
-                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-accent-purple">Запись</span>
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-accent-purple"><%= t("events.index.record_label") %></span>
                   </div>
                   <span class="text-base font-black text-white leading-tight tracking-tight">
                     <% if event.captured_at %>
                       <span data-controller="local-time"
                             data-local-time-iso-value="<%= event.captured_at.utc.iso8601 %>"
+                            data-local-time-locale-value="<%= I18n.locale %>"
                             data-local-time-format-value="long">
                         <%= l(event.captured_at.utc, format: :long) %>
                       </span>
@@ -62,14 +63,14 @@
                 </div>
                 <span class="badge <%= event.hidden? ? "badge-hidden" : "badge-open" %>">
                   <% if event.hidden? %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Скрыто" role="img">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="<%= t("events.labels.hidden") %>" role="img">
                       <path d="M1 1l22 22"/>
                       <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24"/>
                       <path d="M10.73 5.08A11 11 0 0 1 12 5c5 0 9.27 3.11 11 7-1.05 2.36-2.9 4.3-5.19 5.38"/>
                       <path d="M6.61 6.61C3.66 8.08 1.5 10.7 1 12c1.73 3.89 6 7 11 7 1.4 0 2.74-.24 3.99-.69"/>
                     </svg>
                   <% else %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Опубликовано" role="img">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="<%= t("events.labels.published") %>" role="img">
                       <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
                       <circle cx="12" cy="12" r="3"/>
                     </svg>
@@ -80,7 +81,7 @@
             
             <div class="p-6 bg-white/[0.01] flex items-center justify-between border-t border-white/5">
               <div class="flex flex-col gap-1">
-                <span class="text-[9px] text-text-secondary/40 font-black uppercase tracking-[0.2em]">Содержимое</span>
+                <span class="text-[9px] text-text-secondary/40 font-black uppercase tracking-[0.2em]"><%= t("events.index.content") %></span>
                 <span class="text-xs text-text-secondary font-black tracking-tight">
                   <%= t("events.captures_count", count: event.captures.size) %>
                 </span>
@@ -102,7 +103,7 @@
   <% else %>
     <div class="flex flex-col items-center justify-center py-20 bg-card-bg rounded-2xl border border-dashed border-border-dim">
       <div class="text-4xl mb-4">📹</div>
-      <p class="text-text-secondary font-medium">Событий пока нет.</p>
+      <p class="text-text-secondary font-medium"><%= t("events.index.empty") %></p>
     </div>
   <% end %>
 </div>

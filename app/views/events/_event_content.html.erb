@@ -14,13 +14,13 @@
              data-action="mousemove->video-switcher#showControls touchstart->video-switcher#showControls mouseenter->video-switcher#showControls pointerdown->video-switcher#startSpeedBoost pointerup->video-switcher#stopSpeedBoost pointercancel->video-switcher#stopSpeedBoost pointerleave->video-switcher#stopSpeedBoost pointermove->video-switcher#updateSpeedBoost">
           <%= link_to(@next_event ? event_path(@next_event, room: current_room_name) : "#",
             class: "player-nav absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-white/10 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-all",
-            title: "Новее",
+            title: t("events.navigation.newer"),
             data: { turbo: "false", action: "video-switcher#navigateEvent", video_switcher_target: "nextEventLink" }) do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           <% end %>
           <%= link_to(@prev_event ? event_path(@prev_event, room: current_room_name) : "#",
             class: "player-nav absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-white/10 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-all",
-            title: "Старее",
+            title: t("events.navigation.older"),
             data: { turbo: "false", action: "video-switcher#navigateEvent", video_switcher_target: "prevEventLink" }) do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           <% end %>
@@ -42,15 +42,16 @@
 
           <div class="absolute top-4 left-4 z-30 flex items-center gap-3 px-3 py-2 rounded-xl bg-black/60 border border-white/10 text-[10px] md:text-xs font-black tracking-widest text-white/80 pointer-events-none">
             <span>
-              Запись от
+              <%= t("events.labels.recording_from") %>
               <span data-controller="local-time"
                     data-local-time-iso-value="<%= @event.captured_at&.utc&.iso8601 %>"
+                    data-local-time-locale-value="<%= I18n.locale %>"
                     data-local-time-format-value="long">
                 <%= l(@event.captured_at&.utc, format: :long) %>
               </span>
             </span>
             <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[9px] md:text-[10px] px-2 py-1 rounded-md">
-              <%= @event.hidden? ? "Скрыто" : "Опубликовано" %>
+              <%= @event.hidden? ? t("events.labels.hidden") : t("events.labels.published") %>
             </span>
           </div>
 
@@ -153,7 +154,7 @@
   <% else %>
     <div class="card p-12 flex flex-col items-center justify-center border-dashed text-text-secondary">
       <span class="text-4xl mb-4">🔇</span>
-      <p class="font-medium">Записей для этого события нет.</p>
+      <p class="font-medium"><%= t("events.show.empty") %></p>
     </div>
   <% end %>
 

@@ -1,4 +1,4 @@
-<%= render "shared/modal", title: "Вход" do %>
+<%= render "shared/modal", title: t("auth.login.title") do %>
   <% if flash[:alert].present? %>
     <div class="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl text-sm font-bold mb-6 flex items-center gap-3">
       <span class="text-lg">⚠️</span>
@@ -7,17 +7,17 @@
   <% end %>
   <%= form_with url: session_path, method: :post, data: { turbo_frame: "_top" }, class: "space-y-6" do %>
     <div class="flex flex-col gap-3">
-      <label for="username" class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-1">Имя пользователя</label>
+      <label for="username" class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-1"><%= t("auth.login.username") %></label>
       <input type="text" name="username" id="username" value="<%= params[:username] %>" required 
              class="input-field" placeholder="admin" />
     </div>
     <div class="flex flex-col gap-3">
-      <label for="password" class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-1">Пароль</label>
+      <label for="password" class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-1"><%= t("auth.login.password") %></label>
       <input type="password" name="password" id="password" required 
              class="input-field" placeholder="••••••••" />
     </div>
     <div class="pt-6">
-      <%= submit_tag "Войти в систему", class: "btn-primary w-full py-4" %>
+      <%= submit_tag t("auth.login.submit"), class: "btn-primary w-full py-4" %>
     </div>
   <% end %>
 <% end %>

@@ -4,8 +4,8 @@
       <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       </div>
-      <span class="hidden sm:inline">Все события</span>
-      <span class="sm:hidden">Назад</span>
+      <span class="hidden sm:inline"><%= t("events.header.all_events") %></span>
+      <span class="sm:hidden"><%= t("events.header.back") %></span>
     <% end %>
 
     <div class="h-6 md:h-8 w-px bg-white/5"></div>
@@ -15,11 +15,11 @@
     <%= button_to set_visibility_event_path(@event, hidden: !@event.hidden?, room: current_room_name),
       method: :patch,
       class: "btn-secondary text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-6 py-2.5 md:py-3 flex-grow sm:flex-grow-0" do %>
-      <%= @event.hidden? ? "Опулибковать" : "Скрыть" %>
+      <%= @event.hidden? ? t("events.header.publish") : t("events.header.hide") %>
     <% end %>
     <%= button_to event_path(@event, room: current_room_name), 
       method: :delete, 
-      data: { turbo_confirm: "Удалить это событие и все связанные записи?" }, 
+      data: { turbo_confirm: t("events.header.delete_confirm") }, 
       class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white" do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
     <% end %>

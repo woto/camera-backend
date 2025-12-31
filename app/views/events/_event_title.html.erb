@@ -1,7 +1,8 @@
 <div id="event-title" class="sr-only">
-  Запись от
+  <%= t("events.labels.recording_from") %>
   <span data-controller="local-time"
         data-local-time-iso-value="<%= @event.captured_at&.utc&.iso8601 %>"
+        data-local-time-locale-value="<%= I18n.locale %>"
         data-local-time-format-value="long">
     <%= l(@event.captured_at&.utc, format: :long) %>
   </span>

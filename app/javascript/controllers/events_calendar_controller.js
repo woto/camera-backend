@@ -1,25 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
-const MONTHS = [
-  "Январь",
-  "Февраль",
-  "Март",
-  "Апрель",
-  "Май",
-  "Июнь",
-  "Июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь"
-]
-
 export default class extends Controller {
   static values = {
     dates: Array,
     selected: String,
-    baseUrl: String
+    baseUrl: String,
+    months: Array,
+    emptyLabel: String
   }
 
   static targets = ["monthLabel", "grid", "empty"]
@@ -50,7 +37,9 @@ export default class extends Controller {
   render() {
     const year = this.currentDate.getUTCFullYear()
     const month = this.currentDate.getUTCMonth()
-    this.monthLabelTarget.textContent = `${MONTHS[month]} ${year}`
+    const months = (this.monthsValue || []).length ? this.monthsValue : []
+    const monthLabel = months[month] || this.currentDate.toLocaleString(undefined, { month: "long", timeZone: "UTC" })
+    this.monthLabelTarget.textContent = `${monthLabel} ${year}`
     this.gridTarget.innerHTML = ""
 
     const firstDay = new Date(Date.UTC(year, month, 1))
@@ -95,7 +84,7 @@ export default class extends Controller {
       }
     }
 
-    this.emptyTarget.textContent = this.datesSet.size ? "" : "Событий пока нет"
+    this.emptyTarget.textContent = this.datesSet.size ? "" : (this.emptyLabelValue || "")
   }
 
   initialMonthDate() {

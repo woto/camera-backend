@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resource :session, only: [ :new, :create, :destroy ]
   get "/login", to: "sessions#new"
   delete "/logout", to: "sessions#destroy"
+  resource :locale, only: [ :update ]
 
   resources :events, only: [ :index, :show, :destroy ] do
     collection do

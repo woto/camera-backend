@@ -10,7 +10,11 @@ export default class extends Controller {
     captures: Array,
     currentId: Number,
     prevEventUrl: String,
-    nextEventUrl: String
+    nextEventUrl: String,
+    loadingText: String,
+    baseLabel: String,
+    offsetLabel: String,
+    cameraLabel: String
   }
 
   connect() {
@@ -89,7 +93,7 @@ export default class extends Controller {
     this.updateEventNav()
     if (this.hasPlayerTarget) {
       if (this.hasLabelTarget) {
-        this.labelTarget.textContent = "Загрузка…"
+        this.labelTarget.textContent = this.loadingText()
       }
       this.loadCurrent(false)
       this.syncPlayPauseUI()
@@ -144,7 +148,7 @@ export default class extends Controller {
     if (this.isNavigating) return
     this.isNavigating = true
     if (this.hasLabelTarget) {
-      this.labelTarget.textContent = "Загрузка…"
+      this.labelTarget.textContent = this.loadingText()
     }
     fetch(url, {
       headers: {
@@ -639,7 +643,7 @@ export default class extends Controller {
   updateLabel(capture) {
     if (!this.hasLabelTarget) return
     const offset = this.offsetSeconds(capture)
-    const basePart = offset === 0 ? "База" : `Смещение: ${offset.toFixed(3)}s`
+    const basePart = offset === 0 ? this.baseLabel() : this.formatTemplate(this.offsetLabel(), { offset: offset.toFixed(3) })
     this.labelTarget.textContent = `${capture.label} (${basePart})`
   }
 
@@ -659,7 +663,7 @@ export default class extends Controller {
         button.type = "button"
         button.className = "source-button"
         button.dataset.captureId = capture.id
-        button.textContent = `CAM ${capture.id}`
+        button.textContent = this.formatTemplate(this.cameraLabel(), { id: capture.id })
         button.addEventListener("pointerdown", (e) => {
           e.stopPropagation()
         })
@@ -723,6 +727,29 @@ export default class extends Controller {
       rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0,
       preview_thumbnails: Array.isArray(capture.preview_thumbnails) ? capture.preview_thumbnails : []
     }
+  }
+
+  loadingText() {
+    return this.hasLoadingTextValue ? this.loadingTextValue : "Loading…"
+  }
+
+  baseLabel() {
+    return this.hasBaseLabelValue ? this.baseLabelValue : "Base"
+  }
+
+  offsetLabel() {
+    return this.hasOffsetLabelValue ? this.offsetLabelValue : "Offset: %{offset}s"
+  }
+
+  cameraLabel() {
+    return this.hasCameraLabelValue ? this.cameraLabelValue : "CAM %{id}"
+  }
+
+  formatTemplate(template, vars) {
+    return String(template).replace(/%\{(\w+)\}/g, (_match, key) => {
+      const value = vars[key]
+      return value === undefined || value === null ? "" : String(value)
+    })
   }
 
   setPreviewForCapture(capture) {
