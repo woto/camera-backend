@@ -78,6 +78,17 @@ class ApplicationController < ActionController::Base
   end
 
   def websocket_connections_count
-    Rails.cache.read("ws_connections_count").to_i
+    key = "recording_connections_registry"
+    registry = Rails.cache.read(key) || {}
+    now = Time.current.to_i
+    ttl = RecordingChannel::CONNECTION_TTL
+    pruned = registry.select { |_id, ts| ts && (now - ts) < ttl }
+
+    if pruned.size != registry.size
+      Rails.cache.write(key, pruned, expires_in: ttl * 2)
+      Rails.cache.write("recording_connections_count", pruned.size)
+    end
+
+    Rails.cache.read("recording_connections_count").to_i
   end
 end
