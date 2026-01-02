@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
     # Сначала проверяем параметр room (по имени)
     if params[:room].present?
       @current_room = Room.find_by(name: params[:room])
+      session[:room_id] = @current_room&.id
       return @current_room
     end
 
