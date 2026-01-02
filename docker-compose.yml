@@ -31,9 +31,22 @@ services:
     networks:
       - traefik
 
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    container_name: camera_db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - "camera_db:/var/lib/postgresql/data"
+
 volumes:
   camera_storage:
   camera_hls:
+  camera_db:
 
 networks:
   traefik:
