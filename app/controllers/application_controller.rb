@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :require_login
   before_action :set_locale
   before_action :load_current_room
+  before_action :strip_room_param
 
   helper_method :current_user, :current_room, :current_room_name, :events_scope, :event_dates, :websocket_connections_count
 
@@ -55,6 +56,17 @@ class ApplicationController < ActionController::Base
 
   def load_current_room
     current_room
+  end
+
+  def strip_room_param
+    return unless params[:room].present?
+    return unless request.get? || request.head?
+    return unless request.format.html?
+
+    query = request.query_parameters.except("room")
+    target = request.path
+    target = "#{target}?#{query.to_query}" if query.present?
+    redirect_to target, status: :see_other
   end
 
   def events_scope
