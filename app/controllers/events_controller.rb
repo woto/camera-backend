@@ -292,9 +292,12 @@ class EventsController < ApplicationController
     @meta_description = t("events.meta.description", time: I18n.l(@event.captured_at, format: :long))
     @meta_url = request.original_url
 
-    thumb = captures.find { |capture| capture.thumbnails.attached? }&.thumbnails&.first
-    @meta_image_url = if thumb
-      url_for(thumb)
+    preview_thumb = captures.find { |capture| capture.preview_thumbnails.attached? }&.preview_thumbnails&.first
+    fallback_thumb = captures.find { |capture| capture.thumbnails.attached? }&.thumbnails&.first
+    @meta_image_url = if preview_thumb
+      url_for(preview_thumb)
+    elsif fallback_thumb
+      url_for(fallback_thumb)
     else
       "#{request.base_url}/icon.png"
     end
