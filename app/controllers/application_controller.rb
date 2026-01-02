@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
       .group(Arel.sql("date(captured_at)"))
       .order(Arel.sql("date(captured_at) desc"))
       .pluck(Arel.sql("date(captured_at)"))
-      .map { |date| Date.iso8601(date) }
+      .map(&:to_date)
   end
 
   def websocket_connections_count
