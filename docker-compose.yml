@@ -30,6 +30,7 @@ services:
 
     networks:
       - traefik
+      - app
 
     depends_on:
       - db
@@ -42,6 +43,8 @@ services:
       - .env
     volumes:
       - "camera_db:/var/lib/postgresql/data"
+    networks:
+      - app
 
 volumes:
   camera_storage:
@@ -51,3 +54,5 @@ volumes:
 networks:
   traefik:
     external: true
+  app:
+    driver: bridge
