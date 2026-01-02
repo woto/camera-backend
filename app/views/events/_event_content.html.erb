@@ -40,20 +40,7 @@
             <span data-video-switcher-target="speedBadgeValue">2.00x</span>
           </div>
 
-          <div class="absolute top-4 left-4 z-30 flex items-center gap-3 px-3 py-2 rounded-xl bg-black/60 border border-white/10 text-[10px] md:text-xs font-black tracking-widest text-white/80 pointer-events-none">
-            <span>
-              <%= t("events.labels.recording_from") %>
-              <span data-controller="local-time"
-                    data-local-time-iso-value="<%= @event.captured_at&.utc&.iso8601 %>"
-                    data-local-time-locale-value="<%= I18n.locale %>"
-                    data-local-time-format-value="long">
-                <%= l(@event.captured_at&.utc, format: :long) %>
-              </span>
-            </span>
-            <span class="badge <%= @event.hidden? ? "badge-hidden" : "badge-open" %> text-[9px] md:text-[10px] px-2 py-1 rounded-md">
-              <%= @event.hidden? ? t("events.labels.hidden") : t("events.labels.published") %>
-            </span>
-          </div>
+          <%= render "event_overlay" %>
 
           <div class="absolute inset-0 z-20 flex flex-col justify-end opacity-0 invisible transition-all duration-300 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"
                data-video-switcher-target="controlsOverlay"

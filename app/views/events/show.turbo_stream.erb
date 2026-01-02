@@ -10,6 +10,14 @@
   <%= render "event_title" %>
 <% end %>
 
+<%= turbo_stream.replace "event-overlay" do %>
+  <%= render "event_overlay" %>
+<% end %>
+
+<%= turbo_stream.replace "page-title" do %>
+  <title id="page-title"><%= t("events.meta.title", id: @event.id) %></title>
+<% end %>
+
 <%= turbo_stream.replace "event-files" do %>
   <%= render "event_files" %>
 <% end %>
