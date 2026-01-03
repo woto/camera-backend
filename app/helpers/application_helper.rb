@@ -10,4 +10,19 @@ module ApplicationHelper
       attributes: %w[href title src alt]
     )
   end
+
+  def event_preview_frames(event)
+    captures = event.captures.to_a.sort_by(&:created_at)
+    return [] if captures.empty?
+
+    frames = captures.flat_map do |capture|
+      if capture.preview_thumbnails.attached?
+        capture.preview_thumbnails.to_a
+      else
+        capture.thumbnails.to_a
+      end
+    end
+
+    frames
+  end
 end
