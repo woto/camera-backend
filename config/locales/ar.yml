@@ -42,6 +42,11 @@ ar:
     ru: "Русский"
     de: "Deutsch"
     sr: "Srpski"
+    "pt-BR": "Português (Brasil)"
+    pl: "Polski"
+    tr: "Türkçe"
+    nl: "Nederlands"
+    it: "Italiano"
   nav:
     events: "الأحداث"
     room: "الغرفة"
@@ -140,6 +145,26 @@ ar:
     set_anchor_first: "عيّن إطارًا مرجعيًا لكل فيديو أولًا."
     anchor_missing: "لم يتم اختيار الإطار المرجعي"
     anchor_text: "الإطار المرجعي: %{time}s"
+    generate_hls_all: "إنشاء HLS لكل التسجيلات"
+    sync:
+      title: "المزامنة"
+      set_base: "تعيين الأساسي #%{id}"
+      base: "أساسي"
+      offset: "إزاحة"
+      offset_none: "—"
+      base_capture: "التسجيل الأساسي"
+      analyze_duration: "مدة التحليل (ثانية)"
+      sample_rate: "معدل أخذ العينات (Hz)"
+      submit: "بدء المزامنة"
+    orientation:
+      title: "الاتجاه"
+    hls:
+      ready: "HLS جاهز"
+      regenerate: "إعادة إنشاء HLS"
+      processing: "جارٍ إنشاء HLS..."
+      refresh: "تحديث الحالة"
+      generate: "إنشاء HLS"
+      error: "خطأ"
   admin:
     title: "لوحة الإدارة"
     generate_hls_all: "إنشاء HLS لكل التسجيلات"

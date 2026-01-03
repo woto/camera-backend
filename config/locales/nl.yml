@@ -1,0 +1,188 @@
+nl:
+  time:
+    formats:
+      default: "%d-%m-%Y %H:%M:%S"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+  date:
+    formats:
+      default: "%d-%m-%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+    month_names: ["", "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"]
+    abbr_month_names: ["", "jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
+    day_names: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"]
+    abbr_day_names: ["zo", "ma", "di", "wo", "do", "vr", "za"]
+  views:
+    pagination:
+      first: "&laquo; Eerste"
+      last: "Laatste &raquo;"
+      previous: "&lsaquo; Vorige"
+      next: "Volgende &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          one: "Weergave <b>1</b> item"
+          few: "Weergave <b>%{count}</b> items"
+          many: "Weergave <b>%{count}</b> items"
+          other: "Weergave <b>%{count}</b> items"
+  locales:
+    en: "Engels"
+    zh: "Chinees"
+    es: "Spaans"
+    ar: "Arabisch"
+    id: "Indonesisch"
+    pt: "Portugees"
+    fr: "Frans"
+    ja: "Japans"
+    ru: "Russisch"
+    de: "Duits"
+    sr: "Servisch"
+    "pt-BR": "Portugees (Brazilië)"
+    pl: "Pools"
+    tr: "Turks"
+    nl: "Nederlands"
+    it: "Italiaans"
+  nav:
+    events: "Gebeurtenissen"
+    room: "Kamer"
+    login: "Inloggen"
+    logout: "Uitloggen"
+    logout_confirm: "Uitloggen?"
+    cameras_online: "Camera's online"
+    privacy_policy: "Privacybeleid"
+    language: "Taal"
+  events:
+    captures_count:
+      one: "1 opname"
+      few: "%{count} opnames"
+      many: "%{count} opnames"
+      other: "%{count} opnames"
+    index:
+      title: "Gebeurtenissen"
+      subtitle: "Blader en beheer opnames"
+      save_recording: "Opname opslaan"
+      saving: "Opslaan..."
+      no_preview: "Geen preview"
+      record_label: "Opname"
+      content: "Inhoud"
+      empty: "Nog geen gebeurtenissen."
+      id: "ID"
+    header:
+      all_events: "Alle gebeurtenissen"
+      back: "Terug"
+      publish: "Publiceren"
+      hide: "Verbergen"
+      delete_confirm: "Deze gebeurtenis en alle gerelateerde opnames verwijderen?"
+    navigation:
+      newer: "Nieuwer"
+      older: "Ouder"
+    labels:
+      recording_from: "Opgenomen op"
+      hidden: "Verborgen"
+      published: "Gepubliceerd"
+      capture: "Opname #%{id}"
+    show:
+      empty: "Geen opnames voor deze gebeurtenis."
+    files:
+      title: "Bronbestanden"
+      capture: "Opname #%{id}"
+      download: "Download"
+    permissions:
+      room_required_delete: "Voer de kamercode in om deze gebeurtenis te verwijderen."
+      room_mismatch_delete: "Kamercode komt niet overeen voor het verwijderen van de gebeurtenis."
+      room_required_visibility: "Voer de kamercode in om de zichtbaarheid te wijzigen."
+      room_mismatch_visibility: "Kamercode komt niet overeen om de zichtbaarheid te wijzigen."
+    notices:
+      deleted_showing_older: "Gebeurtenis verwijderd. Een oudere gebeurtenis wordt getoond."
+      deleted: "Gebeurtenis verwijderd."
+      base_set: "Basisopname ingesteld (Opname #%{id})."
+      offsets_updated: "Offsets bijgewerkt: %{count}."
+      offsets_skipped: "overgeslagen: %{ids}"
+      hls_already_processing: "HLS wordt al verwerkt voor Opname #%{id}."
+      hls_started: "HLS-generatie gestart voor Opname #%{id}."
+      hls_none: "Geen opnames vereisen HLS-generatie."
+      hls_bulk_started: "HLS-generatie gestart voor %{count} opnames."
+      visibility_changed: "Gebeurtenis is nu %{status}."
+    errors:
+      delete_failed: "Verwijderen van gebeurtenis mislukt."
+      base_set_failed: "Basisopname instellen mislukt: %{error}"
+      no_captures_to_sync: "Geen opnames om te synchroniseren."
+      sync_failed: "Synchronisatiefout: %{error}"
+      no_video: "Opname #%{id} heeft geen video."
+      hls_start_failed: "HLS-generatie starten mislukt: %{error}"
+      hls_bulk_failed: "Bulk HLS-generatie starten mislukt: %{error}"
+      visibility_failed: "Zichtbaarheid van gebeurtenis bijwerken mislukt."
+      not_found: "Gebeurtenis niet gevonden."
+      capture_no_video: "Opname #%{id} zonder video"
+    meta:
+      title: "Gebeurtenis #%{id}"
+      description: "Opgenomen op %{time}"
+  admin:
+    title: "Beheerpaneel"
+    hls:
+      title: "HLS"
+  recorder:
+    signal_sent: "Opnamesignaal verzonden."
+    signal_sent_at: "Opnamesignaal verzonden om %{time}"
+    notices:
+      uploaded: "Video geüpload"
+    errors:
+      missing_params: "Ontbrekende video/timestamp-parameters"
+      invalid_timestamp: "Ongeldige timestamp"
+      room_required: "Voer de kamercode in om de opname op te slaan."
+      signal_failed: "Versturen van capturesignaal mislukt: %{error}"
+  video_switcher:
+    loading: "Laden…"
+    base_label: "Basis"
+    offset_label: "Offset: %{offset}s"
+    camera_label: "CAM %{id}"
+  sync_videos:
+    waiting_metadata: "Wachten op metadata om het ankerframe in te stellen…"
+    ready_select_anchor: "Video klaar. Selecteer een ankerframe."
+    set_anchor_first: "Stel eerst een ankerframe in voor elke video."
+    anchor_missing: "Ankerframe niet geselecteerd"
+    anchor_text: "Ankerframe: %{time}s"
+    generate_hls_all: "HLS genereren voor alle opnames"
+    sync:
+      title: "Synchronisatie"
+      set_base: "Basis instellen #%{id}"
+      base: "Basis"
+      offset: "Offset"
+      offset_none: "—"
+      base_capture: "Basisopname"
+      analyze_duration: "Analyseduur (sec)"
+      sample_rate: "Samplefrequentie (Hz)"
+      submit: "Synchronisatie starten"
+    orientation:
+      title: "Oriëntatie"
+    hls:
+      ready: "HLS gereed"
+      regenerate: "HLS opnieuw genereren"
+      processing: "HLS wordt verwerkt..."
+      refresh: "Status vernieuwen"
+      generate: "HLS genereren"
+      error: "Fout"
+  auth:
+    login_required: "Log in a.u.b."
+    login_success: "Succesvol ingelogd."
+    invalid_credentials: "Ongeldige gebruikersnaam of wachtwoord."
+    logout_success: "Uitgelogd."
+    login:
+      title: "Inloggen"
+      username: "Gebruikersnaam"
+      password: "Wachtwoord"
+      submit: "Inloggen"
+  room:
+    title: "Kamer selecteren"
+    code: "Kamercode"
+    submit: "Kamer selecteren"
+    selected: "Kamer geselecteerd: %{name}"
+    missing_code: "Voer de kamercode in"
+  calendar:
+    title: "Kalender"
+    empty: "Nog geen gebeurtenissen."
+  modal:
+    action: "Actie"

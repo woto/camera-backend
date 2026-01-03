@@ -40,6 +40,11 @@ en:
     ru: "Русский"
     de: "Deutsch"
     sr: "Srpski"
+    "pt-BR": "Português (Brasil)"
+    pl: "Polski"
+    tr: "Türkçe"
+    nl: "Nederlands"
+    it: "Italiano"
   nav:
     events: "Events"
     room: "Room"

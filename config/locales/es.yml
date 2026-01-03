@@ -40,6 +40,11 @@ es:
     ru: "Русский"
     de: "Deutsch"
     sr: "Srpski"
+    "pt-BR": "Português (Brasil)"
+    pl: "Polski"
+    tr: "Türkçe"
+    nl: "Nederlands"
+    it: "Italiano"
   nav:
     events: "Eventos"
     room: "Sala"
@@ -136,6 +141,26 @@ es:
     set_anchor_first: "Primero establezca un fotograma ancla para cada vídeo."
     anchor_missing: "Fotograma ancla no seleccionado"
     anchor_text: "Fotograma ancla: %{time}s"
+    generate_hls_all: "Generar HLS para todas las capturas"
+    sync:
+      title: "Sincronización"
+      set_base: "Establecer base #%{id}"
+      base: "Base"
+      offset: "Desplazamiento"
+      offset_none: "—"
+      base_capture: "Captura base"
+      analyze_duration: "Duración del análisis (seg)"
+      sample_rate: "Frecuencia de muestreo (Hz)"
+      submit: "Iniciar sincronización"
+    orientation:
+      title: "Orientación"
+    hls:
+      ready: "HLS listo"
+      regenerate: "Regenerar HLS"
+      processing: "Procesando HLS..."
+      refresh: "Actualizar estado"
+      generate: "Generar HLS"
+      error: "Error"
   admin:
     title: "Panel de administración"
     generate_hls_all: "Generar HLS para todas las capturas"

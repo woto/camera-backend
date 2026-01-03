@@ -1,0 +1,188 @@
+it:
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M:%S"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+    month_names: ["", "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"]
+    abbr_month_names: ["", "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"]
+    day_names: ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"]
+    abbr_day_names: ["dom", "lun", "mar", "mer", "gio", "ven", "sab"]
+  views:
+    pagination:
+      first: "&laquo; Prima"
+      last: "Ultima &raquo;"
+      previous: "&lsaquo; Precedente"
+      next: "Successiva &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          one: "Mostrando <b>1</b> elemento"
+          few: "Mostrando <b>%{count}</b> elementi"
+          many: "Mostrando <b>%{count}</b> elementi"
+          other: "Mostrando <b>%{count}</b> elementi"
+  locales:
+    en: "Inglese"
+    zh: "Cinese"
+    es: "Spagnolo"
+    ar: "Arabo"
+    id: "Indonesiano"
+    pt: "Portoghese"
+    fr: "Francese"
+    ja: "Giapponese"
+    ru: "Russo"
+    de: "Tedesco"
+    sr: "Serbo"
+    "pt-BR": "Portoghese (Brasile)"
+    pl: "Polacco"
+    tr: "Turco"
+    nl: "Olandese"
+    it: "Italiano"
+  nav:
+    events: "Eventi"
+    room: "Stanza"
+    login: "Accedi"
+    logout: "Esci"
+    logout_confirm: "Uscire?"
+    cameras_online: "Telecamere online"
+    privacy_policy: "Informativa sulla privacy"
+    language: "Lingua"
+  events:
+    captures_count:
+      one: "1 registrazione"
+      few: "%{count} registrazioni"
+      many: "%{count} registrazioni"
+      other: "%{count} registrazioni"
+    index:
+      title: "Eventi"
+      subtitle: "Sfoglia e gestisci le registrazioni"
+      save_recording: "Salva registrazione"
+      saving: "Salvataggio..."
+      no_preview: "Nessuna anteprima"
+      record_label: "Registrazione"
+      content: "Contenuto"
+      empty: "Nessun evento ancora."
+      id: "ID"
+    header:
+      all_events: "Tutti gli eventi"
+      back: "Indietro"
+      publish: "Pubblica"
+      hide: "Nascondi"
+      delete_confirm: "Eliminare questo evento e tutte le registrazioni correlate?"
+    navigation:
+      newer: "Più recenti"
+      older: "Più vecchi"
+    labels:
+      recording_from: "Registrato il"
+      hidden: "Nascosto"
+      published: "Pubblicato"
+      capture: "Cattura #%{id}"
+    show:
+      empty: "Nessuna registrazione per questo evento."
+    files:
+      title: "File sorgente"
+      capture: "Cattura #%{id}"
+      download: "Scarica"
+    permissions:
+      room_required_delete: "Inserisci il codice stanza per eliminare questo evento."
+      room_mismatch_delete: "Il codice stanza non corrisponde per eliminare l'evento."
+      room_required_visibility: "Inserisci il codice stanza per cambiare la visibilità dell'evento."
+      room_mismatch_visibility: "Il codice stanza non corrisponde per cambiare la visibilità."
+    notices:
+      deleted_showing_older: "Evento eliminato. Visualizzazione di un evento più vecchio."
+      deleted: "Evento eliminato."
+      base_set: "Cattura base impostata (Cattura #%{id})."
+      offsets_updated: "Offset aggiornati: %{count}."
+      offsets_skipped: "saltati: %{ids}"
+      hls_already_processing: "HLS è già in elaborazione per Cattura #%{id}."
+      hls_started: "Generazione HLS avviata per Cattura #%{id}."
+      hls_none: "Nessuna cattura richiede la generazione HLS."
+      hls_bulk_started: "Generazione HLS avviata per %{count} catture."
+      visibility_changed: "L'evento ora è %{status}."
+    errors:
+      delete_failed: "Impossibile eliminare l'evento."
+      base_set_failed: "Impossibile impostare la cattura base: %{error}"
+      no_captures_to_sync: "Nessuna cattura da sincronizzare."
+      sync_failed: "Errore di sincronizzazione: %{error}"
+      no_video: "La cattura #%{id} non ha video allegato."
+      hls_start_failed: "Impossibile avviare la generazione HLS: %{error}"
+      hls_bulk_failed: "Impossibile avviare la generazione HLS in blocco: %{error}"
+      visibility_failed: "Impossibile aggiornare la visibilità dell'evento."
+      not_found: "Evento non trovato."
+      capture_no_video: "Cattura #%{id} senza video"
+    meta:
+      title: "Evento #%{id}"
+      description: "Registrato il %{time}"
+  admin:
+    title: "Pannello di amministrazione"
+    hls:
+      title: "HLS"
+  recorder:
+    signal_sent: "Segnale di registrazione inviato."
+    signal_sent_at: "Segnale di registrazione inviato alle %{time}"
+    notices:
+      uploaded: "Video caricato"
+    errors:
+      missing_params: "Parametri video/timestamp mancanti"
+      invalid_timestamp: "Timestamp non valido"
+      room_required: "Inserisci il codice stanza per salvare la registrazione."
+      signal_failed: "Impossibile inviare il segnale di cattura: %{error}"
+  video_switcher:
+    loading: "Caricamento…"
+    base_label: "Base"
+    offset_label: "Offset: %{offset}s"
+    camera_label: "CAM %{id}"
+  sync_videos:
+    waiting_metadata: "In attesa dei metadati per impostare il fotogramma di ancoraggio…"
+    ready_select_anchor: "Video pronto. Seleziona un fotogramma di ancoraggio."
+    set_anchor_first: "Imposta prima un fotogramma di ancoraggio per ogni video."
+    anchor_missing: "Fotogramma di ancoraggio non selezionato"
+    anchor_text: "Fotogramma di ancoraggio: %{time}s"
+    generate_hls_all: "Genera HLS per tutte le catture"
+    sync:
+      title: "Sincronizzazione"
+      set_base: "Imposta base #%{id}"
+      base: "Base"
+      offset: "Offset"
+      offset_none: "—"
+      base_capture: "Cattura base"
+      analyze_duration: "Durata analisi (sec)"
+      sample_rate: "Frequenza di campionamento (Hz)"
+      submit: "Avvia sincronizzazione"
+    orientation:
+      title: "Orientamento"
+    hls:
+      ready: "HLS pronto"
+      regenerate: "Rigenera HLS"
+      processing: "Elaborazione HLS..."
+      refresh: "Aggiorna stato"
+      generate: "Genera HLS"
+      error: "Errore"
+  auth:
+    login_required: "Accedi per favore."
+    login_success: "Accesso effettuato."
+    invalid_credentials: "Nome utente o password non validi."
+    logout_success: "Uscita effettuata."
+    login:
+      title: "Accedi"
+      username: "Nome utente"
+      password: "Password"
+      submit: "Accedi"
+  room:
+    title: "Seleziona stanza"
+    code: "Codice stanza"
+    submit: "Seleziona stanza"
+    selected: "Stanza selezionata: %{name}"
+    missing_code: "Inserisci il codice stanza"
+  calendar:
+    title: "Calendario"
+    empty: "Ancora nessun evento."
+  modal:
+    action: "Azione"
