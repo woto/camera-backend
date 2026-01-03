@@ -12,16 +12,16 @@
       <div class="p-0 md:p-4 pt-0">
         <div id="event-player" class="player-container group/player rounded-none md:!rounded-[2rem] select-none" data-turbo-permanent
              data-action="mousemove->video-switcher#showControls touchstart->video-switcher#showControls mouseenter->video-switcher#showControls pointerdown->video-switcher#startSpeedBoost pointerup->video-switcher#stopSpeedBoost pointercancel->video-switcher#stopSpeedBoost pointerleave->video-switcher#stopSpeedBoost pointermove->video-switcher#updateSpeedBoost">
-          <%= link_to(@next_event ? event_path(@next_event) : "#",
-            class: "player-nav absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-white/10 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-all",
-            title: t("events.navigation.newer"),
-            data: { turbo: "false", action: "video-switcher#navigateEvent", video_switcher_target: "nextEventLink" }) do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          <% end %>
           <%= link_to(@prev_event ? event_path(@prev_event) : "#",
-            class: "player-nav absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-white/10 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition-all",
+            class: "player-nav absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-black/40 rounded-full border-2 border-white/30 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/60 transition-all",
             title: t("events.navigation.older"),
             data: { turbo: "false", action: "video-switcher#navigateEvent", video_switcher_target: "prevEventLink" }) do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          <% end %>
+          <%= link_to(@next_event ? event_path(@next_event) : "#",
+            class: "player-nav absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-black/40 rounded-full border-2 border-white/30 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/60 transition-all",
+            title: t("events.navigation.newer"),
+            data: { turbo: "false", action: "video-switcher#navigateEvent", video_switcher_target: "nextEventLink" }) do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           <% end %>
           <%= video_tag "",

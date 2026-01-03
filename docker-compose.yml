@@ -45,6 +45,8 @@ services:
       - "camera_db:/var/lib/postgresql/data"
     networks:
       - app
+    ports:
+      - ${POSTGRES_PORT}:5432
 
 volumes:
   camera_storage:

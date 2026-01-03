@@ -27,7 +27,6 @@ Rails.application.routes.draw do
       post :sync_offsets
       post :generate_hls
       post :generate_hls_all
-      patch :set_rotation
       patch :set_visibility
     end
   end

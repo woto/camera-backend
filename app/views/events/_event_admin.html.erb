@@ -49,17 +49,12 @@
         </div>
 
         <div>
-          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4"><%= t("admin.orientation.title") %></h3>
+          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4"><%= t("admin.hls.title") %></h3>
           <div class="space-y-4">
             <% @captures.each do |capture| %>
               <div class="bg-zinc-900/50 p-4 rounded-xl border border-border-dim">
                 <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3">
-                  <%= t("events.files.capture", id: capture.id) %> <span class="text-accent-purple ml-2">(<%= capture.rotation_degrees || 0 %>°)</span>
-                </div>
-                <div class="flex gap-2">
-                  <% [0, 90, 180, 270].each do |deg| %>
-                    <%= button_to "#{deg}°", set_rotation_event_path(@event, capture_id: capture.id, rotation: deg), method: :patch, class: "btn-ghost flex-1 py-1 text-[10px]" %>
-                  <% end %>
+                  <%= t("events.files.capture", id: capture.id) %>
                 </div>
                 <div class="mt-3 flex flex-wrap items-center gap-2">
                   <% if capture.hls_manifest_path.present? %>

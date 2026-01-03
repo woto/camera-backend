@@ -39,6 +39,7 @@ en:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "Events"
     room: "Room"
@@ -95,7 +96,6 @@ en:
       base_set: "Base capture set (Capture #%{id})."
       offsets_updated: "Offsets updated: %{count}."
       offsets_skipped: "skipped: %{ids}"
-      rotation_set: "Orientation for Capture #%{id} set to %{rotation}°."
       hls_already_processing: "HLS is already processing for Capture #%{id}."
       hls_started: "HLS generation started for Capture #%{id}."
       hls_none: "No captures require HLS generation."
@@ -106,8 +106,6 @@ en:
       base_set_failed: "Failed to set base capture: %{error}"
       no_captures_to_sync: "No captures to sync."
       sync_failed: "Sync error: %{error}"
-      invalid_rotation: "Invalid rotation (allowed: %{allowed})"
-      rotation_failed: "Failed to update orientation: %{error}"
       no_video: "Capture #%{id} has no attached video."
       hls_start_failed: "Failed to start HLS generation: %{error}"
       hls_bulk_failed: "Failed to start bulk HLS generation: %{error}"
@@ -119,6 +117,8 @@ en:
       description: "Recorded on %{time}"
   admin:
     title: "Admin panel"
+    hls:
+      title: "HLS"
   recorder:
     signal_sent: "Recording signal sent."
     signal_sent_at: "Recording signal sent at %{time}"

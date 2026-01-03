@@ -39,6 +39,7 @@ pt:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "Eventos"
     room: "Sala"
@@ -95,7 +96,6 @@ pt:
       base_set: "Gravação base definida (Capture #%{id})."
       offsets_updated: "Deslocamentos atualizados: %{count}."
       offsets_skipped: "ignorado(s): %{ids}"
-      rotation_set: "Orientação do Capture #%{id} definida para %{rotation}°."
       hls_already_processing: "HLS já está sendo processado para Capture #%{id}."
       hls_started: "Geração de HLS iniciada para Capture #%{id}."
       hls_none: "Nenhuma gravação requer geração de HLS."
@@ -106,8 +106,6 @@ pt:
       base_set_failed: "Não foi possível definir a gravação base: %{error}"
       no_captures_to_sync: "Não há gravações para sincronizar."
       sync_failed: "Erro de sincronização: %{error}"
-      invalid_rotation: "Rotação inválida (permitido: %{allowed})"
-      rotation_failed: "Não foi possível atualizar a orientação: %{error}"
       no_video: "O Capture #%{id} não tem vídeo anexado."
       hls_start_failed: "Não foi possível iniciar a geração de HLS: %{error}"
       hls_bulk_failed: "Não foi possível iniciar a geração em massa de HLS: %{error}"
@@ -151,9 +149,8 @@ pt:
       analyze_duration: "Duração da análise (s)"
       sample_rate: "Sample rate (Hz)"
       submit: "Iniciar sincronização"
-    orientation:
-      title: "Orientação"
     hls:
+      title: "HLS"
       ready: "HLS pronto"
       regenerate: "Regenerar HLS"
       processing: "Processando HLS..."

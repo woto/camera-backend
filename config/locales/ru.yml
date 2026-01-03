@@ -39,6 +39,7 @@ ru:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "События"
     room: "Комната"
@@ -95,7 +96,6 @@ ru:
       base_set: "Базовый ролик установлен (Capture #%{id})."
       offsets_updated: "Смещения обновлены: %{count} шт."
       offsets_skipped: "пропущено: %{ids}"
-      rotation_set: "Ориентация Capture #%{id} установлена на %{rotation}°."
       hls_already_processing: "Для Capture #%{id} уже идёт обработка HLS."
       hls_started: "Запущена генерация HLS для Capture #%{id}."
       hls_none: "Нет роликов, требующих генерации HLS."
@@ -106,8 +106,6 @@ ru:
       base_set_failed: "Не удалось установить базовый ролик: %{error}"
       no_captures_to_sync: "Нет роликов для синхронизации."
       sync_failed: "Ошибка синхронизации: %{error}"
-      invalid_rotation: "Недопустимый угол (разрешены: %{allowed})"
-      rotation_failed: "Не удалось обновить ориентацию: %{error}"
       no_video: "У Capture #%{id} нет прикреплённого видео."
       hls_start_failed: "Не удалось запустить генерацию HLS: %{error}"
       hls_bulk_failed: "Не удалось запустить массовую генерацию HLS: %{error}"
@@ -130,9 +128,8 @@ ru:
       analyze_duration: "Длительность анализа (сек)"
       sample_rate: "Sample rate (Hz)"
       submit: "Запустить синхронизацию"
-    orientation:
-      title: "Ориентация"
     hls:
+      title: "HLS"
       ready: "HLS готово"
       regenerate: "Перегенерировать HLS"
       processing: "Генерация HLS ..."

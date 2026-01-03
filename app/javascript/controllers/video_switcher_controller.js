@@ -691,25 +691,6 @@ export default class extends Controller {
     })
   }
 
-  applyRotation(capture) {
-    const video = this.playerTarget
-    if (!video) return
-    const deg = Number.isFinite(capture?.rotation_degrees) ? capture.rotation_degrees : 0
-
-    let transform = `rotate(${deg}deg)`
-
-    // For 90/270 deg we need to scale down to fit container height
-    if (deg === 90 || deg === 270) {
-      const container = video.parentElement
-      if (container && container.clientWidth > 0) {
-        const scale = container.clientHeight / container.clientWidth
-        transform += ` scale(${scale.toFixed(4)})`
-      }
-    }
-
-    video.style.transform = transform
-  }
-
   offsetSeconds(capture) {
     const raw = capture?.offset_seconds
     const num = typeof raw === "string" ? parseFloat(raw) : raw
@@ -724,7 +705,6 @@ export default class extends Controller {
     return {
       ...capture,
       offset_seconds: this.offsetSeconds(capture),
-      rotation_degrees: Number.isFinite(capture.rotation_degrees) ? capture.rotation_degrees : 0,
       preview_thumbnails: Array.isArray(capture.preview_thumbnails) ? capture.preview_thumbnails : []
     }
   }
@@ -778,7 +758,6 @@ export default class extends Controller {
         if (finished) return
         finished = true
         cleanup()
-        this.applyRotation(capture)
         resolve()
       }
 

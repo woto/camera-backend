@@ -39,6 +39,7 @@ fr:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "Événements"
     room: "Salle"
@@ -95,7 +96,6 @@ fr:
       base_set: "Capture de base définie (Capture #%{id})."
       offsets_updated: "Décalages mis à jour : %{count}."
       offsets_skipped: "ignoré(s) : %{ids}"
-      rotation_set: "Orientation de la capture #%{id} définie à %{rotation}°."
       hls_already_processing: "Le HLS est déjà en cours pour la capture #%{id}."
       hls_started: "Génération HLS démarrée pour la capture #%{id}."
       hls_none: "Aucune capture ne nécessite une génération HLS."
@@ -106,8 +106,6 @@ fr:
       base_set_failed: "Impossible de définir la capture de base : %{error}"
       no_captures_to_sync: "Aucune capture à synchroniser."
       sync_failed: "Erreur de synchronisation : %{error}"
-      invalid_rotation: "Rotation invalide (autorisée : %{allowed})"
-      rotation_failed: "Impossible de mettre à jour l'orientation : %{error}"
       no_video: "La capture #%{id} n'a pas de vidéo jointe."
       hls_start_failed: "Impossible de lancer la génération HLS : %{error}"
       hls_bulk_failed: "Impossible de lancer la génération HLS en masse : %{error}"
@@ -151,9 +149,8 @@ fr:
       analyze_duration: "Durée d'analyse (s)"
       sample_rate: "Sample rate (Hz)"
       submit: "Lancer la synchronisation"
-    orientation:
-      title: "Orientation"
     hls:
+      title: "HLS"
       ready: "HLS prêt"
       regenerate: "Régénérer HLS"
       processing: "Traitement HLS..."

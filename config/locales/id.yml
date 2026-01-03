@@ -39,6 +39,7 @@ id:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "Acara"
     room: "Ruang"
@@ -95,7 +96,6 @@ id:
       base_set: "Rekaman dasar ditetapkan (Capture #%{id})."
       offsets_updated: "Offset diperbarui: %{count}."
       offsets_skipped: "dilewati: %{ids}"
-      rotation_set: "Orientasi Capture #%{id} diatur ke %{rotation}°."
       hls_already_processing: "HLS sudah diproses untuk Capture #%{id}."
       hls_started: "Pembuatan HLS dimulai untuk Capture #%{id}."
       hls_none: "Tidak ada rekaman yang perlu dibuat HLS."
@@ -106,8 +106,6 @@ id:
       base_set_failed: "Gagal menetapkan rekaman dasar: %{error}"
       no_captures_to_sync: "Tidak ada rekaman untuk disinkronkan."
       sync_failed: "Kesalahan sinkronisasi: %{error}"
-      invalid_rotation: "Rotasi tidak valid (diizinkan: %{allowed})"
-      rotation_failed: "Gagal memperbarui orientasi: %{error}"
       no_video: "Capture #%{id} tidak memiliki video terlampir."
       hls_start_failed: "Gagal memulai pembuatan HLS: %{error}"
       hls_bulk_failed: "Gagal memulai pembuatan HLS massal: %{error}"
@@ -151,9 +149,8 @@ id:
       analyze_duration: "Durasi analisis (detik)"
       sample_rate: "Sample rate (Hz)"
       submit: "Mulai sinkronisasi"
-    orientation:
-      title: "Orientasi"
     hls:
+      title: "HLS"
       ready: "HLS siap"
       regenerate: "Buat ulang HLS"
       processing: "Memproses HLS..."

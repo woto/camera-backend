@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest, :set_visibility, :destroy ]
-  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :set_rotation, :generate_hls, :generate_hls_all, :set_visibility ]
+  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :generate_hls, :generate_hls_all, :set_visibility ]
   helper_method :room_param
 
   def index
@@ -15,7 +15,6 @@ class EventsController < ApplicationController
   def show
     force_html_for_non_event_stream!
     @captures = @event.captures.with_attached_thumbnails.with_attached_preview_thumbnails.with_attached_video.order(created_at: :asc)
-    backfill_rotations!(@captures)
     scope = scoped_events
     @next_event = scope.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
     @prev_event = scope.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
@@ -107,20 +106,6 @@ class EventsController < ApplicationController
     redirect_to event_path(@event), notice: notice
   rescue => e
     redirect_to event_path(@event), alert: t("events.errors.sync_failed", error: e.message)
-  end
-
-  def set_rotation
-    capture = @event.captures.find(params[:capture_id])
-    rotation = params[:rotation].to_i
-    allowed = [ 0, 90, 180, 270 ]
-    unless allowed.include?(rotation)
-      return redirect_to event_path(@event), alert: t("events.errors.invalid_rotation", allowed: allowed.join(", "))
-    end
-
-    capture.update!(rotation_degrees: rotation)
-    redirect_to event_path(@event), notice: t("events.notices.rotation_set", id: capture.id, rotation: rotation)
-  rescue => e
-    redirect_to event_path(@event), alert: t("events.errors.rotation_failed", error: e.message)
   end
 
   def generate_hls
@@ -234,37 +219,11 @@ class EventsController < ApplicationController
     params.permit(:analyze_duration, :sample_rate)
   end
 
-  def video_path_for(capture)
-    blob = capture.video&.blob
-    raise t("events.errors.capture_no_video", id: capture.id) unless blob
-
-    service = ActiveStorage::Blob.service
-    if service.respond_to?(:path_for)
-      service.path_for(blob.key)
-    else
-      service.send(:path_for, blob.key)
-    end
-  end
-
-  def backfill_rotations!(captures)
-    captures.each do |capture|
-      next unless capture.video.attached?
-      next unless capture.rotation_degrees.nil?
-
-      path = video_path_for(capture)
-      rotation = VideoMetadata.rotation_degrees(path)
-      capture.update_columns(rotation_degrees: rotation) # avoid callbacks; lightweight backfill
-    rescue => e
-      Rails.logger.warn("[EventsController#show] rotation backfill failed for Capture ##{capture.id}: #{e.message}")
-    end
-  end
-
   def assign_switcher_data!(captures)
     @base_capture = @event.base_capture || captures.first
     @switcher_captures = captures.filter_map do |capture|
       next unless capture.video.attached?
       offset = capture.offset_seconds&.to_f || 0.0
-      rotation = capture.rotation_degrees || 0
       preview_thumbs = if capture.preview_thumbnails.attached?
         capture.preview_thumbnails
       else
@@ -276,7 +235,6 @@ class EventsController < ApplicationController
         offset_seconds: offset,
         url: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : url_for(capture.video),
         label: t("events.labels.capture", id: capture.id),
-        rotation_degrees: rotation,
         preview_thumbnails: preview_thumbs.map { |thumb| url_for(thumb) },
         hls: {
           manifest: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : nil,
@@ -286,6 +244,7 @@ class EventsController < ApplicationController
       }
     end
   end
+
 
   def assign_share_metadata!(captures)
     @meta_title = t("events.meta.title", id: @event.id)

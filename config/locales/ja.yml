@@ -39,6 +39,7 @@ ja:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "イベント"
     room: "ルーム"
@@ -95,7 +96,6 @@ ja:
       base_set: "ベース録画を設定しました（キャプチャ #%{id}）。"
       offsets_updated: "オフセットを更新しました: %{count}件。"
       offsets_skipped: "スキップ: %{ids}"
-      rotation_set: "キャプチャ #%{id} の向きを %{rotation}° に設定しました。"
       hls_already_processing: "キャプチャ #%{id} の HLS はすでに処理中です。"
       hls_started: "キャプチャ #%{id} の HLS 生成を開始しました。"
       hls_none: "HLS 生成が必要な録画はありません。"
@@ -106,8 +106,6 @@ ja:
       base_set_failed: "ベース録画の設定に失敗しました: %{error}"
       no_captures_to_sync: "同期する録画がありません。"
       sync_failed: "同期エラー: %{error}"
-      invalid_rotation: "無効な角度（許可: %{allowed}）"
-      rotation_failed: "向きの更新に失敗しました: %{error}"
       no_video: "キャプチャ #%{id} に動画がありません。"
       hls_start_failed: "HLS 生成の開始に失敗しました: %{error}"
       hls_bulk_failed: "HLS の一括生成に失敗しました: %{error}"
@@ -130,9 +128,8 @@ ja:
       analyze_duration: "解析時間 (秒)"
       sample_rate: "Sample rate (Hz)"
       submit: "同期を開始"
-    orientation:
-      title: "向き"
     hls:
+      title: "HLS"
       ready: "HLS 準備完了"
       regenerate: "HLS を再生成"
       processing: "HLS 生成中..."

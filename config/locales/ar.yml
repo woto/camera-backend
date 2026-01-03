@@ -41,6 +41,7 @@ ar:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "الأحداث"
     room: "الغرفة"
@@ -99,7 +100,6 @@ ar:
       base_set: "تم تعيين التسجيل الأساسي (التسجيل #%{id})."
       offsets_updated: "تم تحديث الإزاحات: %{count}."
       offsets_skipped: "تم تخطي: %{ids}"
-      rotation_set: "تم ضبط اتجاه التسجيل #%{id} إلى %{rotation}°."
       hls_already_processing: "يتم بالفعل معالجة HLS للتسجيل #%{id}."
       hls_started: "بدأ إنشاء HLS للتسجيل #%{id}."
       hls_none: "لا توجد تسجيلات تحتاج إنشاء HLS."
@@ -110,8 +110,6 @@ ar:
       base_set_failed: "تعذر تعيين التسجيل الأساسي: %{error}"
       no_captures_to_sync: "لا توجد تسجيلات للمزامنة."
       sync_failed: "خطأ في المزامنة: %{error}"
-      invalid_rotation: "زاوية غير صالحة (المسموح: %{allowed})"
-      rotation_failed: "تعذر تحديث الاتجاه: %{error}"
       no_video: "التسجيل #%{id} لا يحتوي على فيديو مرفق."
       hls_start_failed: "تعذر بدء إنشاء HLS: %{error}"
       hls_bulk_failed: "تعذر بدء إنشاء HLS بالجملة: %{error}"
@@ -155,9 +153,8 @@ ar:
       analyze_duration: "مدة التحليل (ثانية)"
       sample_rate: "Sample rate (Hz)"
       submit: "بدء المزامنة"
-    orientation:
-      title: "الاتجاه"
     hls:
+      title: "HLS"
       ready: "HLS جاهز"
       regenerate: "إعادة إنشاء HLS"
       processing: "جارٍ إنشاء HLS..."

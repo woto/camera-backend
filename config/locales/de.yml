@@ -39,6 +39,7 @@ de:
     ja: "日本語"
     ru: "Русский"
     de: "Deutsch"
+    sr: "Srpski"
   nav:
     events: "Ereignisse"
     room: "Raum"
@@ -95,7 +96,6 @@ de:
       base_set: "Basisaufnahme gesetzt (Capture #%{id})."
       offsets_updated: "Versätze aktualisiert: %{count}."
       offsets_skipped: "übersprungen: %{ids}"
-      rotation_set: "Ausrichtung von Capture #%{id} auf %{rotation}° gesetzt."
       hls_already_processing: "HLS wird bereits für Capture #%{id} verarbeitet."
       hls_started: "HLS-Erstellung für Capture #%{id} gestartet."
       hls_none: "Keine Aufnahmen benötigen HLS-Erstellung."
@@ -106,8 +106,6 @@ de:
       base_set_failed: "Basisaufnahme konnte nicht gesetzt werden: %{error}"
       no_captures_to_sync: "Keine Aufnahmen zum Synchronisieren."
       sync_failed: "Synchronisationsfehler: %{error}"
-      invalid_rotation: "Ungültige Ausrichtung (erlaubt: %{allowed})"
-      rotation_failed: "Ausrichtung konnte nicht aktualisiert werden: %{error}"
       no_video: "Capture #%{id} hat kein angehängtes Video."
       hls_start_failed: "HLS-Erstellung konnte nicht gestartet werden: %{error}"
       hls_bulk_failed: "Massen-HLS-Erstellung konnte nicht gestartet werden: %{error}"
@@ -151,9 +149,8 @@ de:
       analyze_duration: "Analysedauer (Sek)"
       sample_rate: "Sample rate (Hz)"
       submit: "Synchronisation starten"
-    orientation:
-      title: "Ausrichtung"
     hls:
+      title: "HLS"
       ready: "HLS bereit"
       regenerate: "HLS neu erzeugen"
       processing: "HLS wird erstellt..."

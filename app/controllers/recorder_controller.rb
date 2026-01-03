@@ -29,7 +29,6 @@ class RecorderController < ApplicationController
     ActiveRecord::Base.transaction do
       event = Event.find_or_create_by!(captured_at: captured_at, room: room, hidden: true)
       capture = event.captures.build(room: room)
-      capture.rotation_degrees = VideoMetadata.rotation_degrees(video_file.tempfile.path)
 
       capture.offset_seconds = offset_seconds unless offset_seconds.nil?
       attach_video!(capture, video_file)
