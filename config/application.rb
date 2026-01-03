@@ -14,7 +14,7 @@ module Camera
     config.i18n.default_locale = :ru
     config.time_zone = "UTC"
     config.i18n.available_locales = [
-      :en, :zh, :es, :ar, :id, :pt, :"pt-BR", :fr, :ja, :ru, :de, :sr, :pl, :tr, :nl, :it
+      :ar, :de, :en, :es, :fr, :id, :it, :ja, :nl, :pl, :pt, :"pt-BR", :ru, :sr, :tr, :zh
     ]
     config.i18n.default_locale = :ru
     config.i18n.fallbacks = [ :en ]
