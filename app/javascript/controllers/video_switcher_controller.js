@@ -246,7 +246,7 @@ export default class extends Controller {
     this.speedBoostTimer = setTimeout(() => {
       this.speedBoostTimer = null
       this.enableSpeedBoost()
-    }, 150)
+    }, 200)
   }
 
   updateSpeedBoost(event) {
