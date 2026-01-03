@@ -44,7 +44,8 @@ class ThumbnailGenerator
   def generate_thumbnail(second_mark, index)
     tempfile = Tempfile.new(["thumbnail_#{index}", ".jpg"])
     tempfile.binmode
-    resize_filter = "scale=#{target_width}:#{target_height}:force_original_aspect_ratio=decrease,pad=#{target_width}:#{target_height}:(#{target_width}-iw)/2:(#{target_height}-ih)/2"
+    # Fill the frame and crop to avoid black bars.
+    resize_filter = "scale=#{target_width}:#{target_height}:force_original_aspect_ratio=increase,crop=#{target_width}:#{target_height}"
 
     cmd = [
       "ffmpeg", "-y",
