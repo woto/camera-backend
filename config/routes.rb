@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "events#latest"
-  get "/policy", to: "pages#policy"
+  get "/privacy", to: "pages#policy"
 
   resource :session, only: [ :new, :create, :destroy ]
   get "/login", to: "sessions#new"
