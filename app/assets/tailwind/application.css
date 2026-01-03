@@ -109,10 +109,10 @@
     & .page, & .first, & .last, & .prev, & .next {
       @apply bg-white/5 border border-white/5 rounded-xl;
       & a {
-        @apply block px-4 py-2.5 text-xs font-black uppercase tracking-widest text-text-secondary hover:text-white hover:bg-white/5;
+        @apply block px-4 py-2.5 text-xs font-black uppercase tracking-widest text-text-secondary hover:text-white hover:bg-white/5 whitespace-nowrap;
       }
       &.current {
-        @apply bg-accent-purple border-accent-purple text-white px-4 py-2.5 text-xs font-black uppercase tracking-widest;
+        @apply bg-accent-purple border-accent-purple text-white px-4 py-2.5 text-xs font-black uppercase tracking-widest whitespace-nowrap;
       }
       &.disabled {
         @apply opacity-30 pointer-events-none;
