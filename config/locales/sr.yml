@@ -168,27 +168,6 @@ sr:
       - Dvaput klik za ceo ekran.
       - Držite levi taster i pomerajte za ubrzanje/usporenje.
       - Desni taster — ⟲ 1 s unazad.
-  admin:
-    title: Administratorski panel
-    generate_hls_all: Generiši HLS za sve snimke
-    sync:
-      title: Sinhronizacija
-      set_base: 'Postavi kao bazu #%{id}'
-      base: Baza
-      offset: Pomeraj
-      offset_none: —
-      base_capture: Bazni snimak
-      analyze_duration: Trajanje analize (sek)
-      sample_rate: Frekvencija uzorkovanja (Hz)
-      submit: Pokreni sinhronizaciju
-    hls:
-      title: HLS
-      ready: HLS spreman
-      regenerate: Regeneriši HLS
-      processing: HLS generisanje ...
-      refresh: Osveži status
-      generate: Generiši HLS
-      error: Greška
   auth:
     login_required: Molimo prijavite se.
     login_success: Uspešna prijava.

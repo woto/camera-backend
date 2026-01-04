@@ -213,27 +213,6 @@ ar:
       refresh: تحديث الحالة
       generate: إنشاء HLS
       error: خطأ
-  admin:
-    title: لوحة الإدارة
-    generate_hls_all: إنشاء HLS لكل التسجيلات
-    sync:
-      title: المزامنة
-      set_base: 'تعيين الأساسي #%{id}'
-      base: أساسي
-      offset: إزاحة
-      offset_none: —
-      base_capture: التسجيل الأساسي
-      analyze_duration: مدة التحليل (ثانية)
-      sample_rate: Sample rate (Hz)
-      submit: بدء المزامنة
-    hls:
-      title: HLS
-      ready: HLS جاهز
-      regenerate: إعادة إنشاء HLS
-      processing: جارٍ إنشاء HLS...
-      refresh: تحديث الحالة
-      generate: إنشاء HLS
-      error: خطأ
   auth:
     login_required: يرجى تسجيل الدخول.
     login_success: تم تسجيل الدخول بنجاح.

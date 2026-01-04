@@ -209,27 +209,6 @@ zh:
       refresh: 刷新状态
       generate: 生成 HLS
       error: 错误
-  admin:
-    title: 管理面板
-    generate_hls_all: 为所有录制生成 HLS
-    sync:
-      title: 同步
-      set_base: '设置基础 #%{id}'
-      base: 基础
-      offset: 偏移
-      offset_none: —
-      base_capture: 基础录制
-      analyze_duration: 分析时长（秒）
-      sample_rate: Sample rate (Hz)
-      submit: 开始同步
-    hls:
-      title: HLS
-      ready: HLS 就绪
-      regenerate: 重新生成 HLS
-      processing: HLS 生成中...
-      refresh: 刷新状态
-      generate: 生成 HLS
-      error: 错误
   auth:
     login_required: 请先登录。
     login_success: 登录成功。

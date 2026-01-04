@@ -169,10 +169,6 @@ pt-BR:
       - Clique duplo para tela cheia.
       - Segure o botão esquerdo e mova o mouse para acelerar/desacelerar.
       - Botão direito — ⟲ 1 s para trás.
-  admin:
-    title: Painel de administração
-    hls:
-      title: HLS
   recorder:
     signal_sent: Sinal de gravação enviado.
     signal_sent_at: Sinal de gravação enviado às %{time}

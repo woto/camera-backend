@@ -209,27 +209,6 @@ pt:
       refresh: Atualizar status
       generate: Gerar HLS
       error: Erro
-  admin:
-    title: Painel de administração
-    generate_hls_all: Gerar HLS para todas as gravações
-    sync:
-      title: Sincronização
-      set_base: 'Definir base #%{id}'
-      base: Base
-      offset: Deslocamento
-      offset_none: —
-      base_capture: Gravação base
-      analyze_duration: Duração da análise (s)
-      sample_rate: Sample rate (Hz)
-      submit: Iniciar sincronização
-    hls:
-      title: HLS
-      ready: HLS pronto
-      regenerate: Regenerar HLS
-      processing: Processando HLS...
-      refresh: Atualizar status
-      generate: Gerar HLS
-      error: Erro
   auth:
     login_required: Por favor, faça login.
     login_success: Login realizado com sucesso.

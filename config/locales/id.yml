@@ -209,27 +209,6 @@ id:
       refresh: Perbarui status
       generate: Buat HLS
       error: Kesalahan
-  admin:
-    title: Panel admin
-    generate_hls_all: Buat HLS untuk semua rekaman
-    sync:
-      title: Sinkronisasi
-      set_base: 'Tetapkan dasar #%{id}'
-      base: Dasar
-      offset: Offset
-      offset_none: —
-      base_capture: Rekaman dasar
-      analyze_duration: Durasi analisis (detik)
-      sample_rate: Sample rate (Hz)
-      submit: Mulai sinkronisasi
-    hls:
-      title: HLS
-      ready: HLS siap
-      regenerate: Buat ulang HLS
-      processing: Memproses HLS...
-      refresh: Segarkan status
-      generate: Buat HLS
-      error: Kesalahan
   auth:
     login_required: Silakan masuk.
     login_success: Berhasil masuk.

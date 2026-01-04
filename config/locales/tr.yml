@@ -169,10 +169,6 @@ tr:
       - 'Çift tıklama: tam ekran.'
       - Sol tuşa basılı tutup hareket ettirerek hızlandır/yavaşlat.
       - Sağ tuş — ⟲ 1 sn geri.
-  admin:
-    title: Yönetim paneli
-    hls:
-      title: HLS
   recorder:
     signal_sent: Kayıt sinyali gönderildi.
     signal_sent_at: Kayıt sinyali %{time} gönderildi

@@ -169,10 +169,6 @@ it:
       - Doppio clic per schermo intero.
       - Tieni premuto il tasto sinistro e muovi il mouse per accelerare/rallentare.
       - Tasto destro — ⟲ 1 s indietro.
-  admin:
-    title: Pannello di amministrazione
-    hls:
-      title: HLS
   recorder:
     signal_sent: Segnale di registrazione inviato.
     signal_sent_at: Segnale di registrazione inviato alle %{time}

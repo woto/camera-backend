@@ -168,10 +168,6 @@ pl:
       - Podwójny klik — pełny ekran.
       - Przytrzymaj lewy przycisk i poruszaj myszą, aby przyspieszyć/zwolnić.
       - Prawy przycisk — ⟲ 1 s wstecz.
-  admin:
-    title: Panel administracyjny
-    hls:
-      title: HLS
   recorder:
     signal_sent: Sygnał nagrywania wysłany.
     signal_sent_at: Sygnał nagrywania wysłany o %{time}

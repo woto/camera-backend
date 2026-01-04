@@ -210,27 +210,6 @@ de:
       refresh: Status aktualisieren
       generate: HLS erzeugen
       error: Fehler
-  admin:
-    title: Admin-Bereich
-    generate_hls_all: HLS für alle Aufnahmen erzeugen
-    sync:
-      title: Synchronisation
-      set_base: 'Basis setzen #%{id}'
-      base: Basis
-      offset: Versatz
-      offset_none: —
-      base_capture: Basisaufnahme
-      analyze_duration: Analysedauer (Sek)
-      sample_rate: Sample rate (Hz)
-      submit: Synchronisation starten
-    hls:
-      title: HLS
-      ready: HLS bereit
-      regenerate: HLS neu erzeugen
-      processing: HLS wird erstellt...
-      refresh: Status aktualisieren
-      generate: HLS erzeugen
-      error: Fehler
   auth:
     login_required: Bitte anmelden.
     login_success: Erfolgreich angemeldet.

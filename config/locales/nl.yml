@@ -171,10 +171,6 @@ nl:
       - Dubbelklik voor volledig scherm.
       - Houd de linkermuisknop vast en beweeg om te versnellen/vertragen.
       - Rechtermuisknop — ⟲ 1 s terug.
-  admin:
-    title: Beheerpaneel
-    hls:
-      title: HLS
   recorder:
     signal_sent: Opnamesignaal verzonden.
     signal_sent_at: Opnamesignaal verzonden om %{time}
