@@ -65,7 +65,26 @@
           <div class="pointer-events-none sticky bottom-0 h-10 bg-gradient-to-b from-transparent to-sidebar-bg"></div>
         </nav>
         <div class="px-6 pb-4">
-          <%= image_tag "GetItOnGooglePlay_Badge_Web_color_English.png",
+          <% play_badges = {
+            ar: "GetItOnGooglePlay_Badge_Web_color_Arabic-Saudi-Arabia.png",
+            de: "GetItOnGooglePlay_Badge_Web_color_German.png",
+            en: "GetItOnGooglePlay_Badge_Web_color_English.png",
+            es: "GetItOnGooglePlay_Badge_Web_color_Spanish.png",
+            fr: "GetItOnGooglePlay_Badge_Web_color_French.png",
+            id: "GetItOnGooglePlay_Badge_Web_color_Indonesian.png",
+            it: "GetItOnGooglePlay_Badge_Web_color_Italian.png",
+            ja: "GetItOnGooglePlay_Badge_Web_color_Japanese.png",
+            nl: "GetItOnGooglePlay_Badge_Web_color_Dutch.png",
+            pl: "GetItOnGooglePlay_Badge_Web_color_Polish.png",
+            pt: "GetItOnGooglePlay_Badge_Web_color_Portuguese-Portugal.png",
+            :"pt-BR" => "GetItOnGooglePlay_Badge_Web_color_Portuguese-Brazil.png",
+            ru: "GetItOnGooglePlay_Badge_Web_color_Russian.png",
+            sr: "GetItOnGooglePlay_Badge_Web_color_Serbian.png",
+            tr: "GetItOnGooglePlay_Badge_Web_color_Turkish.png",
+            zh: "GetItOnGooglePlay_Badge_Web_color_Chinese-China.png"
+          } %>
+          <% play_badge = play_badges.fetch(I18n.locale.to_sym, play_badges[:en]) %>
+          <%= image_tag "google-play/#{play_badge}",
                         alt: "Get it on Google Play",
                         class: "h-[44px] w-auto" %>
         </div>
