@@ -11,7 +11,7 @@
     <div class="p-0 md:p-1.5 mb-8 md:mb-12 relative overflow-visible group/player -mx-4 md:mx-0 md:bg-card-bg md:bg-white/[0.02] md:border md:border-border-dim md:rounded-2xl md:overflow-hidden">
       <div class="p-0 md:p-4 pt-0">
         <div id="event-player" class="player-container group/player rounded-none md:!rounded-[2rem] select-none" data-turbo-permanent
-             data-action="mousemove->video-switcher#showControls touchstart->video-switcher#showControls mouseenter->video-switcher#showControls pointerdown->video-switcher#startSpeedBoost pointerup->video-switcher#stopSpeedBoost pointercancel->video-switcher#stopSpeedBoost pointerleave->video-switcher#stopSpeedBoost pointermove->video-switcher#updateSpeedBoost">
+             data-action="mousemove->video-switcher#showControls touchstart->video-switcher#showControls mouseenter->video-switcher#showControls contextmenu->video-switcher#preventContextMenu pointerdown->video-switcher#startSpeedBoost pointerup->video-switcher#stopSpeedBoost pointercancel->video-switcher#stopSpeedBoost pointerleave->video-switcher#stopSpeedBoost pointermove->video-switcher#updateSpeedBoost">
           <%= link_to(@prev_event ? event_path(@prev_event) : "#",
             class: "player-nav absolute left-3 md:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 md:w-11 md:h-11 bg-black/40 rounded-full border-2 border-white/30 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/60 transition-all",
             title: t("events.navigation.older"),

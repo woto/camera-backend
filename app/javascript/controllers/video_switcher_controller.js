@@ -25,11 +25,16 @@ export default class extends Controller {
     })
     this.isScrubbing = false
     this.isSpeedBoosting = false
+    this.isReverseBoosting = false
     this.suppressNextClick = false
     this.speedBoostTimer = null
     this.speedBoostStartX = 0
     this.speedBoostCenterRate = 2
     this.basePlaybackRate = 1
+    this.reverseBoostTimer = null
+    this.reverseBoostStartX = 0
+    this.reverseWasPlaying = false
+    this.badgeHideTimer = null
     this.speedOptions = [0.25, 0.5, 1, 2, 3]
     this.previewUrls = []
     this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
@@ -232,6 +237,10 @@ export default class extends Controller {
   }
 
   startSpeedBoost(event) {
+    if (event.pointerType === "mouse" && event.button === 2) {
+      this.startReverseBoost(event)
+      return
+    }
     if (event.pointerType === "mouse" && event.button !== 0) return
     if (event.target?.closest?.(".player-nav")) return
     if (event.target?.closest?.(".player-controls")) return
@@ -250,6 +259,10 @@ export default class extends Controller {
   }
 
   updateSpeedBoost(event) {
+    if (this.isReverseBoosting) {
+      this.updateReverseBoost(event)
+      return
+    }
     if (!this.isSpeedBoosting) return
     if (event.target?.closest?.(".player-nav")) return
     if (event.target?.closest?.(".player-controls")) return
@@ -274,6 +287,10 @@ export default class extends Controller {
   }
 
   stopSpeedBoost(event) {
+    if (this.isReverseBoosting) {
+      this.stopReverseBoost(event, { keepBadge: true })
+      return
+    }
     if (this.speedBoostTimer) {
       clearTimeout(this.speedBoostTimer)
       this.speedBoostTimer = null
@@ -299,6 +316,86 @@ export default class extends Controller {
     this.speedBoostCenterRate = closest
     this.isSpeedBoosting = true
     this.updateSpeedBadge(video.playbackRate)
+  }
+
+  startReverseBoost(event) {
+    if (event.pointerType === "mouse" && event.button !== 2) return
+    if (event.target?.closest?.(".player-nav")) return
+    if (event.target?.closest?.(".player-controls")) return
+    event.preventDefault()
+    this.showControls()
+    this.reverseBoostStartX = event.clientX ?? 0
+    try {
+      this.playerTarget.setPointerCapture(event.pointerId)
+    } catch (e) { /* ignore */ }
+    if (this.reverseBoostTimer) {
+      clearTimeout(this.reverseBoostTimer)
+    }
+    this.reverseBoostTimer = setTimeout(() => {
+      this.reverseBoostTimer = null
+      this.enableReverseBoost()
+    }, 200)
+  }
+
+  updateReverseBoost(event) {
+    if (!this.isReverseBoosting) return
+    if (event.target?.closest?.(".player-nav")) return
+    if (event.target?.closest?.(".player-controls")) return
+  }
+
+  stopReverseBoost(event, options = {}) {
+    if (this.reverseBoostTimer) {
+      clearTimeout(this.reverseBoostTimer)
+      this.reverseBoostTimer = null
+    }
+    if (!this.isReverseBoosting) return
+    this.isReverseBoosting = false
+    if (!options.keepBadge) {
+      this.hideSpeedBadge()
+    }
+    const video = this.playerTarget
+    if (video && this.reverseWasPlaying) {
+      video.play().catch(() => {})
+    }
+    if (event?.pointerId) {
+      try {
+        this.playerTarget.releasePointerCapture(event.pointerId)
+      } catch (e) { /* ignore */ }
+    }
+  }
+
+  enableReverseBoost() {
+    const video = this.playerTarget
+    if (!video || this.isReverseBoosting) return
+    this.basePlaybackRate = video.playbackRate || 1
+    this.reverseWasPlaying = !video.paused
+    video.pause()
+    this.isReverseBoosting = true
+    this.showRewindBadge(this.rewindSeconds())
+    this.stepReverseOnce()
+    setTimeout(() => this.stopReverseBoost(null, { keepBadge: true }), 200)
+  }
+
+  stepReverseOnce() {
+    const video = this.playerTarget
+    if (!video) return
+    const step = this.rewindSeconds()
+    const nextTime = Math.max(0, video.currentTime - step)
+    video.currentTime = nextTime
+    if (Number.isFinite(video.duration) && this.hasProgressTarget) {
+      const percent = (nextTime / video.duration) * 100
+      if (Number.isFinite(percent)) {
+        this.progressTarget.value = percent
+        this.updateProgressUI(percent)
+      }
+    }
+    if (this.hasCurrentTimeTarget) {
+      this.currentTimeTarget.textContent = this.formatTime(video.currentTime)
+    }
+  }
+
+  preventContextMenu(event) {
+    event.preventDefault()
   }
 
   updateProgress() {
@@ -445,12 +542,29 @@ export default class extends Controller {
 
   updateSpeedBadge(rate) {
     if (!this.hasSpeedBadgeTarget || !this.hasSpeedBadgeValueTarget) return
+    this.clearBadgeTimer()
     this.speedBadgeValueTarget.textContent = `${rate.toFixed(2)}x`
     this.speedBadgeTarget.classList.remove("opacity-0", "invisible")
   }
 
+  showRewindBadge(seconds) {
+    if (!this.hasSpeedBadgeTarget || !this.hasSpeedBadgeValueTarget) return
+    this.clearBadgeTimer()
+    this.speedBadgeValueTarget.textContent = `⟲ ${seconds.toFixed(0)}s`
+    this.speedBadgeTarget.classList.remove("opacity-0", "invisible")
+    this.badgeHideTimer = setTimeout(() => this.hideSpeedBadge(), 450)
+  }
+
+  clearBadgeTimer() {
+    if (this.badgeHideTimer) {
+      clearTimeout(this.badgeHideTimer)
+      this.badgeHideTimer = null
+    }
+  }
+
   hideSpeedBadge() {
     if (!this.hasSpeedBadgeTarget) return
+    this.clearBadgeTimer()
     this.speedBadgeTarget.classList.add("opacity-0", "invisible")
   }
 
