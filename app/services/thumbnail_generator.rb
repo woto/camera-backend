@@ -48,11 +48,13 @@ class ThumbnailGenerator
     tempfile = Tempfile.new(["thumbnail_#{index}", ".jpg"])
     tempfile.binmode
     resize_filter = build_resize_filter
-    rotate_filter = rotate_to_fit? ? "transpose=1" : nil
+    rotate_filter = rotation_filter
     filters = [rotate_filter, resize_filter].compact.join(",")
+    autorotate_flag = rotate_filter ? "-noautorotate" : nil
 
     cmd = [
       "ffmpeg", "-y",
+      autorotate_flag,
       "-ss", second_mark.to_s,
       "-i", source_path,
       "-vframes", "1",
@@ -63,7 +65,7 @@ class ThumbnailGenerator
       tempfile.path
     ]
 
-    stdout, stderr, status = Open3.capture3(*cmd)
+    stdout, stderr, status = Open3.capture3(*cmd.compact)
     raise Error, stderr.presence || stdout.presence || "FFmpeg exited with an error" unless status.success?
 
     tempfile
@@ -79,35 +81,28 @@ class ThumbnailGenerator
     end
   end
 
-  def rotate_to_fit?
-    return false unless rotate_to_fit
+  def rotation_filter
+    return unless rotate_to_fit
 
-    dimensions = display_dimensions
-    return false unless dimensions
+    rotation = video_stream_rotation
+    return unless rotation
 
-    original_scale = scale_for(dimensions[:width], dimensions[:height])
-    rotated_scale = scale_for(dimensions[:height], dimensions[:width])
-    rotated_scale > original_scale + 0.0001
-  end
-
-  def display_dimensions
-    info = video_stream_info
-    width = info[:width]
-    height = info[:height]
-    return unless width && height
-
-    rotation = info[:rotation].to_i % 360
-    if rotation == 90 || rotation == 270
-      { width: height.to_f, height: width.to_f }
-    else
-      { width: width.to_f, height: height.to_f }
+    case rotation
+    when 90
+      "transpose=1"
+    when 180
+      "hflip,vflip"
+    when 270
+      "transpose=2"
     end
   end
 
-  def scale_for(width, height)
-    return 0.0 if width.to_f <= 0.0 || height.to_f <= 0.0
+  def video_stream_rotation
+    info = video_stream_info
+    rotation = info[:rotation]
+    return if rotation.nil?
 
-    [target_width / width.to_f, target_height / height.to_f].min
+    rotation.to_i % 360
   end
 
   def video_stream_info
@@ -115,7 +110,7 @@ class ThumbnailGenerator
       "ffprobe",
       "-v", "error",
       "-select_streams", "v:0",
-      "-show_entries", "stream=width,height:stream_tags=rotate",
+      "-show_entries", "stream=width,height:stream_tags=rotate:stream_side_data=rotation,side_data_type",
       "-of", "json",
       source_path
     )
@@ -123,10 +118,13 @@ class ThumbnailGenerator
 
     data = JSON.parse(stdout)
     stream = data["streams"]&.first || {}
+    rotation = stream.dig("tags", "rotate")
+    rotation ||= stream["side_data_list"]&.find { |item| item["rotation"] }&.dig("rotation")
+
     {
       width: stream["width"],
       height: stream["height"],
-      rotation: stream.dig("tags", "rotate")
+      rotation: rotation
     }
   rescue JSON::ParserError
     {}
