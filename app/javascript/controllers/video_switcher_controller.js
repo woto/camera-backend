@@ -31,7 +31,6 @@ export default class extends Controller {
     this.speedBoostStartX = 0
     this.speedBoostCenterRate = 2
     this.basePlaybackRate = 1
-    this.reverseBoostTimer = null
     this.reverseBoostStartX = 0
     this.reverseWasPlaying = false
     this.badgeHideTimer = null
@@ -238,7 +237,7 @@ export default class extends Controller {
 
   startSpeedBoost(event) {
     if (event.pointerType === "mouse" && event.button === 2) {
-      this.startReverseBoost(event)
+      this.stepReverseOnClick(event)
       return
     }
     if (event.pointerType === "mouse" && event.button !== 0) return
@@ -318,62 +317,21 @@ export default class extends Controller {
     this.updateSpeedBadge(video.playbackRate)
   }
 
-  startReverseBoost(event) {
+  stepReverseOnClick(event) {
     if (event.pointerType === "mouse" && event.button !== 2) return
     if (event.target?.closest?.(".player-nav")) return
     if (event.target?.closest?.(".player-controls")) return
     event.preventDefault()
-    this.showControls()
-    this.reverseBoostStartX = event.clientX ?? 0
-    try {
-      this.playerTarget.setPointerCapture(event.pointerId)
-    } catch (e) { /* ignore */ }
-    if (this.reverseBoostTimer) {
-      clearTimeout(this.reverseBoostTimer)
+    this.reverseWasPlaying = !this.playerTarget?.paused
+    if (this.playerTarget) {
+      this.playerTarget.pause()
     }
-    this.reverseBoostTimer = setTimeout(() => {
-      this.reverseBoostTimer = null
-      this.enableReverseBoost()
-    }, 200)
-  }
-
-  updateReverseBoost(event) {
-    if (!this.isReverseBoosting) return
-    if (event.target?.closest?.(".player-nav")) return
-    if (event.target?.closest?.(".player-controls")) return
-  }
-
-  stopReverseBoost(event, options = {}) {
-    if (this.reverseBoostTimer) {
-      clearTimeout(this.reverseBoostTimer)
-      this.reverseBoostTimer = null
-    }
-    if (!this.isReverseBoosting) return
-    this.isReverseBoosting = false
-    if (!options.keepBadge) {
-      this.hideSpeedBadge()
-    }
-    const video = this.playerTarget
-    if (video && this.reverseWasPlaying) {
-      video.play().catch(() => {})
-    }
-    if (event?.pointerId) {
-      try {
-        this.playerTarget.releasePointerCapture(event.pointerId)
-      } catch (e) { /* ignore */ }
-    }
-  }
-
-  enableReverseBoost() {
-    const video = this.playerTarget
-    if (!video || this.isReverseBoosting) return
-    this.basePlaybackRate = video.playbackRate || 1
-    this.reverseWasPlaying = !video.paused
-    video.pause()
-    this.isReverseBoosting = true
     this.showRewindBadge(this.rewindSeconds())
     this.stepReverseOnce()
-    setTimeout(() => this.stopReverseBoost(null, { keepBadge: true }), 200)
+    this.isReverseBoosting = false
+    if (this.playerTarget && this.reverseWasPlaying) {
+      this.playerTarget.play().catch(() => {})
+    }
   }
 
   stepReverseOnce() {
