@@ -34,7 +34,7 @@ export default class extends Controller {
     this.reverseBoostStartX = 0
     this.reverseWasPlaying = false
     this.badgeHideTimer = null
-    this.speedOptions = [0.25, 0.5, 1, 2, 3]
+    this.speedOptions = [0.25, 1, 2]
     this.previewUrls = []
     this.capturesById = new Map(this.capturesValue.map((c) => [c.id, this.normalizeCapture(c)]))
     if (!this.hasPlayerTarget) {
@@ -270,7 +270,7 @@ export default class extends Controller {
     const container = video.parentElement
     const width = container?.clientWidth || 1
     const delta = (event.clientX ?? 0) - this.speedBoostStartX
-    const normalized = Math.max(Math.min(delta / (width / 2), 1), -1)
+    const normalized = Math.max(Math.min(delta / (width / 3), 1), -1)
     const centerIndex = this.speedOptions.indexOf(this.speedBoostCenterRate)
     const maxLeft = centerIndex
     const maxRight = this.speedOptions.length - 1 - centerIndex
@@ -508,7 +508,7 @@ export default class extends Controller {
   showRewindBadge(seconds) {
     if (!this.hasSpeedBadgeTarget || !this.hasSpeedBadgeValueTarget) return
     this.clearBadgeTimer()
-    this.speedBadgeValueTarget.textContent = `⟲ ${seconds.toFixed(0)}s`
+    this.speedBadgeValueTarget.textContent = `⟲ ${seconds.toFixed(2)}s`
     this.speedBadgeTarget.classList.remove("opacity-0", "invisible")
     this.badgeHideTimer = setTimeout(() => this.hideSpeedBadge(), 450)
   }
@@ -672,6 +672,7 @@ export default class extends Controller {
       rewind: this.rewindSeconds(),
       targetTime
     })
+    this.showRewindBadge(this.rewindSeconds())
     const wasPlaying = this.isPlaying()
 
     this.currentIdValue = nextId
@@ -785,7 +786,8 @@ export default class extends Controller {
   }
 
   rewindSeconds() {
-    return 1
+    const rate = this.basePlaybackRate || 1
+    return 1 * rate
   }
 
   normalizeCapture(capture) {
