@@ -1,205 +1,254 @@
 de:
   time:
     formats:
-      default: "%d.%m.%Y %H:%M:%S"
-      short: "%d. %b %H:%M"
-      long: "%d. %B %Y %H:%M"
+      default: '%d.%m.%Y %H:%M:%S'
+      short: '%d. %b %H:%M'
+      long: '%d. %B %Y %H:%M'
   date:
     formats:
-      default: "%d.%m.%Y"
-      short: "%d. %b"
-      long: "%d. %B %Y"
-    month_names: ["", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
-    abbr_month_names: ["", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
-    day_names: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-    abbr_day_names: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
+      default: '%d.%m.%Y'
+      short: '%d. %b'
+      long: '%d. %B %Y'
+    month_names:
+    - ''
+    - Januar
+    - Februar
+    - März
+    - April
+    - Mai
+    - Juni
+    - Juli
+    - August
+    - September
+    - Oktober
+    - November
+    - Dezember
+    abbr_month_names:
+    - ''
+    - Jan
+    - Feb
+    - Mär
+    - Apr
+    - Mai
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Okt
+    - Nov
+    - Dez
+    day_names:
+    - Sonntag
+    - Montag
+    - Dienstag
+    - Mittwoch
+    - Donnerstag
+    - Freitag
+    - Samstag
+    abbr_day_names:
+    - So
+    - Mo
+    - Di
+    - Mi
+    - Do
+    - Fr
+    - Sa
   views:
     pagination:
-      first: "&laquo; Erste"
-      last: "Letzte &raquo;"
-      previous: "&lsaquo; Zurück"
-      next: "Weiter &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; Erste'
+      last: Letzte &raquo;
+      previous: '&lsaquo; Zurück'
+      next: Weiter &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Zeige <b>1</b> Eintrag"
-          few: "Zeige <b>%{count}</b> Einträge"
-          many: "Zeige <b>%{count}</b> Einträge"
-          other: "Zeige <b>%{count}</b> Einträge"
+          one: Zeige <b>1</b> Eintrag
+          few: Zeige <b>%{count}</b> Einträge
+          many: Zeige <b>%{count}</b> Einträge
+          other: Zeige <b>%{count}</b> Einträge
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "Ereignisse"
-    room: "Raum"
-    login: "Anmelden"
-    logout: "Abmelden"
-    logout_confirm: "Abmelden?"
-    cameras_online: "Kameras online"
-    privacy_policy: "Datenschutzerklärung"
-    language: "Sprache"
+    events: Ereignisse
+    room: Raum
+    login: Anmelden
+    logout: Abmelden
+    logout_confirm: Abmelden?
+    cameras_online: Kameras online
+    privacy_policy: Datenschutzerklärung
+    language: Sprache
   events:
     captures_count:
-      one: "1 Aufnahme"
-      few: "%{count} Aufnahmen"
-      many: "%{count} Aufnahmen"
-      other: "%{count} Aufnahmen"
+      one: 1 Aufnahme
+      few: '%{count} Aufnahmen'
+      many: '%{count} Aufnahmen'
+      other: '%{count} Aufnahmen'
     index:
-      title: "Ereignisse"
-      subtitle: "Aufnahmen durchsuchen und verwalten"
-      save_recording: "Aufnahme speichern"
-      saving: "Wird gespeichert..."
-      no_preview: "Keine Vorschau"
-      record_label: "Aufnahme"
-      content: "Inhalt"
-      empty: "Noch keine Ereignisse."
-      id: "ID"
+      title: Ereignisse
+      subtitle: Aufnahmen durchsuchen und verwalten
+      save_recording: Aufnahme speichern
+      saving: Wird gespeichert...
+      no_preview: Keine Vorschau
+      record_label: Aufnahme
+      content: Inhalt
+      empty: Noch keine Ereignisse.
+      id: ID
     header:
-      all_events: "Alle Ereignisse"
-      back: "Zurück"
-      publish: "Veröffentlichen"
-      hide: "Ausblenden"
-      delete_confirm: "Dieses Ereignis und alle zugehörigen Aufnahmen löschen?"
+      all_events: Alle Ereignisse
+      back: Zurück
+      publish: Veröffentlichen
+      hide: Ausblenden
+      delete_confirm: Dieses Ereignis und alle zugehörigen Aufnahmen löschen?
     navigation:
-      newer: "Neuer"
-      older: "Älter"
+      newer: Neuer
+      older: Älter
     labels:
-      recording_from: "Aufgenommen am"
-      hidden: "Ausgeblendet"
-      published: "Veröffentlicht"
-      capture: "Capture #%{id}"
+      recording_from: Aufgenommen am
+      hidden: Ausgeblendet
+      published: Veröffentlicht
+      capture: 'Capture #%{id}'
     show:
-      empty: "Keine Aufnahmen für dieses Ereignis."
+      empty: Keine Aufnahmen für dieses Ereignis.
     files:
-      title: "Quelldateien"
-      capture: "Capture #%{id}"
-      download: "Herunterladen"
+      title: Quelldateien
+      capture: 'Capture #%{id}'
+      download: Herunterladen
     permissions:
-      room_required_delete: "Raumcode eingeben, um dieses Ereignis zu löschen."
-      room_mismatch_delete: "Der Raumcode stimmt für das Löschen nicht überein."
-      room_required_visibility: "Raumcode eingeben, um die Sichtbarkeit zu ändern."
-      room_mismatch_visibility: "Der Raumcode stimmt für die Änderung der Sichtbarkeit nicht überein."
+      room_required_delete: Raumcode eingeben, um dieses Ereignis zu löschen.
+      room_mismatch_delete: Der Raumcode stimmt für das Löschen nicht überein.
+      room_required_visibility: Raumcode eingeben, um die Sichtbarkeit zu ändern.
+      room_mismatch_visibility: Der Raumcode stimmt für die Änderung der Sichtbarkeit
+        nicht überein.
     notices:
-      deleted_showing_older: "Ereignis gelöscht. Ein älteres Ereignis wird angezeigt."
-      deleted: "Ereignis gelöscht."
-      base_set: "Basisaufnahme gesetzt (Capture #%{id})."
-      offsets_updated: "Versätze aktualisiert: %{count}."
-      offsets_skipped: "übersprungen: %{ids}"
-      hls_already_processing: "HLS wird bereits für Capture #%{id} verarbeitet."
-      hls_started: "HLS-Erstellung für Capture #%{id} gestartet."
-      hls_none: "Keine Aufnahmen benötigen HLS-Erstellung."
-      hls_bulk_started: "HLS-Erstellung für %{count} Aufnahmen gestartet."
-      visibility_changed: "Ereignis ist jetzt %{status}."
+      deleted_showing_older: Ereignis gelöscht. Ein älteres Ereignis wird angezeigt.
+      deleted: Ereignis gelöscht.
+      base_set: 'Basisaufnahme gesetzt (Capture #%{id}).'
+      offsets_updated: 'Versätze aktualisiert: %{count}.'
+      offsets_skipped: 'übersprungen: %{ids}'
+      hls_already_processing: 'HLS wird bereits für Capture #%{id} verarbeitet.'
+      hls_started: 'HLS-Erstellung für Capture #%{id} gestartet.'
+      hls_none: Keine Aufnahmen benötigen HLS-Erstellung.
+      hls_bulk_started: HLS-Erstellung für %{count} Aufnahmen gestartet.
+      visibility_changed: Ereignis ist jetzt %{status}.
     errors:
-      delete_failed: "Ereignis konnte nicht gelöscht werden."
-      base_set_failed: "Basisaufnahme konnte nicht gesetzt werden: %{error}"
-      no_captures_to_sync: "Keine Aufnahmen zum Synchronisieren."
-      sync_failed: "Synchronisationsfehler: %{error}"
-      no_video: "Capture #%{id} hat kein angehängtes Video."
-      hls_start_failed: "HLS-Erstellung konnte nicht gestartet werden: %{error}"
-      hls_bulk_failed: "Massen-HLS-Erstellung konnte nicht gestartet werden: %{error}"
-      visibility_failed: "Sichtbarkeit des Ereignisses konnte nicht aktualisiert werden."
-      not_found: "Ereignis nicht gefunden."
-      capture_no_video: "Capture #%{id} ohne Video"
+      delete_failed: Ereignis konnte nicht gelöscht werden.
+      base_set_failed: 'Basisaufnahme konnte nicht gesetzt werden: %{error}'
+      no_captures_to_sync: Keine Aufnahmen zum Synchronisieren.
+      sync_failed: 'Synchronisationsfehler: %{error}'
+      no_video: 'Capture #%{id} hat kein angehängtes Video.'
+      hls_start_failed: 'HLS-Erstellung konnte nicht gestartet werden: %{error}'
+      hls_bulk_failed: 'Massen-HLS-Erstellung konnte nicht gestartet werden: %{error}'
+      visibility_failed: Sichtbarkeit des Ereignisses konnte nicht aktualisiert werden.
+      not_found: Ereignis nicht gefunden.
+      capture_no_video: 'Capture #%{id} ohne Video'
     meta:
-      title: "Ereignis #%{id}"
-      description: "Aufgenommen am %{time}"
+      title: 'Ereignis #%{id}'
+      description: Aufgenommen am %{time}
+    player_help:
+      title: Player-Steuerung
+      subtitle: Schnelle Gesten und Aktionen
+      items:
+      - Klick auf das Video für Pause/Wiedergabe.
+      - Doppelklick für Vollbild.
+      - Linke Taste halten und bewegen zum Beschleunigen/Verlangsamen.
+      - Rechte Taste — ⟲ 1 s zurück.
   recorder:
-    signal_sent: "Aufnahmesignal gesendet."
-    signal_sent_at: "Aufnahmesignal gesendet um %{time}"
+    signal_sent: Aufnahmesignal gesendet.
+    signal_sent_at: Aufnahmesignal gesendet um %{time}
     notices:
-      uploaded: "Video hochgeladen"
+      uploaded: Video hochgeladen
     errors:
-      missing_params: "Fehlende Video-/Zeitstempel-Parameter."
-      invalid_timestamp: "Ungültiger Zeitstempel."
-      room_required: "Raumcode eingeben, um die Aufnahme zu speichern."
-      signal_failed: "Aufnahmesignal konnte nicht gesendet werden: %{error}"
+      missing_params: Fehlende Video-/Zeitstempel-Parameter.
+      invalid_timestamp: Ungültiger Zeitstempel.
+      room_required: Raumcode eingeben, um die Aufnahme zu speichern.
+      signal_failed: 'Aufnahmesignal konnte nicht gesendet werden: %{error}'
   video_switcher:
-    loading: "Wird geladen…"
-    base_label: "Basis"
-    offset_label: "Versatz: %{offset}s"
-    camera_label: "KAMERA %{id}"
+    loading: Wird geladen…
+    base_label: Basis
+    offset_label: 'Versatz: %{offset}s'
+    camera_label: KAMERA %{id}
   sync_videos:
-    waiting_metadata: "Warte auf Metadaten, um den Anker-Frame zu setzen…"
-    ready_select_anchor: "Video bereit. Anker-Frame auswählen."
-    set_anchor_first: "Zuerst einen Anker-Frame für jedes Video setzen."
-    anchor_missing: "Anker-Frame nicht ausgewählt"
-    anchor_text: "Anker-Frame: %{time}s"
-    generate_hls_all: "HLS für alle Aufnahmen erzeugen"
+    waiting_metadata: Warte auf Metadaten, um den Anker-Frame zu setzen…
+    ready_select_anchor: Video bereit. Anker-Frame auswählen.
+    set_anchor_first: Zuerst einen Anker-Frame für jedes Video setzen.
+    anchor_missing: Anker-Frame nicht ausgewählt
+    anchor_text: 'Anker-Frame: %{time}s'
+    generate_hls_all: HLS für alle Aufnahmen erzeugen
     sync:
-      title: "Synchronisation"
-      set_base: "Basis setzen #%{id}"
-      base: "Basis"
-      offset: "Versatz"
-      offset_none: "—"
-      base_capture: "Basisaufnahme"
-      analyze_duration: "Analysedauer (Sek)"
-      sample_rate: "Abtastrate (Hz)"
-      submit: "Synchronisation starten"
+      title: Synchronisation
+      set_base: 'Basis setzen #%{id}'
+      base: Basis
+      offset: Versatz
+      offset_none: —
+      base_capture: Basisaufnahme
+      analyze_duration: Analysedauer (Sek)
+      sample_rate: Abtastrate (Hz)
+      submit: Synchronisation starten
     orientation:
-      title: "Ausrichtung"
+      title: Ausrichtung
     hls:
-      ready: "HLS bereit"
-      regenerate: "HLS neu erzeugen"
-      processing: "HLS wird erstellt..."
-      refresh: "Status aktualisieren"
-      generate: "HLS erzeugen"
-      error: "Fehler"
+      ready: HLS bereit
+      regenerate: HLS neu erzeugen
+      processing: HLS wird erstellt...
+      refresh: Status aktualisieren
+      generate: HLS erzeugen
+      error: Fehler
   admin:
-    title: "Admin-Bereich"
-    generate_hls_all: "HLS für alle Aufnahmen erzeugen"
+    title: Admin-Bereich
+    generate_hls_all: HLS für alle Aufnahmen erzeugen
     sync:
-      title: "Synchronisation"
-      set_base: "Basis setzen #%{id}"
-      base: "Basis"
-      offset: "Versatz"
-      offset_none: "—"
-      base_capture: "Basisaufnahme"
-      analyze_duration: "Analysedauer (Sek)"
-      sample_rate: "Sample rate (Hz)"
-      submit: "Synchronisation starten"
+      title: Synchronisation
+      set_base: 'Basis setzen #%{id}'
+      base: Basis
+      offset: Versatz
+      offset_none: —
+      base_capture: Basisaufnahme
+      analyze_duration: Analysedauer (Sek)
+      sample_rate: Sample rate (Hz)
+      submit: Synchronisation starten
     hls:
-      title: "HLS"
-      ready: "HLS bereit"
-      regenerate: "HLS neu erzeugen"
-      processing: "HLS wird erstellt..."
-      refresh: "Status aktualisieren"
-      generate: "HLS erzeugen"
-      error: "Fehler"
+      title: HLS
+      ready: HLS bereit
+      regenerate: HLS neu erzeugen
+      processing: HLS wird erstellt...
+      refresh: Status aktualisieren
+      generate: HLS erzeugen
+      error: Fehler
   auth:
-    login_required: "Bitte anmelden."
-    login_success: "Erfolgreich angemeldet."
-    invalid_credentials: "Ungültiger Benutzername oder Passwort."
-    logout_success: "Erfolgreich abgemeldet."
+    login_required: Bitte anmelden.
+    login_success: Erfolgreich angemeldet.
+    invalid_credentials: Ungültiger Benutzername oder Passwort.
+    logout_success: Erfolgreich abgemeldet.
     login:
-      title: "Anmelden"
-      username: "Benutzername"
-      password: "Passwort"
-      submit: "Anmelden"
+      title: Anmelden
+      username: Benutzername
+      password: Passwort
+      submit: Anmelden
   room:
-    title: "Raum auswählen"
-    code: "Raumcode"
-    submit: "Raum auswählen"
-    selected: "Raum ausgewählt: %{name}"
-    missing_code: "Raumcode eingeben"
+    title: Raum auswählen
+    code: Raumcode
+    submit: Raum auswählen
+    selected: 'Raum ausgewählt: %{name}'
+    missing_code: Raumcode eingeben
   calendar:
-    title: "Kalender"
-    empty: "Noch keine Ereignisse."
+    title: Kalender
+    empty: Noch keine Ereignisse.
   modal:
-    action: "Aktion"
+    action: Aktion

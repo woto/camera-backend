@@ -149,15 +149,14 @@
           </svg>
         </div>
         <div>
-          <div class="text-[12px] font-black uppercase tracking-widest text-white">Управление плеером</div>
-          <div class="text-xs text-white/50">Горячие жесты и быстрые действия</div>
+          <div class="text-[12px] font-black uppercase tracking-widest text-white"><%= t("events.player_help.title") %></div>
+          <div class="text-xs text-white/50"><%= t("events.player_help.subtitle") %></div>
         </div>
       </div>
       <ul class="grid gap-2 text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-        <li>Клик по видео — пауза/плей.</li>
-        <li>Двойной клик — полноэкранный режим.</li>
-        <li>Удерживайте левую кнопку и ведите мышь — ускорение/замедление.</li>
-        <li>Правая кнопка — ⟲ 1&nbsp;с назад.</li>
+        <% t("events.player_help.items").each do |item| %>
+          <li><%= item %></li>
+        <% end %>
       </ul>
     </div>
   <% else %>

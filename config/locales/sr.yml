@@ -1,205 +1,253 @@
 sr:
   time:
     formats:
-      default: "%d.%m.%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d.%m.%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d.%m.%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"]
-    abbr_month_names: ["", "Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"]
-    day_names: ["Nedelja", "Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota"]
-    abbr_day_names: ["Ned", "Pon", "Uto", "Sre", "Čet", "Pet", "Sub"]
+      default: '%d.%m.%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - Januar
+    - Februar
+    - Mart
+    - April
+    - Maj
+    - Jun
+    - Jul
+    - Avgust
+    - Septembar
+    - Oktobar
+    - Novembar
+    - Decembar
+    abbr_month_names:
+    - ''
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - Maj
+    - Jun
+    - Jul
+    - Avg
+    - Sep
+    - Okt
+    - Nov
+    - Dec
+    day_names:
+    - Nedelja
+    - Ponedeljak
+    - Utorak
+    - Sreda
+    - Četvrtak
+    - Petak
+    - Subota
+    abbr_day_names:
+    - Ned
+    - Pon
+    - Uto
+    - Sre
+    - Čet
+    - Pet
+    - Sub
   views:
     pagination:
-      first: "&laquo; Prva"
-      last: "Poslednja &raquo;"
-      previous: "&lsaquo; Nazad"
-      next: "Napred &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; Prva'
+      last: Poslednja &raquo;
+      previous: '&lsaquo; Nazad'
+      next: Napred &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Prikazana <b>1</b> stavka"
-          few: "Prikazane <b>%{count}</b> stavke"
-          many: "Prikazano <b>%{count}</b> stavki"
-          other: "Prikazano <b>%{count}</b> stavki"
+          one: Prikazana <b>1</b> stavka
+          few: Prikazane <b>%{count}</b> stavke
+          many: Prikazano <b>%{count}</b> stavki
+          other: Prikazano <b>%{count}</b> stavki
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "Događaji"
-    room: "Soba"
-    login: "Prijava"
-    logout: "Odjava"
-    logout_confirm: "Odjaviti se?"
-    cameras_online: "Kamera online"
-    privacy_policy: "Politika privatnosti"
-    language: "Jezik"
+    events: Događaji
+    room: Soba
+    login: Prijava
+    logout: Odjava
+    logout_confirm: Odjaviti se?
+    cameras_online: Kamera online
+    privacy_policy: Politika privatnosti
+    language: Jezik
   events:
     captures_count:
-      one: "1 snimak"
-      few: "%{count} snimka"
-      many: "%{count} snimaka"
-      other: "%{count} snimaka"
+      one: 1 snimak
+      few: '%{count} snimka'
+      many: '%{count} snimaka'
+      other: '%{count} snimaka'
     index:
-      title: "Događaji"
-      subtitle: "Pregled i upravljanje snimcima"
-      save_recording: "Sačuvaj snimak"
-      saving: "Čuvanje..."
-      no_preview: "Nema pregleda"
-      record_label: "Snimak"
-      content: "Sadržaj"
-      empty: "Još nema događaja."
-      id: "ID"
+      title: Događaji
+      subtitle: Pregled i upravljanje snimcima
+      save_recording: Sačuvaj snimak
+      saving: Čuvanje...
+      no_preview: Nema pregleda
+      record_label: Snimak
+      content: Sadržaj
+      empty: Još nema događaja.
+      id: ID
     header:
-      all_events: "Svi događaji"
-      back: "Nazad"
-      publish: "Objavi"
-      hide: "Sakrij"
-      delete_confirm: "Obrisati ovaj događaj i sve povezane snimke?"
+      all_events: Svi događaji
+      back: Nazad
+      publish: Objavi
+      hide: Sakrij
+      delete_confirm: Obrisati ovaj događaj i sve povezane snimke?
     navigation:
-      newer: "Noviji"
-      older: "Stariji"
+      newer: Noviji
+      older: Stariji
     labels:
-      recording_from: "Snimljeno"
-      hidden: "Skriveno"
-      published: "Objavljeno"
-      capture: "Snimak #%{id}"
+      recording_from: Snimljeno
+      hidden: Skriveno
+      published: Objavljeno
+      capture: 'Snimak #%{id}'
     show:
-      empty: "Nema snimaka za ovaj događaj."
+      empty: Nema snimaka za ovaj događaj.
     files:
-      title: "Izvorne datoteke"
-      capture: "Snimak #%{id}"
-      download: "Preuzmi"
+      title: Izvorne datoteke
+      capture: 'Snimak #%{id}'
+      download: Preuzmi
     permissions:
-      room_required_delete: "Unesite kod sobe da biste obrisali ovaj događaj."
-      room_mismatch_delete: "Kod sobe se ne poklapa za brisanje događaja."
-      room_required_visibility: "Unesite kod sobe da biste promenili vidljivost događaja."
-      room_mismatch_visibility: "Kod sobe se ne poklapa za promenu vidljivosti događaja."
+      room_required_delete: Unesite kod sobe da biste obrisali ovaj događaj.
+      room_mismatch_delete: Kod sobe se ne poklapa za brisanje događaja.
+      room_required_visibility: Unesite kod sobe da biste promenili vidljivost događaja.
+      room_mismatch_visibility: Kod sobe se ne poklapa za promenu vidljivosti događaja.
     notices:
-      deleted_showing_older: "Događaj je obrisan. Prikazan je stariji događaj."
-      deleted: "Događaj je obrisan."
-      base_set: "Bazni snimak postavljen (Snimak #%{id})."
-      offsets_updated: "Pomeraji ažurirani: %{count}."
-      offsets_skipped: "preskočeno: %{ids}"
-      hls_already_processing: "HLS se već obrađuje za Snimak #%{id}."
-      hls_started: "Pokrenuta HLS generacija za Snimak #%{id}."
-      hls_none: "Nema snimaka koji zahtevaju HLS generaciju."
-      hls_bulk_started: "Pokrenuta HLS generacija za %{count} snimaka."
-      visibility_changed: "Događaj je sada %{status}."
+      deleted_showing_older: Događaj je obrisan. Prikazan je stariji događaj.
+      deleted: Događaj je obrisan.
+      base_set: 'Bazni snimak postavljen (Snimak #%{id}).'
+      offsets_updated: 'Pomeraji ažurirani: %{count}.'
+      offsets_skipped: 'preskočeno: %{ids}'
+      hls_already_processing: 'HLS se već obrađuje za Snimak #%{id}.'
+      hls_started: 'Pokrenuta HLS generacija za Snimak #%{id}.'
+      hls_none: Nema snimaka koji zahtevaju HLS generaciju.
+      hls_bulk_started: Pokrenuta HLS generacija za %{count} snimaka.
+      visibility_changed: Događaj je sada %{status}.
     errors:
-      delete_failed: "Brisanje događaja nije uspelo."
-      base_set_failed: "Nije uspelo postavljanje baznog snimka: %{error}"
-      no_captures_to_sync: "Nema snimaka za sinhronizaciju."
-      sync_failed: "Greška sinhronizacije: %{error}"
-      no_video: "Snimak #%{id} nema priložen video."
-      hls_start_failed: "Nije uspelo pokretanje HLS generacije: %{error}"
-      hls_bulk_failed: "Nije uspelo pokretanje masovne HLS generacije: %{error}"
-      visibility_failed: "Nije uspelo ažuriranje vidljivosti događaja."
-      not_found: "Događaj nije pronađen."
-      capture_no_video: "Snimak #%{id} bez videa"
+      delete_failed: Brisanje događaja nije uspelo.
+      base_set_failed: 'Nije uspelo postavljanje baznog snimka: %{error}'
+      no_captures_to_sync: Nema snimaka za sinhronizaciju.
+      sync_failed: 'Greška sinhronizacije: %{error}'
+      no_video: 'Snimak #%{id} nema priložen video.'
+      hls_start_failed: 'Nije uspelo pokretanje HLS generacije: %{error}'
+      hls_bulk_failed: 'Nije uspelo pokretanje masovne HLS generacije: %{error}'
+      visibility_failed: Nije uspelo ažuriranje vidljivosti događaja.
+      not_found: Događaj nije pronađen.
+      capture_no_video: 'Snimak #%{id} bez videa'
     meta:
-      title: "Događaj #%{id}"
-      description: "Snimljeno %{time}"
+      title: 'Događaj #%{id}'
+      description: Snimljeno %{time}
+    player_help:
+      title: Kontrole plejera
+      subtitle: Brze geste i radnje
+      items:
+      - Klik na video za pauzu/puštanje.
+      - Dvaput klik za ceo ekran.
+      - Držite levi taster i pomerajte za ubrzanje/usporenje.
+      - Desni taster — ⟲ 1 s unazad.
   admin:
-    title: "Administratorski panel"
-    generate_hls_all: "Generiši HLS za sve snimke"
+    title: Administratorski panel
+    generate_hls_all: Generiši HLS za sve snimke
     sync:
-      title: "Sinhronizacija"
-      set_base: "Postavi kao bazu #%{id}"
-      base: "Baza"
-      offset: "Pomeraj"
-      offset_none: "—"
-      base_capture: "Bazni snimak"
-      analyze_duration: "Trajanje analize (sek)"
-      sample_rate: "Frekvencija uzorkovanja (Hz)"
-      submit: "Pokreni sinhronizaciju"
+      title: Sinhronizacija
+      set_base: 'Postavi kao bazu #%{id}'
+      base: Baza
+      offset: Pomeraj
+      offset_none: —
+      base_capture: Bazni snimak
+      analyze_duration: Trajanje analize (sek)
+      sample_rate: Frekvencija uzorkovanja (Hz)
+      submit: Pokreni sinhronizaciju
     hls:
-      title: "HLS"
-      ready: "HLS spreman"
-      regenerate: "Regeneriši HLS"
-      processing: "HLS generisanje ..."
-      refresh: "Osveži status"
-      generate: "Generiši HLS"
-      error: "Greška"
+      title: HLS
+      ready: HLS spreman
+      regenerate: Regeneriši HLS
+      processing: HLS generisanje ...
+      refresh: Osveži status
+      generate: Generiši HLS
+      error: Greška
   auth:
-    login_required: "Molimo prijavite se."
-    login_success: "Uspešna prijava."
-    invalid_credentials: "Neispravno korisničko ime ili lozinka."
-    logout_success: "Odjavljeni ste."
+    login_required: Molimo prijavite se.
+    login_success: Uspešna prijava.
+    invalid_credentials: Neispravno korisničko ime ili lozinka.
+    logout_success: Odjavljeni ste.
     login:
-      title: "Prijava"
-      username: "Korisničko ime"
-      password: "Lozinka"
-      submit: "Prijavi se"
+      title: Prijava
+      username: Korisničko ime
+      password: Lozinka
+      submit: Prijavi se
   room:
-    title: "Izaberite sobu"
-    code: "Kod sobe"
-    submit: "Izaberi sobu"
-    selected: "Soba izabrana: %{name}"
-    missing_code: "Unesite kod sobe"
+    title: Izaberite sobu
+    code: Kod sobe
+    submit: Izaberi sobu
+    selected: 'Soba izabrana: %{name}'
+    missing_code: Unesite kod sobe
   calendar:
-    title: "Kalendar"
-    empty: "Još nema događaja."
+    title: Kalendar
+    empty: Još nema događaja.
   modal:
-    action: "Radnja"
+    action: Radnja
   recorder:
-    signal_sent: "Signal za snimanje je poslat."
-    signal_sent_at: "Signal za snimanje je poslat u %{time}"
+    signal_sent: Signal za snimanje je poslat.
+    signal_sent_at: Signal za snimanje je poslat u %{time}
     notices:
-      uploaded: "Video je otpremljen"
+      uploaded: Video je otpremljen
     errors:
-      missing_params: "Nedostaje video ili vreme snimanja."
-      invalid_timestamp: "Neispravna vremenska oznaka."
-      room_required: "Unesite kod sobe da biste sačuvali snimak."
-      signal_failed: "Nije uspelo slanje signala za snimanje: %{error}"
+      missing_params: Nedostaje video ili vreme snimanja.
+      invalid_timestamp: Neispravna vremenska oznaka.
+      room_required: Unesite kod sobe da biste sačuvali snimak.
+      signal_failed: 'Nije uspelo slanje signala za snimanje: %{error}'
   video_switcher:
-    loading: "Učitavanje..."
-    base_label: "Baza"
-    offset_label: "Pomeraj: %{offset}s"
-    camera_label: "Kamera %{id}"
+    loading: Učitavanje...
+    base_label: Baza
+    offset_label: 'Pomeraj: %{offset}s'
+    camera_label: Kamera %{id}
   sync_videos:
-    waiting_metadata: "Čekam metapodatke da fiksiram kontrolni kadar..."
-    ready_select_anchor: "Video je spreman. Izaberite kontrolni kadar."
-    set_anchor_first: "Prvo postavite kontrolni kadar za svaki video."
-    anchor_missing: "Kontrolni kadar nije izabran"
-    anchor_text: "Kontrolni kadar: %{time}s"
-    generate_hls_all: "Generiši HLS za sve snimke"
+    waiting_metadata: Čekam metapodatke da fiksiram kontrolni kadar...
+    ready_select_anchor: Video je spreman. Izaberite kontrolni kadar.
+    set_anchor_first: Prvo postavite kontrolni kadar za svaki video.
+    anchor_missing: Kontrolni kadar nije izabran
+    anchor_text: 'Kontrolni kadar: %{time}s'
+    generate_hls_all: Generiši HLS za sve snimke
     sync:
-      title: "Sinhronizacija"
-      set_base: "Postavi bazu #%{id}"
-      base: "Baza"
-      offset: "Pomeraj"
-      offset_none: "—"
-      base_capture: "Bazni snimak"
-      analyze_duration: "Trajanje analize (s)"
-      sample_rate: "Frekvencija uzorkovanja (Hz)"
-      submit: "Pokreni sinhronizaciju"
+      title: Sinhronizacija
+      set_base: 'Postavi bazu #%{id}'
+      base: Baza
+      offset: Pomeraj
+      offset_none: —
+      base_capture: Bazni snimak
+      analyze_duration: Trajanje analize (s)
+      sample_rate: Frekvencija uzorkovanja (Hz)
+      submit: Pokreni sinhronizaciju
     orientation:
-      title: "Orijentacija"
+      title: Orijentacija
     hls:
-      ready: "HLS spreman"
-      regenerate: "Ponovo generiši HLS"
-      processing: "HLS se obrađuje..."
-      refresh: "Osveži status"
-      generate: "Generiši HLS"
-      error: "Greška"
+      ready: HLS spreman
+      regenerate: Ponovo generiši HLS
+      processing: HLS se obrađuje...
+      refresh: Osveži status
+      generate: Generiši HLS
+      error: Greška

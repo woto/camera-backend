@@ -1,209 +1,257 @@
 ar:
   time:
     formats:
-      default: "%d/%m/%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d/%m/%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d/%m/%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"]
-    abbr_month_names: ["", "ينا", "فبر", "مار", "أبر", "ماي", "يون", "يول", "أغس", "سبت", "أكت", "نوف", "ديس"]
-    day_names: ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"]
-    abbr_day_names: ["أحد", "اثن", "ثلا", "أرب", "خمي", "جمع", "سبت"]
+      default: '%d/%m/%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - يناير
+    - فبراير
+    - مارس
+    - أبريل
+    - مايو
+    - يونيو
+    - يوليو
+    - أغسطس
+    - سبتمبر
+    - أكتوبر
+    - نوفمبر
+    - ديسمبر
+    abbr_month_names:
+    - ''
+    - ينا
+    - فبر
+    - مار
+    - أبر
+    - ماي
+    - يون
+    - يول
+    - أغس
+    - سبت
+    - أكت
+    - نوف
+    - ديس
+    day_names:
+    - الأحد
+    - الاثنين
+    - الثلاثاء
+    - الأربعاء
+    - الخميس
+    - الجمعة
+    - السبت
+    abbr_day_names:
+    - أحد
+    - اثن
+    - ثلا
+    - أرب
+    - خمي
+    - جمع
+    - سبت
   views:
     pagination:
-      first: "&laquo; الأولى"
-      last: "الأخيرة &raquo;"
-      previous: "&lsaquo; السابق"
-      next: "التالي &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; الأولى'
+      last: الأخيرة &raquo;
+      previous: '&lsaquo; السابق'
+      next: التالي &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          zero: "لا توجد سجلات"
-          one: "عرض <b>سجل واحد</b>"
-          two: "عرض <b>سجلين</b>"
-          few: "عرض <b>%{count}</b> سجلات"
-          many: "عرض <b>%{count}</b> سجلًا"
-          other: "عرض <b>%{count}</b> سجل"
+          zero: لا توجد سجلات
+          one: عرض <b>سجل واحد</b>
+          two: عرض <b>سجلين</b>
+          few: عرض <b>%{count}</b> سجلات
+          many: عرض <b>%{count}</b> سجلًا
+          other: عرض <b>%{count}</b> سجل
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "الأحداث"
-    room: "الغرفة"
-    login: "تسجيل الدخول"
-    logout: "تسجيل الخروج"
-    logout_confirm: "تسجيل الخروج؟"
-    cameras_online: "الكاميرات المتصلة"
-    privacy_policy: "سياسة الخصوصية"
-    language: "اللغة"
+    events: الأحداث
+    room: الغرفة
+    login: تسجيل الدخول
+    logout: تسجيل الخروج
+    logout_confirm: تسجيل الخروج؟
+    cameras_online: الكاميرات المتصلة
+    privacy_policy: سياسة الخصوصية
+    language: اللغة
   events:
     captures_count:
-      zero: "لا تسجيلات"
-      one: "تسجيل واحد"
-      two: "تسجيلان"
-      few: "%{count} تسجيلات"
-      many: "%{count} تسجيلًا"
-      other: "%{count} تسجيل"
+      zero: لا تسجيلات
+      one: تسجيل واحد
+      two: تسجيلان
+      few: '%{count} تسجيلات'
+      many: '%{count} تسجيلًا'
+      other: '%{count} تسجيل'
     index:
-      title: "الأحداث"
-      subtitle: "تصفح وإدارة التسجيلات"
-      save_recording: "حفظ التسجيل"
-      saving: "جارٍ الحفظ..."
-      no_preview: "لا توجد معاينة"
-      record_label: "تسجيل"
-      content: "المحتوى"
-      empty: "لا توجد أحداث حتى الآن."
-      id: "المعرّف"
+      title: الأحداث
+      subtitle: تصفح وإدارة التسجيلات
+      save_recording: حفظ التسجيل
+      saving: جارٍ الحفظ...
+      no_preview: لا توجد معاينة
+      record_label: تسجيل
+      content: المحتوى
+      empty: لا توجد أحداث حتى الآن.
+      id: المعرّف
     header:
-      all_events: "كل الأحداث"
-      back: "رجوع"
-      publish: "نشر"
-      hide: "إخفاء"
-      delete_confirm: "حذف هذا الحدث وكل التسجيلات المرتبطة؟"
+      all_events: كل الأحداث
+      back: رجوع
+      publish: نشر
+      hide: إخفاء
+      delete_confirm: حذف هذا الحدث وكل التسجيلات المرتبطة؟
     navigation:
-      newer: "أحدث"
-      older: "أقدم"
+      newer: أحدث
+      older: أقدم
     labels:
-      recording_from: "تم التسجيل في"
-      hidden: "مخفي"
-      published: "منشور"
-      capture: "التسجيل #%{id}"
+      recording_from: تم التسجيل في
+      hidden: مخفي
+      published: منشور
+      capture: 'التسجيل #%{id}'
     show:
-      empty: "لا توجد تسجيلات لهذا الحدث."
+      empty: لا توجد تسجيلات لهذا الحدث.
     files:
-      title: "الملفات الأصلية"
-      capture: "التسجيل #%{id}"
-      download: "تنزيل"
+      title: الملفات الأصلية
+      capture: 'التسجيل #%{id}'
+      download: تنزيل
     permissions:
-      room_required_delete: "أدخل رمز الغرفة لحذف هذا الحدث."
-      room_mismatch_delete: "رمز الغرفة غير مطابق لحذف الحدث."
-      room_required_visibility: "أدخل رمز الغرفة لتغيير ظهور الحدث."
-      room_mismatch_visibility: "رمز الغرفة غير مطابق لتغيير الظهور."
+      room_required_delete: أدخل رمز الغرفة لحذف هذا الحدث.
+      room_mismatch_delete: رمز الغرفة غير مطابق لحذف الحدث.
+      room_required_visibility: أدخل رمز الغرفة لتغيير ظهور الحدث.
+      room_mismatch_visibility: رمز الغرفة غير مطابق لتغيير الظهور.
     notices:
-      deleted_showing_older: "تم حذف الحدث. يتم عرض حدث أقدم."
-      deleted: "تم حذف الحدث."
-      base_set: "تم تعيين التسجيل الأساسي (التسجيل #%{id})."
-      offsets_updated: "تم تحديث الإزاحات: %{count}."
-      offsets_skipped: "تم تخطي: %{ids}"
-      hls_already_processing: "يتم بالفعل معالجة HLS للتسجيل #%{id}."
-      hls_started: "بدأ إنشاء HLS للتسجيل #%{id}."
-      hls_none: "لا توجد تسجيلات تحتاج إنشاء HLS."
-      hls_bulk_started: "بدأ إنشاء HLS لـ %{count} تسجيلات."
-      visibility_changed: "أصبح الحدث %{status}."
+      deleted_showing_older: تم حذف الحدث. يتم عرض حدث أقدم.
+      deleted: تم حذف الحدث.
+      base_set: 'تم تعيين التسجيل الأساسي (التسجيل #%{id}).'
+      offsets_updated: 'تم تحديث الإزاحات: %{count}.'
+      offsets_skipped: 'تم تخطي: %{ids}'
+      hls_already_processing: 'يتم بالفعل معالجة HLS للتسجيل #%{id}.'
+      hls_started: 'بدأ إنشاء HLS للتسجيل #%{id}.'
+      hls_none: لا توجد تسجيلات تحتاج إنشاء HLS.
+      hls_bulk_started: بدأ إنشاء HLS لـ %{count} تسجيلات.
+      visibility_changed: أصبح الحدث %{status}.
     errors:
-      delete_failed: "تعذر حذف الحدث."
-      base_set_failed: "تعذر تعيين التسجيل الأساسي: %{error}"
-      no_captures_to_sync: "لا توجد تسجيلات للمزامنة."
-      sync_failed: "خطأ في المزامنة: %{error}"
-      no_video: "التسجيل #%{id} لا يحتوي على فيديو مرفق."
-      hls_start_failed: "تعذر بدء إنشاء HLS: %{error}"
-      hls_bulk_failed: "تعذر بدء إنشاء HLS بالجملة: %{error}"
-      visibility_failed: "تعذر تحديث ظهور الحدث."
-      not_found: "لم يتم العثور على الحدث."
-      capture_no_video: "التسجيل #%{id} بدون فيديو"
+      delete_failed: تعذر حذف الحدث.
+      base_set_failed: 'تعذر تعيين التسجيل الأساسي: %{error}'
+      no_captures_to_sync: لا توجد تسجيلات للمزامنة.
+      sync_failed: 'خطأ في المزامنة: %{error}'
+      no_video: 'التسجيل #%{id} لا يحتوي على فيديو مرفق.'
+      hls_start_failed: 'تعذر بدء إنشاء HLS: %{error}'
+      hls_bulk_failed: 'تعذر بدء إنشاء HLS بالجملة: %{error}'
+      visibility_failed: تعذر تحديث ظهور الحدث.
+      not_found: لم يتم العثور على الحدث.
+      capture_no_video: 'التسجيل #%{id} بدون فيديو'
     meta:
-      title: "الحدث #%{id}"
-      description: "تم التسجيل في %{time}"
+      title: 'الحدث #%{id}'
+      description: تم التسجيل في %{time}
+    player_help:
+      title: عناصر تحكم المشغّل
+      subtitle: إيماءات وإجراءات سريعة
+      items:
+      - انقر على الفيديو للإيقاف/التشغيل.
+      - نقرة مزدوجة لملء الشاشة.
+      - اضغط الزر الأيسر مع التحريك للتسريع/الإبطاء.
+      - الزر الأيمن — ⟲ الرجوع 1 ثانية.
   recorder:
-    signal_sent: "تم إرسال إشارة التسجيل."
-    signal_sent_at: "تم إرسال إشارة التسجيل في %{time}"
+    signal_sent: تم إرسال إشارة التسجيل.
+    signal_sent_at: تم إرسال إشارة التسجيل في %{time}
     notices:
-      uploaded: "تم رفع الفيديو"
+      uploaded: تم رفع الفيديو
     errors:
-      missing_params: "معلمات الفيديو أو الطابع الزمني مفقودة."
-      invalid_timestamp: "طابع زمني غير صالح."
-      room_required: "أدخل رمز الغرفة لحفظ التسجيل."
-      signal_failed: "فشل إرسال إشارة التسجيل: %{error}"
+      missing_params: معلمات الفيديو أو الطابع الزمني مفقودة.
+      invalid_timestamp: طابع زمني غير صالح.
+      room_required: أدخل رمز الغرفة لحفظ التسجيل.
+      signal_failed: 'فشل إرسال إشارة التسجيل: %{error}'
   video_switcher:
-    loading: "جارٍ التحميل…"
-    base_label: "الأساس"
-    offset_label: "الإزاحة: %{offset}s"
-    camera_label: "كاميرا %{id}"
+    loading: جارٍ التحميل…
+    base_label: الأساس
+    offset_label: 'الإزاحة: %{offset}s'
+    camera_label: كاميرا %{id}
   sync_videos:
-    waiting_metadata: "بانتظار بيانات التعريف لتثبيت الإطار المرجعي…"
-    ready_select_anchor: "الفيديو جاهز. اختر الإطار المرجعي."
-    set_anchor_first: "عيّن إطارًا مرجعيًا لكل فيديو أولًا."
-    anchor_missing: "لم يتم اختيار الإطار المرجعي"
-    anchor_text: "الإطار المرجعي: %{time}s"
-    generate_hls_all: "إنشاء HLS لكل التسجيلات"
+    waiting_metadata: بانتظار بيانات التعريف لتثبيت الإطار المرجعي…
+    ready_select_anchor: الفيديو جاهز. اختر الإطار المرجعي.
+    set_anchor_first: عيّن إطارًا مرجعيًا لكل فيديو أولًا.
+    anchor_missing: لم يتم اختيار الإطار المرجعي
+    anchor_text: 'الإطار المرجعي: %{time}s'
+    generate_hls_all: إنشاء HLS لكل التسجيلات
     sync:
-      title: "المزامنة"
-      set_base: "تعيين الأساسي #%{id}"
-      base: "أساسي"
-      offset: "إزاحة"
-      offset_none: "—"
-      base_capture: "التسجيل الأساسي"
-      analyze_duration: "مدة التحليل (ثانية)"
-      sample_rate: "معدل أخذ العينات (Hz)"
-      submit: "بدء المزامنة"
+      title: المزامنة
+      set_base: 'تعيين الأساسي #%{id}'
+      base: أساسي
+      offset: إزاحة
+      offset_none: —
+      base_capture: التسجيل الأساسي
+      analyze_duration: مدة التحليل (ثانية)
+      sample_rate: معدل أخذ العينات (Hz)
+      submit: بدء المزامنة
     orientation:
-      title: "الاتجاه"
+      title: الاتجاه
     hls:
-      ready: "HLS جاهز"
-      regenerate: "إعادة إنشاء HLS"
-      processing: "جارٍ إنشاء HLS..."
-      refresh: "تحديث الحالة"
-      generate: "إنشاء HLS"
-      error: "خطأ"
+      ready: HLS جاهز
+      regenerate: إعادة إنشاء HLS
+      processing: جارٍ إنشاء HLS...
+      refresh: تحديث الحالة
+      generate: إنشاء HLS
+      error: خطأ
   admin:
-    title: "لوحة الإدارة"
-    generate_hls_all: "إنشاء HLS لكل التسجيلات"
+    title: لوحة الإدارة
+    generate_hls_all: إنشاء HLS لكل التسجيلات
     sync:
-      title: "المزامنة"
-      set_base: "تعيين الأساسي #%{id}"
-      base: "أساسي"
-      offset: "إزاحة"
-      offset_none: "—"
-      base_capture: "التسجيل الأساسي"
-      analyze_duration: "مدة التحليل (ثانية)"
-      sample_rate: "Sample rate (Hz)"
-      submit: "بدء المزامنة"
+      title: المزامنة
+      set_base: 'تعيين الأساسي #%{id}'
+      base: أساسي
+      offset: إزاحة
+      offset_none: —
+      base_capture: التسجيل الأساسي
+      analyze_duration: مدة التحليل (ثانية)
+      sample_rate: Sample rate (Hz)
+      submit: بدء المزامنة
     hls:
-      title: "HLS"
-      ready: "HLS جاهز"
-      regenerate: "إعادة إنشاء HLS"
-      processing: "جارٍ إنشاء HLS..."
-      refresh: "تحديث الحالة"
-      generate: "إنشاء HLS"
-      error: "خطأ"
+      title: HLS
+      ready: HLS جاهز
+      regenerate: إعادة إنشاء HLS
+      processing: جارٍ إنشاء HLS...
+      refresh: تحديث الحالة
+      generate: إنشاء HLS
+      error: خطأ
   auth:
-    login_required: "يرجى تسجيل الدخول."
-    login_success: "تم تسجيل الدخول بنجاح."
-    invalid_credentials: "اسم المستخدم أو كلمة المرور غير صحيحة."
-    logout_success: "تم تسجيل الخروج."
+    login_required: يرجى تسجيل الدخول.
+    login_success: تم تسجيل الدخول بنجاح.
+    invalid_credentials: اسم المستخدم أو كلمة المرور غير صحيحة.
+    logout_success: تم تسجيل الخروج.
     login:
-      title: "تسجيل الدخول"
-      username: "اسم المستخدم"
-      password: "كلمة المرور"
-      submit: "تسجيل الدخول"
+      title: تسجيل الدخول
+      username: اسم المستخدم
+      password: كلمة المرور
+      submit: تسجيل الدخول
   room:
-    title: "اختر غرفة"
-    code: "رمز الغرفة"
-    submit: "اختر الغرفة"
-    selected: "تم اختيار الغرفة: %{name}"
-    missing_code: "أدخل رمز الغرفة"
+    title: اختر غرفة
+    code: رمز الغرفة
+    submit: اختر الغرفة
+    selected: 'تم اختيار الغرفة: %{name}'
+    missing_code: أدخل رمز الغرفة
   calendar:
-    title: "التقويم"
-    empty: "لا توجد أحداث حتى الآن."
+    title: التقويم
+    empty: لا توجد أحداث حتى الآن.
   modal:
-    action: "إجراء"
+    action: إجراء

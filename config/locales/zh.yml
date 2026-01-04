@@ -1,205 +1,253 @@
 zh:
   time:
     formats:
-      default: "%Y/%m/%d %H:%M:%S"
-      short: "%m/%d %H:%M"
-      long: "%Y年%m月%d日 %H:%M"
+      default: '%Y/%m/%d %H:%M:%S'
+      short: '%m/%d %H:%M'
+      long: '%Y年%m月%d日 %H:%M'
   date:
     formats:
-      default: "%Y/%m/%d"
-      short: "%m/%d"
-      long: "%Y年%m月%d日"
-    month_names: ["", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-    abbr_month_names: ["", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-    day_names: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
-    abbr_day_names: ["日", "一", "二", "三", "四", "五", "六"]
+      default: '%Y/%m/%d'
+      short: '%m/%d'
+      long: '%Y年%m月%d日'
+    month_names:
+    - ''
+    - 1月
+    - 2月
+    - 3月
+    - 4月
+    - 5月
+    - 6月
+    - 7月
+    - 8月
+    - 9月
+    - 10月
+    - 11月
+    - 12月
+    abbr_month_names:
+    - ''
+    - 1月
+    - 2月
+    - 3月
+    - 4月
+    - 5月
+    - 6月
+    - 7月
+    - 8月
+    - 9月
+    - 10月
+    - 11月
+    - 12月
+    day_names:
+    - 星期日
+    - 星期一
+    - 星期二
+    - 星期三
+    - 星期四
+    - 星期五
+    - 星期六
+    abbr_day_names:
+    - 日
+    - 一
+    - 二
+    - 三
+    - 四
+    - 五
+    - 六
   views:
     pagination:
-      first: "&laquo; 首页"
-      last: "末页 &raquo;"
-      previous: "&lsaquo; 上一页"
-      next: "下一页 &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; 首页'
+      last: 末页 &raquo;
+      previous: '&lsaquo; 上一页'
+      next: 下一页 &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "显示 <b>1</b> 条"
-          few: "显示 <b>%{count}</b> 条"
-          many: "显示 <b>%{count}</b> 条"
-          other: "显示 <b>%{count}</b> 条"
+          one: 显示 <b>1</b> 条
+          few: 显示 <b>%{count}</b> 条
+          many: 显示 <b>%{count}</b> 条
+          other: 显示 <b>%{count}</b> 条
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "事件"
-    room: "房间"
-    login: "登录"
-    logout: "退出"
-    logout_confirm: "确定退出？"
-    cameras_online: "在线摄像头"
-    privacy_policy: "隐私政策"
-    language: "语言"
+    events: 事件
+    room: 房间
+    login: 登录
+    logout: 退出
+    logout_confirm: 确定退出？
+    cameras_online: 在线摄像头
+    privacy_policy: 隐私政策
+    language: 语言
   events:
     captures_count:
-      one: "1 个录制"
-      few: "%{count} 个录制"
-      many: "%{count} 个录制"
-      other: "%{count} 个录制"
+      one: 1 个录制
+      few: '%{count} 个录制'
+      many: '%{count} 个录制'
+      other: '%{count} 个录制'
     index:
-      title: "事件"
-      subtitle: "浏览并管理录制"
-      save_recording: "保存录制"
-      saving: "保存中..."
-      no_preview: "无预览"
-      record_label: "录制"
-      content: "内容"
-      empty: "暂无事件。"
-      id: "ID"
+      title: 事件
+      subtitle: 浏览并管理录制
+      save_recording: 保存录制
+      saving: 保存中...
+      no_preview: 无预览
+      record_label: 录制
+      content: 内容
+      empty: 暂无事件。
+      id: ID
     header:
-      all_events: "所有事件"
-      back: "返回"
-      publish: "发布"
-      hide: "隐藏"
-      delete_confirm: "删除此事件及其所有相关录制？"
+      all_events: 所有事件
+      back: 返回
+      publish: 发布
+      hide: 隐藏
+      delete_confirm: 删除此事件及其所有相关录制？
     navigation:
-      newer: "更新"
-      older: "更旧"
+      newer: 更新
+      older: 更旧
     labels:
-      recording_from: "录制于"
-      hidden: "已隐藏"
-      published: "已发布"
-      capture: "录制 #%{id}"
+      recording_from: 录制于
+      hidden: 已隐藏
+      published: 已发布
+      capture: '录制 #%{id}'
     show:
-      empty: "此事件没有录制。"
+      empty: 此事件没有录制。
     files:
-      title: "源文件"
-      capture: "录制 #%{id}"
-      download: "下载"
+      title: 源文件
+      capture: '录制 #%{id}'
+      download: 下载
     permissions:
-      room_required_delete: "请输入房间代码以删除此事件。"
-      room_mismatch_delete: "房间代码不匹配，无法删除事件。"
-      room_required_visibility: "请输入房间代码以更改事件可见性。"
-      room_mismatch_visibility: "房间代码不匹配，无法更改可见性。"
+      room_required_delete: 请输入房间代码以删除此事件。
+      room_mismatch_delete: 房间代码不匹配，无法删除事件。
+      room_required_visibility: 请输入房间代码以更改事件可见性。
+      room_mismatch_visibility: 房间代码不匹配，无法更改可见性。
     notices:
-      deleted_showing_older: "事件已删除。显示较旧的事件。"
-      deleted: "事件已删除。"
-      base_set: "已设置基础录制（录制 #%{id}）。"
-      offsets_updated: "偏移已更新：%{count}。"
-      offsets_skipped: "已跳过：%{ids}"
-      hls_already_processing: "录制 #%{id} 的 HLS 已在处理中。"
-      hls_started: "已开始为录制 #%{id} 生成 HLS。"
-      hls_none: "没有需要生成 HLS 的录制。"
-      hls_bulk_started: "已开始为 %{count} 个录制生成 HLS。"
-      visibility_changed: "事件现在为 %{status}。"
+      deleted_showing_older: 事件已删除。显示较旧的事件。
+      deleted: 事件已删除。
+      base_set: '已设置基础录制（录制 #%{id}）。'
+      offsets_updated: 偏移已更新：%{count}。
+      offsets_skipped: 已跳过：%{ids}
+      hls_already_processing: '录制 #%{id} 的 HLS 已在处理中。'
+      hls_started: '已开始为录制 #%{id} 生成 HLS。'
+      hls_none: 没有需要生成 HLS 的录制。
+      hls_bulk_started: 已开始为 %{count} 个录制生成 HLS。
+      visibility_changed: 事件现在为 %{status}。
     errors:
-      delete_failed: "无法删除事件。"
-      base_set_failed: "无法设置基础录制：%{error}"
-      no_captures_to_sync: "没有可同步的录制。"
-      sync_failed: "同步错误：%{error}"
-      no_video: "录制 #%{id} 没有附加视频。"
-      hls_start_failed: "无法启动 HLS 生成：%{error}"
-      hls_bulk_failed: "无法启动批量 HLS 生成：%{error}"
-      visibility_failed: "无法更新事件可见性。"
-      not_found: "未找到事件。"
-      capture_no_video: "录制 #%{id} 没有视频"
+      delete_failed: 无法删除事件。
+      base_set_failed: 无法设置基础录制：%{error}
+      no_captures_to_sync: 没有可同步的录制。
+      sync_failed: 同步错误：%{error}
+      no_video: '录制 #%{id} 没有附加视频。'
+      hls_start_failed: 无法启动 HLS 生成：%{error}
+      hls_bulk_failed: 无法启动批量 HLS 生成：%{error}
+      visibility_failed: 无法更新事件可见性。
+      not_found: 未找到事件。
+      capture_no_video: '录制 #%{id} 没有视频'
     meta:
-      title: "事件 #%{id}"
-      description: "录制于 %{time}"
+      title: '事件 #%{id}'
+      description: 录制于 %{time}
+    player_help:
+      title: 播放器控制
+      subtitle: 快捷手势与操作
+      items:
+      - 点击视频暂停/播放。
+      - 双击进入全屏。
+      - 按住左键并移动鼠标可加速/减速。
+      - 右键 — ⟲ 后退 1 秒。
   recorder:
-    signal_sent: "录制信号已发送。"
-    signal_sent_at: "录制信号已在 %{time} 发送"
+    signal_sent: 录制信号已发送。
+    signal_sent_at: 录制信号已在 %{time} 发送
     notices:
-      uploaded: "视频已上传"
+      uploaded: 视频已上传
     errors:
-      missing_params: "缺少视频或时间戳参数。"
-      invalid_timestamp: "时间戳无效。"
-      room_required: "请输入房间代码以保存录制。"
-      signal_failed: "发送录制信号失败：%{error}"
+      missing_params: 缺少视频或时间戳参数。
+      invalid_timestamp: 时间戳无效。
+      room_required: 请输入房间代码以保存录制。
+      signal_failed: 发送录制信号失败：%{error}
   video_switcher:
-    loading: "加载中…"
-    base_label: "基准"
-    offset_label: "偏移：%{offset}s"
-    camera_label: "摄像头 %{id}"
+    loading: 加载中…
+    base_label: 基准
+    offset_label: 偏移：%{offset}s
+    camera_label: 摄像头 %{id}
   sync_videos:
-    waiting_metadata: "等待元数据以设置锚帧…"
-    ready_select_anchor: "视频已就绪。请选择锚帧。"
-    set_anchor_first: "请先为每个视频设置锚帧。"
-    anchor_missing: "未选择锚帧"
-    anchor_text: "锚帧：%{time}s"
-    generate_hls_all: "为所有录制生成 HLS"
+    waiting_metadata: 等待元数据以设置锚帧…
+    ready_select_anchor: 视频已就绪。请选择锚帧。
+    set_anchor_first: 请先为每个视频设置锚帧。
+    anchor_missing: 未选择锚帧
+    anchor_text: 锚帧：%{time}s
+    generate_hls_all: 为所有录制生成 HLS
     sync:
-      title: "同步"
-      set_base: "设置基础 #%{id}"
-      base: "基础"
-      offset: "偏移"
-      offset_none: "—"
-      base_capture: "基础录制"
-      analyze_duration: "分析时长（秒）"
-      sample_rate: "采样率（Hz）"
-      submit: "开始同步"
+      title: 同步
+      set_base: '设置基础 #%{id}'
+      base: 基础
+      offset: 偏移
+      offset_none: —
+      base_capture: 基础录制
+      analyze_duration: 分析时长（秒）
+      sample_rate: 采样率（Hz）
+      submit: 开始同步
     orientation:
-      title: "方向"
+      title: 方向
     hls:
-      ready: "HLS 就绪"
-      regenerate: "重新生成 HLS"
-      processing: "HLS 生成中..."
-      refresh: "刷新状态"
-      generate: "生成 HLS"
-      error: "错误"
+      ready: HLS 就绪
+      regenerate: 重新生成 HLS
+      processing: HLS 生成中...
+      refresh: 刷新状态
+      generate: 生成 HLS
+      error: 错误
   admin:
-    title: "管理面板"
-    generate_hls_all: "为所有录制生成 HLS"
+    title: 管理面板
+    generate_hls_all: 为所有录制生成 HLS
     sync:
-      title: "同步"
-      set_base: "设置基础 #%{id}"
-      base: "基础"
-      offset: "偏移"
-      offset_none: "—"
-      base_capture: "基础录制"
-      analyze_duration: "分析时长（秒）"
-      sample_rate: "Sample rate (Hz)"
-      submit: "开始同步"
+      title: 同步
+      set_base: '设置基础 #%{id}'
+      base: 基础
+      offset: 偏移
+      offset_none: —
+      base_capture: 基础录制
+      analyze_duration: 分析时长（秒）
+      sample_rate: Sample rate (Hz)
+      submit: 开始同步
     hls:
-      title: "HLS"
-      ready: "HLS 就绪"
-      regenerate: "重新生成 HLS"
-      processing: "HLS 生成中..."
-      refresh: "刷新状态"
-      generate: "生成 HLS"
-      error: "错误"
+      title: HLS
+      ready: HLS 就绪
+      regenerate: 重新生成 HLS
+      processing: HLS 生成中...
+      refresh: 刷新状态
+      generate: 生成 HLS
+      error: 错误
   auth:
-    login_required: "请先登录。"
-    login_success: "登录成功。"
-    invalid_credentials: "用户名或密码无效。"
-    logout_success: "已退出。"
+    login_required: 请先登录。
+    login_success: 登录成功。
+    invalid_credentials: 用户名或密码无效。
+    logout_success: 已退出。
     login:
-      title: "登录"
-      username: "用户名"
-      password: "密码"
-      submit: "登录"
+      title: 登录
+      username: 用户名
+      password: 密码
+      submit: 登录
   room:
-    title: "选择房间"
-    code: "房间代码"
-    submit: "选择房间"
-    selected: "已选择房间：%{name}"
-    missing_code: "请输入房间代码"
+    title: 选择房间
+    code: 房间代码
+    submit: 选择房间
+    selected: 已选择房间：%{name}
+    missing_code: 请输入房间代码
   calendar:
-    title: "日历"
-    empty: "暂无事件。"
+    title: 日历
+    empty: 暂无事件。
   modal:
-    action: "操作"
+    action: 操作

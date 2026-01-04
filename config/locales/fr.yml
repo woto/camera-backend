@@ -1,205 +1,256 @@
 fr:
   time:
     formats:
-      default: "%d/%m/%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d/%m/%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d/%m/%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
-    abbr_month_names: ["", "janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"]
-    day_names: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
-    abbr_day_names: ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"]
+      default: '%d/%m/%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - janvier
+    - février
+    - mars
+    - avril
+    - mai
+    - juin
+    - juillet
+    - août
+    - septembre
+    - octobre
+    - novembre
+    - décembre
+    abbr_month_names:
+    - ''
+    - janv
+    - févr
+    - mars
+    - avr
+    - mai
+    - juin
+    - juil
+    - août
+    - sept
+    - oct
+    - nov
+    - déc
+    day_names:
+    - dimanche
+    - lundi
+    - mardi
+    - mercredi
+    - jeudi
+    - vendredi
+    - samedi
+    abbr_day_names:
+    - dim
+    - lun
+    - mar
+    - mer
+    - jeu
+    - ven
+    - sam
   views:
     pagination:
-      first: "&laquo; Première"
-      last: "Dernière &raquo;"
-      previous: "&lsaquo; Précédent"
-      next: "Suivant &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; Première'
+      last: Dernière &raquo;
+      previous: '&lsaquo; Précédent'
+      next: Suivant &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Affichage de <b>1</b> entrée"
-          few: "Affichage de <b>%{count}</b> entrées"
-          many: "Affichage de <b>%{count}</b> entrées"
-          other: "Affichage de <b>%{count}</b> entrées"
+          one: Affichage de <b>1</b> entrée
+          few: Affichage de <b>%{count}</b> entrées
+          many: Affichage de <b>%{count}</b> entrées
+          other: Affichage de <b>%{count}</b> entrées
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "Événements"
-    room: "Salle"
-    login: "Se connecter"
-    logout: "Se déconnecter"
-    logout_confirm: "Se déconnecter ?"
-    cameras_online: "Caméras en ligne"
-    privacy_policy: "Politique de confidentialité"
-    language: "Langue"
+    events: Événements
+    room: Salle
+    login: Se connecter
+    logout: Se déconnecter
+    logout_confirm: Se déconnecter ?
+    cameras_online: Caméras en ligne
+    privacy_policy: Politique de confidentialité
+    language: Langue
   events:
     captures_count:
-      one: "1 enregistrement"
-      few: "%{count} enregistrements"
-      many: "%{count} enregistrements"
-      other: "%{count} enregistrements"
+      one: 1 enregistrement
+      few: '%{count} enregistrements'
+      many: '%{count} enregistrements'
+      other: '%{count} enregistrements'
     index:
-      title: "Événements"
-      subtitle: "Parcourir et gérer les enregistrements"
-      save_recording: "Enregistrer"
-      saving: "Enregistrement..."
-      no_preview: "Pas d’aperçu"
-      record_label: "Enregistrement"
-      content: "Contenu"
-      empty: "Aucun événement pour le moment."
-      id: "ID"
+      title: Événements
+      subtitle: Parcourir et gérer les enregistrements
+      save_recording: Enregistrer
+      saving: Enregistrement...
+      no_preview: Pas d’aperçu
+      record_label: Enregistrement
+      content: Contenu
+      empty: Aucun événement pour le moment.
+      id: ID
     header:
-      all_events: "Tous les événements"
-      back: "Retour"
-      publish: "Publier"
-      hide: "Masquer"
-      delete_confirm: "Supprimer cet événement et tous les enregistrements associés ?"
+      all_events: Tous les événements
+      back: Retour
+      publish: Publier
+      hide: Masquer
+      delete_confirm: Supprimer cet événement et tous les enregistrements associés
+        ?
     navigation:
-      newer: "Plus récents"
-      older: "Plus anciens"
+      newer: Plus récents
+      older: Plus anciens
     labels:
-      recording_from: "Enregistré le"
-      hidden: "Masqué"
-      published: "Publié"
-      capture: "Capture #%{id}"
+      recording_from: Enregistré le
+      hidden: Masqué
+      published: Publié
+      capture: 'Capture #%{id}'
     show:
-      empty: "Aucun enregistrement pour cet événement."
+      empty: Aucun enregistrement pour cet événement.
     files:
-      title: "Fichiers source"
-      capture: "Capture #%{id}"
-      download: "Télécharger"
+      title: Fichiers source
+      capture: 'Capture #%{id}'
+      download: Télécharger
     permissions:
-      room_required_delete: "Entrez le code de la salle pour supprimer cet événement."
-      room_mismatch_delete: "Le code de la salle ne correspond pas pour supprimer l'événement."
-      room_required_visibility: "Entrez le code de la salle pour modifier la visibilité de l'événement."
-      room_mismatch_visibility: "Le code de la salle ne correspond pas pour modifier la visibilité."
+      room_required_delete: Entrez le code de la salle pour supprimer cet événement.
+      room_mismatch_delete: Le code de la salle ne correspond pas pour supprimer l'événement.
+      room_required_visibility: Entrez le code de la salle pour modifier la visibilité
+        de l'événement.
+      room_mismatch_visibility: Le code de la salle ne correspond pas pour modifier
+        la visibilité.
     notices:
-      deleted_showing_older: "Événement supprimé. Affichage d'un événement plus ancien."
-      deleted: "Événement supprimé."
-      base_set: "Capture de base définie (Capture #%{id})."
-      offsets_updated: "Décalages mis à jour : %{count}."
-      offsets_skipped: "ignoré(s) : %{ids}"
-      hls_already_processing: "Le HLS est déjà en cours pour la capture #%{id}."
-      hls_started: "Génération HLS démarrée pour la capture #%{id}."
-      hls_none: "Aucune capture ne nécessite une génération HLS."
-      hls_bulk_started: "Génération HLS démarrée pour %{count} captures."
-      visibility_changed: "L'événement est maintenant %{status}."
+      deleted_showing_older: Événement supprimé. Affichage d'un événement plus ancien.
+      deleted: Événement supprimé.
+      base_set: 'Capture de base définie (Capture #%{id}).'
+      offsets_updated: 'Décalages mis à jour : %{count}.'
+      offsets_skipped: 'ignoré(s) : %{ids}'
+      hls_already_processing: 'Le HLS est déjà en cours pour la capture #%{id}.'
+      hls_started: 'Génération HLS démarrée pour la capture #%{id}.'
+      hls_none: Aucune capture ne nécessite une génération HLS.
+      hls_bulk_started: Génération HLS démarrée pour %{count} captures.
+      visibility_changed: L'événement est maintenant %{status}.
     errors:
-      delete_failed: "Impossible de supprimer l'événement."
-      base_set_failed: "Impossible de définir la capture de base : %{error}"
-      no_captures_to_sync: "Aucune capture à synchroniser."
-      sync_failed: "Erreur de synchronisation : %{error}"
-      no_video: "La capture #%{id} n'a pas de vidéo jointe."
-      hls_start_failed: "Impossible de lancer la génération HLS : %{error}"
-      hls_bulk_failed: "Impossible de lancer la génération HLS en masse : %{error}"
-      visibility_failed: "Impossible de mettre à jour la visibilité de l'événement."
-      not_found: "Événement introuvable."
-      capture_no_video: "Capture #%{id} sans vidéo"
+      delete_failed: Impossible de supprimer l'événement.
+      base_set_failed: 'Impossible de définir la capture de base : %{error}'
+      no_captures_to_sync: Aucune capture à synchroniser.
+      sync_failed: 'Erreur de synchronisation : %{error}'
+      no_video: 'La capture #%{id} n''a pas de vidéo jointe.'
+      hls_start_failed: 'Impossible de lancer la génération HLS : %{error}'
+      hls_bulk_failed: 'Impossible de lancer la génération HLS en masse : %{error}'
+      visibility_failed: Impossible de mettre à jour la visibilité de l'événement.
+      not_found: Événement introuvable.
+      capture_no_video: 'Capture #%{id} sans vidéo'
     meta:
-      title: "Événement #%{id}"
-      description: "Enregistré le %{time}"
+      title: 'Événement #%{id}'
+      description: Enregistré le %{time}
+    player_help:
+      title: Commandes du lecteur
+      subtitle: Gestes rapides et actions utiles
+      items:
+      - Cliquez sur la vidéo pour pause/lecture.
+      - Double‑clic pour le plein écran.
+      - Maintenez le bouton gauche et bougez la souris pour accélérer/ralentir.
+      - Bouton droit — ⟲ 1 s en arrière.
   recorder:
-    signal_sent: "Signal d'enregistrement envoyé."
-    signal_sent_at: "Signal d'enregistrement envoyé à %{time}"
+    signal_sent: Signal d'enregistrement envoyé.
+    signal_sent_at: Signal d'enregistrement envoyé à %{time}
     notices:
-      uploaded: "Vidéo envoyée"
+      uploaded: Vidéo envoyée
     errors:
-      missing_params: "Paramètres vidéo/horodatage manquants."
-      invalid_timestamp: "Horodatage invalide."
-      room_required: "Entrez le code de la salle pour enregistrer la vidéo."
-      signal_failed: "Échec de l'envoi du signal d'enregistrement : %{error}"
+      missing_params: Paramètres vidéo/horodatage manquants.
+      invalid_timestamp: Horodatage invalide.
+      room_required: Entrez le code de la salle pour enregistrer la vidéo.
+      signal_failed: 'Échec de l''envoi du signal d''enregistrement : %{error}'
   video_switcher:
-    loading: "Chargement…"
-    base_label: "Base"
-    offset_label: "Décalage : %{offset}s"
-    camera_label: "CAMÉRA %{id}"
+    loading: Chargement…
+    base_label: Base
+    offset_label: 'Décalage : %{offset}s'
+    camera_label: CAMÉRA %{id}
   sync_videos:
-    waiting_metadata: "En attente des métadonnées pour fixer l'image d'ancrage…"
-    ready_select_anchor: "Vidéo prête. Sélectionnez l'image d'ancrage."
-    set_anchor_first: "Définissez d'abord une image d'ancrage pour chaque vidéo."
-    anchor_missing: "Image d'ancrage non sélectionnée"
-    anchor_text: "Image d'ancrage : %{time}s"
-    generate_hls_all: "Générer le HLS pour toutes les captures"
+    waiting_metadata: En attente des métadonnées pour fixer l'image d'ancrage…
+    ready_select_anchor: Vidéo prête. Sélectionnez l'image d'ancrage.
+    set_anchor_first: Définissez d'abord une image d'ancrage pour chaque vidéo.
+    anchor_missing: Image d'ancrage non sélectionnée
+    anchor_text: 'Image d''ancrage : %{time}s'
+    generate_hls_all: Générer le HLS pour toutes les captures
     sync:
-      title: "Synchronisation"
-      set_base: "Définir la base #%{id}"
-      base: "Base"
-      offset: "Décalage"
-      offset_none: "—"
-      base_capture: "Capture de base"
-      analyze_duration: "Durée de l'analyse (s)"
-      sample_rate: "Fréquence d'échantillonnage (Hz)"
-      submit: "Démarrer la synchronisation"
+      title: Synchronisation
+      set_base: 'Définir la base #%{id}'
+      base: Base
+      offset: Décalage
+      offset_none: —
+      base_capture: Capture de base
+      analyze_duration: Durée de l'analyse (s)
+      sample_rate: Fréquence d'échantillonnage (Hz)
+      submit: Démarrer la synchronisation
     orientation:
-      title: "Orientation"
+      title: Orientation
     hls:
-      ready: "HLS prêt"
-      regenerate: "Régénérer le HLS"
-      processing: "Traitement HLS..."
-      refresh: "Actualiser le statut"
-      generate: "Générer le HLS"
-      error: "Erreur"
+      ready: HLS prêt
+      regenerate: Régénérer le HLS
+      processing: Traitement HLS...
+      refresh: Actualiser le statut
+      generate: Générer le HLS
+      error: Erreur
   admin:
-    title: "Panneau d'administration"
-    generate_hls_all: "Générer HLS pour toutes les captures"
+    title: Panneau d'administration
+    generate_hls_all: Générer HLS pour toutes les captures
     sync:
-      title: "Synchronisation"
-      set_base: "Définir la base #%{id}"
-      base: "Base"
-      offset: "Décalage"
-      offset_none: "—"
-      base_capture: "Capture de base"
-      analyze_duration: "Durée d'analyse (s)"
-      sample_rate: "Sample rate (Hz)"
-      submit: "Lancer la synchronisation"
+      title: Synchronisation
+      set_base: 'Définir la base #%{id}'
+      base: Base
+      offset: Décalage
+      offset_none: —
+      base_capture: Capture de base
+      analyze_duration: Durée d'analyse (s)
+      sample_rate: Sample rate (Hz)
+      submit: Lancer la synchronisation
     hls:
-      title: "HLS"
-      ready: "HLS prêt"
-      regenerate: "Régénérer HLS"
-      processing: "Traitement HLS..."
-      refresh: "Actualiser l'état"
-      generate: "Générer HLS"
-      error: "Erreur"
+      title: HLS
+      ready: HLS prêt
+      regenerate: Régénérer HLS
+      processing: Traitement HLS...
+      refresh: Actualiser l'état
+      generate: Générer HLS
+      error: Erreur
   auth:
-    login_required: "Veuillez vous connecter."
-    login_success: "Connexion réussie."
-    invalid_credentials: "Nom d'utilisateur ou mot de passe invalide."
-    logout_success: "Déconnexion réussie."
+    login_required: Veuillez vous connecter.
+    login_success: Connexion réussie.
+    invalid_credentials: Nom d'utilisateur ou mot de passe invalide.
+    logout_success: Déconnexion réussie.
     login:
-      title: "Connexion"
-      username: "Nom d'utilisateur"
-      password: "Mot de passe"
-      submit: "Se connecter"
+      title: Connexion
+      username: Nom d'utilisateur
+      password: Mot de passe
+      submit: Se connecter
   room:
-    title: "Sélectionner une salle"
-    code: "Code de la salle"
-    submit: "Sélectionner la salle"
-    selected: "Salle sélectionnée : %{name}"
-    missing_code: "Entrez le code de la salle"
+    title: Sélectionner une salle
+    code: Code de la salle
+    submit: Sélectionner la salle
+    selected: 'Salle sélectionnée : %{name}'
+    missing_code: Entrez le code de la salle
   calendar:
-    title: "Calendrier"
-    empty: "Aucun événement pour le moment."
+    title: Calendrier
+    empty: Aucun événement pour le moment.
   modal:
-    action: "Action"
+    action: Action

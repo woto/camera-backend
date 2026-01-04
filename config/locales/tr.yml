@@ -1,188 +1,237 @@
 tr:
   time:
     formats:
-      default: "%d.%m.%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d.%m.%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d.%m.%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
-    abbr_month_names: ["", "Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"]
-    day_names: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]
-    abbr_day_names: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"]
+      default: '%d.%m.%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - Ocak
+    - Şubat
+    - Mart
+    - Nisan
+    - Mayıs
+    - Haziran
+    - Temmuz
+    - Ağustos
+    - Eylül
+    - Ekim
+    - Kasım
+    - Aralık
+    abbr_month_names:
+    - ''
+    - Oca
+    - Şub
+    - Mar
+    - Nis
+    - May
+    - Haz
+    - Tem
+    - Ağu
+    - Eyl
+    - Eki
+    - Kas
+    - Ara
+    day_names:
+    - Pazar
+    - Pazartesi
+    - Salı
+    - Çarşamba
+    - Perşembe
+    - Cuma
+    - Cumartesi
+    abbr_day_names:
+    - Paz
+    - Pzt
+    - Sal
+    - Çar
+    - Per
+    - Cum
+    - Cmt
   views:
     pagination:
-      first: "&laquo; İlk"
-      last: "Son &raquo;"
-      previous: "&lsaquo; Önceki"
-      next: "Sonraki &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; İlk'
+      last: Son &raquo;
+      previous: '&lsaquo; Önceki'
+      next: Sonraki &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Gösteriliyor <b>1</b> kayıt"
-          few: "Gösteriliyor <b>%{count}</b> kayıt"
-          many: "Gösteriliyor <b>%{count}</b> kayıt"
-          other: "Gösteriliyor <b>%{count}</b> kayıt"
+          one: Gösteriliyor <b>1</b> kayıt
+          few: Gösteriliyor <b>%{count}</b> kayıt
+          many: Gösteriliyor <b>%{count}</b> kayıt
+          other: Gösteriliyor <b>%{count}</b> kayıt
   locales:
-    ar: "Arapça"
-    de: "Almanca"
-    en: "İngilizce"
-    es: "İspanyolca"
-    fr: "Fransızca"
-    id: "Endonezce"
-    it: "İtalyanca"
-    ja: "Japonca"
-    nl: "Hollandaca"
-    pl: "Lehçe"
-    pt: "Portekizce"
-    "pt-BR": "Portekizce (Brezilya)"
-    ru: "Rusça"
-    sr: "Sırpça"
-    tr: "Türkçe"
-    zh: "Çince"
+    ar: Arapça
+    de: Almanca
+    en: İngilizce
+    es: İspanyolca
+    fr: Fransızca
+    id: Endonezce
+    it: İtalyanca
+    ja: Japonca
+    nl: Hollandaca
+    pl: Lehçe
+    pt: Portekizce
+    pt-BR: Portekizce (Brezilya)
+    ru: Rusça
+    sr: Sırpça
+    tr: Türkçe
+    zh: Çince
   nav:
-    events: "Etkinlikler"
-    room: "Oda"
-    login: "Giriş yap"
-    logout: "Çıkış yap"
-    logout_confirm: "Çıkış yapılsın mı?"
-    cameras_online: "Çevrimiçi kameralar"
-    privacy_policy: "Gizlilik politikası"
-    language: "Dil"
+    events: Etkinlikler
+    room: Oda
+    login: Giriş yap
+    logout: Çıkış yap
+    logout_confirm: Çıkış yapılsın mı?
+    cameras_online: Çevrimiçi kameralar
+    privacy_policy: Gizlilik politikası
+    language: Dil
   events:
     captures_count:
-      one: "1 kayıt"
-      few: "%{count} kayıt"
-      many: "%{count} kayıt"
-      other: "%{count} kayıt"
+      one: 1 kayıt
+      few: '%{count} kayıt'
+      many: '%{count} kayıt'
+      other: '%{count} kayıt'
     index:
-      title: "Etkinlikler"
-      subtitle: "Kayıtları inceleyin ve yönetin"
-      save_recording: "Kaydı kaydet"
-      saving: "Kaydediliyor..."
-      no_preview: "Önizleme yok"
-      record_label: "Kayıt"
-      content: "İçerik"
-      empty: "Henüz etkinlik yok."
-      id: "ID"
+      title: Etkinlikler
+      subtitle: Kayıtları inceleyin ve yönetin
+      save_recording: Kaydı kaydet
+      saving: Kaydediliyor...
+      no_preview: Önizleme yok
+      record_label: Kayıt
+      content: İçerik
+      empty: Henüz etkinlik yok.
+      id: ID
     header:
-      all_events: "Tüm etkinlikler"
-      back: "Geri"
-      publish: "Yayınla"
-      hide: "Gizle"
-      delete_confirm: "Bu etkinliği ve tüm ilgili kayıtları sil?"
+      all_events: Tüm etkinlikler
+      back: Geri
+      publish: Yayınla
+      hide: Gizle
+      delete_confirm: Bu etkinliği ve tüm ilgili kayıtları sil?
     navigation:
-      newer: "Daha yeni"
-      older: "Daha eski"
+      newer: Daha yeni
+      older: Daha eski
     labels:
-      recording_from: "Kaydedildi"
-      hidden: "Gizli"
-      published: "Yayında"
-      capture: "Yakalama #%{id}"
+      recording_from: Kaydedildi
+      hidden: Gizli
+      published: Yayında
+      capture: 'Yakalama #%{id}'
     show:
-      empty: "Bu etkinlik için kayıt yok."
+      empty: Bu etkinlik için kayıt yok.
     files:
-      title: "Kaynak dosyalar"
-      capture: "Yakalama #%{id}"
-      download: "İndir"
+      title: Kaynak dosyalar
+      capture: 'Yakalama #%{id}'
+      download: İndir
     permissions:
-      room_required_delete: "Bu etkinliği silmek için oda kodunu girin."
-      room_mismatch_delete: "Oda kodu etkinliği silmek için eşleşmiyor."
-      room_required_visibility: "Etkinlik görünürlüğünü değiştirmek için oda kodunu girin."
-      room_mismatch_visibility: "Oda kodu görünürlüğü değiştirmek için eşleşmiyor."
+      room_required_delete: Bu etkinliği silmek için oda kodunu girin.
+      room_mismatch_delete: Oda kodu etkinliği silmek için eşleşmiyor.
+      room_required_visibility: Etkinlik görünürlüğünü değiştirmek için oda kodunu
+        girin.
+      room_mismatch_visibility: Oda kodu görünürlüğü değiştirmek için eşleşmiyor.
     notices:
-      deleted_showing_older: "Etkinlik silindi. Daha eski bir etkinlik gösteriliyor."
-      deleted: "Etkinlik silindi."
-      base_set: "Temel yakalama ayarlandı (Yakalama #%{id})."
-      offsets_updated: "Ofsetler güncellendi: %{count}."
-      offsets_skipped: "atlanmış: %{ids}"
-      hls_already_processing: "HLS zaten Yakalama #%{id} için işleniyor."
-      hls_started: "Yakalama #%{id} için HLS üretimi başladı."
-      hls_none: "HLS üretimi gerektiren yakalama yok."
-      hls_bulk_started: "%{count} yakalama için HLS üretimi başladı."
-      visibility_changed: "Etkinlik artık %{status}."
+      deleted_showing_older: Etkinlik silindi. Daha eski bir etkinlik gösteriliyor.
+      deleted: Etkinlik silindi.
+      base_set: 'Temel yakalama ayarlandı (Yakalama #%{id}).'
+      offsets_updated: 'Ofsetler güncellendi: %{count}.'
+      offsets_skipped: 'atlanmış: %{ids}'
+      hls_already_processing: 'HLS zaten Yakalama #%{id} için işleniyor.'
+      hls_started: 'Yakalama #%{id} için HLS üretimi başladı.'
+      hls_none: HLS üretimi gerektiren yakalama yok.
+      hls_bulk_started: '%{count} yakalama için HLS üretimi başladı.'
+      visibility_changed: Etkinlik artık %{status}.
     errors:
-      delete_failed: "Etkinlik silinemedi."
-      base_set_failed: "Temel yakalama ayarlanamadı: %{error}"
-      no_captures_to_sync: "Senkronize edilecek yakalama yok."
-      sync_failed: "Senkronizasyon hatası: %{error}"
-      no_video: "Yakalama #%{id} bağlı video içermiyor."
-      hls_start_failed: "HLS üretimi başlatılamadı: %{error}"
-      hls_bulk_failed: "Toplu HLS üretimi başlatılamadı: %{error}"
-      visibility_failed: "Etkinlik görünürlüğü güncellenemedi."
-      not_found: "Etkinlik bulunamadı."
-      capture_no_video: "Yakalama #%{id} videosuz"
+      delete_failed: Etkinlik silinemedi.
+      base_set_failed: 'Temel yakalama ayarlanamadı: %{error}'
+      no_captures_to_sync: Senkronize edilecek yakalama yok.
+      sync_failed: 'Senkronizasyon hatası: %{error}'
+      no_video: 'Yakalama #%{id} bağlı video içermiyor.'
+      hls_start_failed: 'HLS üretimi başlatılamadı: %{error}'
+      hls_bulk_failed: 'Toplu HLS üretimi başlatılamadı: %{error}'
+      visibility_failed: Etkinlik görünürlüğü güncellenemedi.
+      not_found: Etkinlik bulunamadı.
+      capture_no_video: 'Yakalama #%{id} videosuz'
     meta:
-      title: "Etkinlik #%{id}"
-      description: "%{time} tarihinde kaydedildi"
+      title: 'Etkinlik #%{id}'
+      description: '%{time} tarihinde kaydedildi'
+    player_help:
+      title: Oynatıcı kontrolleri
+      subtitle: Hızlı hareketler ve işlemler
+      items:
+      - 'Videoya tıklayın: duraklat/oynat.'
+      - 'Çift tıklama: tam ekran.'
+      - Sol tuşa basılı tutup hareket ettirerek hızlandır/yavaşlat.
+      - Sağ tuş — ⟲ 1 sn geri.
   admin:
-    title: "Yönetim paneli"
+    title: Yönetim paneli
     hls:
-      title: "HLS"
+      title: HLS
   recorder:
-    signal_sent: "Kayıt sinyali gönderildi."
-    signal_sent_at: "Kayıt sinyali %{time} gönderildi"
+    signal_sent: Kayıt sinyali gönderildi.
+    signal_sent_at: Kayıt sinyali %{time} gönderildi
     notices:
-      uploaded: "Video yüklendi"
+      uploaded: Video yüklendi
     errors:
-      missing_params: "Video/zaman damgası parametreleri eksik"
-      invalid_timestamp: "Geçersiz zaman damgası"
-      room_required: "Kaydı kaydetmek için oda kodunu girin."
-      signal_failed: "Yakalama sinyali gönderilemedi: %{error}"
+      missing_params: Video/zaman damgası parametreleri eksik
+      invalid_timestamp: Geçersiz zaman damgası
+      room_required: Kaydı kaydetmek için oda kodunu girin.
+      signal_failed: 'Yakalama sinyali gönderilemedi: %{error}'
   video_switcher:
-    loading: "Yükleniyor…"
-    base_label: "Temel"
-    offset_label: "Ofset: %{offset}s"
-    camera_label: "KAM %{id}"
+    loading: Yükleniyor…
+    base_label: Temel
+    offset_label: 'Ofset: %{offset}s'
+    camera_label: KAM %{id}
   sync_videos:
-    waiting_metadata: "Çapa karesini ayarlamak için meta veriler bekleniyor…"
-    ready_select_anchor: "Video hazır. Çapa karesi seçin."
-    set_anchor_first: "Önce her video için çapa karesi ayarlayın."
-    anchor_missing: "Çapa karesi seçilmedi"
-    anchor_text: "Çapa karesi: %{time}s"
-    generate_hls_all: "Tüm yakalamalar için HLS üret"
+    waiting_metadata: Çapa karesini ayarlamak için meta veriler bekleniyor…
+    ready_select_anchor: Video hazır. Çapa karesi seçin.
+    set_anchor_first: Önce her video için çapa karesi ayarlayın.
+    anchor_missing: Çapa karesi seçilmedi
+    anchor_text: 'Çapa karesi: %{time}s'
+    generate_hls_all: Tüm yakalamalar için HLS üret
     sync:
-      title: "Senkronizasyon"
-      set_base: "Temel #%{id} ayarla"
-      base: "Temel"
-      offset: "Ofset"
-      offset_none: "—"
-      base_capture: "Temel yakalama"
-      analyze_duration: "Analiz süresi (sn)"
-      sample_rate: "Örnekleme hızı (Hz)"
-      submit: "Senkronizasyonu başlat"
+      title: Senkronizasyon
+      set_base: 'Temel #%{id} ayarla'
+      base: Temel
+      offset: Ofset
+      offset_none: —
+      base_capture: Temel yakalama
+      analyze_duration: Analiz süresi (sn)
+      sample_rate: Örnekleme hızı (Hz)
+      submit: Senkronizasyonu başlat
     orientation:
-      title: "Yön"
+      title: Yön
     hls:
-      ready: "HLS hazır"
-      regenerate: "HLS'yi yeniden üret"
-      processing: "HLS işleniyor..."
-      refresh: "Durumu yenile"
-      generate: "HLS üret"
-      error: "Hata"
+      ready: HLS hazır
+      regenerate: HLS'yi yeniden üret
+      processing: HLS işleniyor...
+      refresh: Durumu yenile
+      generate: HLS üret
+      error: Hata
   auth:
-    login_required: "Lütfen giriş yapın."
-    login_success: "Başarıyla giriş yapıldı."
-    invalid_credentials: "Geçersiz kullanıcı adı veya şifre."
-    logout_success: "Çıkış yapıldı."
+    login_required: Lütfen giriş yapın.
+    login_success: Başarıyla giriş yapıldı.
+    invalid_credentials: Geçersiz kullanıcı adı veya şifre.
+    logout_success: Çıkış yapıldı.
     login:
-      title: "Giriş yap"
-      username: "Kullanıcı adı"
-      password: "Şifre"
-      submit: "Giriş yap"
+      title: Giriş yap
+      username: Kullanıcı adı
+      password: Şifre
+      submit: Giriş yap
   room:
-    title: "Oda seç"
-    code: "Oda kodu"
-    submit: "Oda seç"
-    selected: "Oda seçildi: %{name}"
-    missing_code: "Oda kodu girin"
+    title: Oda seç
+    code: Oda kodu
+    submit: Oda seç
+    selected: 'Oda seçildi: %{name}'
+    missing_code: Oda kodu girin
   calendar:
-    title: "Takvim"
-    empty: "Henüz etkinlik yok."
+    title: Takvim
+    empty: Henüz etkinlik yok.
   modal:
-    action: "İşlem"
+    action: İşlem

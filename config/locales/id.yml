@@ -1,205 +1,253 @@
 id:
   time:
     formats:
-      default: "%d/%m/%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d/%m/%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d/%m/%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
-    abbr_month_names: ["", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
-    day_names: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
-    abbr_day_names: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"]
+      default: '%d/%m/%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - Januari
+    - Februari
+    - Maret
+    - April
+    - Mei
+    - Juni
+    - Juli
+    - Agustus
+    - September
+    - Oktober
+    - November
+    - Desember
+    abbr_month_names:
+    - ''
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - Mei
+    - Jun
+    - Jul
+    - Agu
+    - Sep
+    - Okt
+    - Nov
+    - Des
+    day_names:
+    - Minggu
+    - Senin
+    - Selasa
+    - Rabu
+    - Kamis
+    - Jumat
+    - Sabtu
+    abbr_day_names:
+    - Min
+    - Sen
+    - Sel
+    - Rab
+    - Kam
+    - Jum
+    - Sab
   views:
     pagination:
-      first: "&laquo; Pertama"
-      last: "Terakhir &raquo;"
-      previous: "&lsaquo; Sebelumnya"
-      next: "Berikutnya &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; Pertama'
+      last: Terakhir &raquo;
+      previous: '&lsaquo; Sebelumnya'
+      next: Berikutnya &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Menampilkan <b>1</b> entri"
-          few: "Menampilkan <b>%{count}</b> entri"
-          many: "Menampilkan <b>%{count}</b> entri"
-          other: "Menampilkan <b>%{count}</b> entri"
+          one: Menampilkan <b>1</b> entri
+          few: Menampilkan <b>%{count}</b> entri
+          many: Menampilkan <b>%{count}</b> entri
+          other: Menampilkan <b>%{count}</b> entri
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "Acara"
-    room: "Ruang"
-    login: "Masuk"
-    logout: "Keluar"
-    logout_confirm: "Keluar?"
-    cameras_online: "Kamera online"
-    privacy_policy: "Kebijakan privasi"
-    language: "Bahasa"
+    events: Acara
+    room: Ruang
+    login: Masuk
+    logout: Keluar
+    logout_confirm: Keluar?
+    cameras_online: Kamera online
+    privacy_policy: Kebijakan privasi
+    language: Bahasa
   events:
     captures_count:
-      one: "1 rekaman"
-      few: "%{count} rekaman"
-      many: "%{count} rekaman"
-      other: "%{count} rekaman"
+      one: 1 rekaman
+      few: '%{count} rekaman'
+      many: '%{count} rekaman'
+      other: '%{count} rekaman'
     index:
-      title: "Acara"
-      subtitle: "Lihat dan kelola rekaman"
-      save_recording: "Simpan rekaman"
-      saving: "Menyimpan..."
-      no_preview: "Tidak ada pratinjau"
-      record_label: "Rekaman"
-      content: "Konten"
-      empty: "Belum ada acara."
-      id: "ID"
+      title: Acara
+      subtitle: Lihat dan kelola rekaman
+      save_recording: Simpan rekaman
+      saving: Menyimpan...
+      no_preview: Tidak ada pratinjau
+      record_label: Rekaman
+      content: Konten
+      empty: Belum ada acara.
+      id: ID
     header:
-      all_events: "Semua acara"
-      back: "Kembali"
-      publish: "Publikasikan"
-      hide: "Sembunyikan"
-      delete_confirm: "Hapus acara ini dan semua rekaman terkait?"
+      all_events: Semua acara
+      back: Kembali
+      publish: Publikasikan
+      hide: Sembunyikan
+      delete_confirm: Hapus acara ini dan semua rekaman terkait?
     navigation:
-      newer: "Lebih baru"
-      older: "Lebih lama"
+      newer: Lebih baru
+      older: Lebih lama
     labels:
-      recording_from: "Direkam pada"
-      hidden: "Disembunyikan"
-      published: "Dipublikasikan"
-      capture: "Capture #%{id}"
+      recording_from: Direkam pada
+      hidden: Disembunyikan
+      published: Dipublikasikan
+      capture: 'Capture #%{id}'
     show:
-      empty: "Tidak ada rekaman untuk acara ini."
+      empty: Tidak ada rekaman untuk acara ini.
     files:
-      title: "Berkas sumber"
-      capture: "Capture #%{id}"
-      download: "Unduh"
+      title: Berkas sumber
+      capture: 'Capture #%{id}'
+      download: Unduh
     permissions:
-      room_required_delete: "Masukkan kode ruang untuk menghapus acara ini."
-      room_mismatch_delete: "Kode ruang tidak cocok untuk menghapus acara."
-      room_required_visibility: "Masukkan kode ruang untuk mengubah visibilitas acara."
-      room_mismatch_visibility: "Kode ruang tidak cocok untuk mengubah visibilitas."
+      room_required_delete: Masukkan kode ruang untuk menghapus acara ini.
+      room_mismatch_delete: Kode ruang tidak cocok untuk menghapus acara.
+      room_required_visibility: Masukkan kode ruang untuk mengubah visibilitas acara.
+      room_mismatch_visibility: Kode ruang tidak cocok untuk mengubah visibilitas.
     notices:
-      deleted_showing_older: "Acara dihapus. Menampilkan acara yang lebih lama."
-      deleted: "Acara dihapus."
-      base_set: "Rekaman dasar ditetapkan (Capture #%{id})."
-      offsets_updated: "Offset diperbarui: %{count}."
-      offsets_skipped: "dilewati: %{ids}"
-      hls_already_processing: "HLS sudah diproses untuk Capture #%{id}."
-      hls_started: "Pembuatan HLS dimulai untuk Capture #%{id}."
-      hls_none: "Tidak ada rekaman yang perlu dibuat HLS."
-      hls_bulk_started: "Pembuatan HLS dimulai untuk %{count} rekaman."
-      visibility_changed: "Acara sekarang %{status}."
+      deleted_showing_older: Acara dihapus. Menampilkan acara yang lebih lama.
+      deleted: Acara dihapus.
+      base_set: 'Rekaman dasar ditetapkan (Capture #%{id}).'
+      offsets_updated: 'Offset diperbarui: %{count}.'
+      offsets_skipped: 'dilewati: %{ids}'
+      hls_already_processing: 'HLS sudah diproses untuk Capture #%{id}.'
+      hls_started: 'Pembuatan HLS dimulai untuk Capture #%{id}.'
+      hls_none: Tidak ada rekaman yang perlu dibuat HLS.
+      hls_bulk_started: Pembuatan HLS dimulai untuk %{count} rekaman.
+      visibility_changed: Acara sekarang %{status}.
     errors:
-      delete_failed: "Gagal menghapus acara."
-      base_set_failed: "Gagal menetapkan rekaman dasar: %{error}"
-      no_captures_to_sync: "Tidak ada rekaman untuk disinkronkan."
-      sync_failed: "Kesalahan sinkronisasi: %{error}"
-      no_video: "Capture #%{id} tidak memiliki video terlampir."
-      hls_start_failed: "Gagal memulai pembuatan HLS: %{error}"
-      hls_bulk_failed: "Gagal memulai pembuatan HLS massal: %{error}"
-      visibility_failed: "Gagal memperbarui visibilitas acara."
-      not_found: "Acara tidak ditemukan."
-      capture_no_video: "Capture #%{id} tanpa video"
+      delete_failed: Gagal menghapus acara.
+      base_set_failed: 'Gagal menetapkan rekaman dasar: %{error}'
+      no_captures_to_sync: Tidak ada rekaman untuk disinkronkan.
+      sync_failed: 'Kesalahan sinkronisasi: %{error}'
+      no_video: 'Capture #%{id} tidak memiliki video terlampir.'
+      hls_start_failed: 'Gagal memulai pembuatan HLS: %{error}'
+      hls_bulk_failed: 'Gagal memulai pembuatan HLS massal: %{error}'
+      visibility_failed: Gagal memperbarui visibilitas acara.
+      not_found: Acara tidak ditemukan.
+      capture_no_video: 'Capture #%{id} tanpa video'
     meta:
-      title: "Acara #%{id}"
-      description: "Direkam pada %{time}"
+      title: 'Acara #%{id}'
+      description: Direkam pada %{time}
+    player_help:
+      title: Kontrol pemutar
+      subtitle: Gestur dan aksi cepat
+      items:
+      - Klik video untuk jeda/putar.
+      - Klik dua kali untuk layar penuh.
+      - Tahan tombol kiri dan gerakkan untuk mempercepat/memperlambat.
+      - Tombol kanan — ⟲ mundur 1 dtk.
   recorder:
-    signal_sent: "Sinyal perekaman dikirim."
-    signal_sent_at: "Sinyal perekaman dikirim pada %{time}"
+    signal_sent: Sinyal perekaman dikirim.
+    signal_sent_at: Sinyal perekaman dikirim pada %{time}
     notices:
-      uploaded: "Video berhasil diunggah"
+      uploaded: Video berhasil diunggah
     errors:
-      missing_params: "Parameter video/timestamp tidak lengkap."
-      invalid_timestamp: "Timestamp tidak valid."
-      room_required: "Masukkan kode ruang untuk menyimpan rekaman."
-      signal_failed: "Gagal mengirim sinyal perekaman: %{error}"
+      missing_params: Parameter video/timestamp tidak lengkap.
+      invalid_timestamp: Timestamp tidak valid.
+      room_required: Masukkan kode ruang untuk menyimpan rekaman.
+      signal_failed: 'Gagal mengirim sinyal perekaman: %{error}'
   video_switcher:
-    loading: "Memuat…"
-    base_label: "Basis"
-    offset_label: "Offset: %{offset}s"
-    camera_label: "KAMERA %{id}"
+    loading: Memuat…
+    base_label: Basis
+    offset_label: 'Offset: %{offset}s'
+    camera_label: KAMERA %{id}
   sync_videos:
-    waiting_metadata: "Menunggu metadata untuk menetapkan frame jangkar…"
-    ready_select_anchor: "Video siap. Pilih frame jangkar."
-    set_anchor_first: "Setel dulu frame jangkar untuk setiap video."
-    anchor_missing: "Frame jangkar belum dipilih"
-    anchor_text: "Frame jangkar: %{time}s"
-    generate_hls_all: "Buat HLS untuk semua rekaman"
+    waiting_metadata: Menunggu metadata untuk menetapkan frame jangkar…
+    ready_select_anchor: Video siap. Pilih frame jangkar.
+    set_anchor_first: Setel dulu frame jangkar untuk setiap video.
+    anchor_missing: Frame jangkar belum dipilih
+    anchor_text: 'Frame jangkar: %{time}s'
+    generate_hls_all: Buat HLS untuk semua rekaman
     sync:
-      title: "Sinkronisasi"
-      set_base: "Tetapkan dasar #%{id}"
-      base: "Dasar"
-      offset: "Offset"
-      offset_none: "—"
-      base_capture: "Rekaman dasar"
-      analyze_duration: "Durasi analisis (detik)"
-      sample_rate: "Laju sampel (Hz)"
-      submit: "Mulai sinkronisasi"
+      title: Sinkronisasi
+      set_base: 'Tetapkan dasar #%{id}'
+      base: Dasar
+      offset: Offset
+      offset_none: —
+      base_capture: Rekaman dasar
+      analyze_duration: Durasi analisis (detik)
+      sample_rate: Laju sampel (Hz)
+      submit: Mulai sinkronisasi
     orientation:
-      title: "Orientasi"
+      title: Orientasi
     hls:
-      ready: "HLS siap"
-      regenerate: "Buat ulang HLS"
-      processing: "Memproses HLS..."
-      refresh: "Perbarui status"
-      generate: "Buat HLS"
-      error: "Kesalahan"
+      ready: HLS siap
+      regenerate: Buat ulang HLS
+      processing: Memproses HLS...
+      refresh: Perbarui status
+      generate: Buat HLS
+      error: Kesalahan
   admin:
-    title: "Panel admin"
-    generate_hls_all: "Buat HLS untuk semua rekaman"
+    title: Panel admin
+    generate_hls_all: Buat HLS untuk semua rekaman
     sync:
-      title: "Sinkronisasi"
-      set_base: "Tetapkan dasar #%{id}"
-      base: "Dasar"
-      offset: "Offset"
-      offset_none: "—"
-      base_capture: "Rekaman dasar"
-      analyze_duration: "Durasi analisis (detik)"
-      sample_rate: "Sample rate (Hz)"
-      submit: "Mulai sinkronisasi"
+      title: Sinkronisasi
+      set_base: 'Tetapkan dasar #%{id}'
+      base: Dasar
+      offset: Offset
+      offset_none: —
+      base_capture: Rekaman dasar
+      analyze_duration: Durasi analisis (detik)
+      sample_rate: Sample rate (Hz)
+      submit: Mulai sinkronisasi
     hls:
-      title: "HLS"
-      ready: "HLS siap"
-      regenerate: "Buat ulang HLS"
-      processing: "Memproses HLS..."
-      refresh: "Segarkan status"
-      generate: "Buat HLS"
-      error: "Kesalahan"
+      title: HLS
+      ready: HLS siap
+      regenerate: Buat ulang HLS
+      processing: Memproses HLS...
+      refresh: Segarkan status
+      generate: Buat HLS
+      error: Kesalahan
   auth:
-    login_required: "Silakan masuk."
-    login_success: "Berhasil masuk."
-    invalid_credentials: "Nama pengguna atau kata sandi salah."
-    logout_success: "Berhasil keluar."
+    login_required: Silakan masuk.
+    login_success: Berhasil masuk.
+    invalid_credentials: Nama pengguna atau kata sandi salah.
+    logout_success: Berhasil keluar.
     login:
-      title: "Masuk"
-      username: "Nama pengguna"
-      password: "Kata sandi"
-      submit: "Masuk"
+      title: Masuk
+      username: Nama pengguna
+      password: Kata sandi
+      submit: Masuk
   room:
-    title: "Pilih ruang"
-    code: "Kode ruang"
-    submit: "Pilih ruang"
-    selected: "Ruang dipilih: %{name}"
-    missing_code: "Masukkan kode ruang"
+    title: Pilih ruang
+    code: Kode ruang
+    submit: Pilih ruang
+    selected: 'Ruang dipilih: %{name}'
+    missing_code: Masukkan kode ruang
   calendar:
-    title: "Kalender"
-    empty: "Belum ada acara."
+    title: Kalender
+    empty: Belum ada acara.
   modal:
-    action: "Aksi"
+    action: Aksi

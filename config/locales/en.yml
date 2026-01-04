@@ -1,188 +1,236 @@
 en:
   time:
     formats:
-      default: "%Y-%m-%d %H:%M:%S"
-      short: "%b %d %H:%M"
-      long: "%B %d, %Y %H:%M"
+      default: '%Y-%m-%d %H:%M:%S'
+      short: '%b %d %H:%M'
+      long: '%B %d, %Y %H:%M'
   date:
     formats:
-      default: "%Y-%m-%d"
-      short: "%b %d"
-      long: "%B %d, %Y"
-    month_names: ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    abbr_month_names: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    day_names: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    abbr_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      default: '%Y-%m-%d'
+      short: '%b %d'
+      long: '%B %d, %Y'
+    month_names:
+    - ''
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    abbr_month_names:
+    - ''
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
   views:
     pagination:
-      first: "&laquo; First"
-      last: "Last &raquo;"
-      previous: "&lsaquo; Prev"
-      next: "Next &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; First'
+      last: Last &raquo;
+      previous: '&lsaquo; Prev'
+      next: Next &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Displaying <b>1</b> entry"
-          few: "Displaying <b>%{count}</b> entries"
-          many: "Displaying <b>%{count}</b> entries"
-          other: "Displaying <b>%{count}</b> entries"
+          one: Displaying <b>1</b> entry
+          few: Displaying <b>%{count}</b> entries
+          many: Displaying <b>%{count}</b> entries
+          other: Displaying <b>%{count}</b> entries
   locales:
-    ar: "العربية"
-    de: "Deutsch"
-    en: "English"
-    es: "Español"
-    fr: "Français"
-    id: "Bahasa Indonesia"
-    it: "Italiano"
-    ja: "日本語"
-    nl: "Nederlands"
-    pl: "Polski"
-    pt: "Português"
-    "pt-BR": "Português (Brasil)"
-    ru: "Русский"
-    sr: "Srpski"
-    tr: "Türkçe"
-    zh: "中文"
+    ar: العربية
+    de: Deutsch
+    en: English
+    es: Español
+    fr: Français
+    id: Bahasa Indonesia
+    it: Italiano
+    ja: 日本語
+    nl: Nederlands
+    pl: Polski
+    pt: Português
+    pt-BR: Português (Brasil)
+    ru: Русский
+    sr: Srpski
+    tr: Türkçe
+    zh: 中文
   nav:
-    events: "Events"
-    room: "Room"
-    login: "Sign in"
-    logout: "Sign out"
-    logout_confirm: "Sign out?"
-    cameras_online: "Cameras online"
-    privacy_policy: "Privacy policy"
-    language: "Language"
+    events: Events
+    room: Room
+    login: Sign in
+    logout: Sign out
+    logout_confirm: Sign out?
+    cameras_online: Cameras online
+    privacy_policy: Privacy policy
+    language: Language
   events:
     captures_count:
-      one: "1 recording"
-      few: "%{count} recordings"
-      many: "%{count} recordings"
-      other: "%{count} recordings"
+      one: 1 recording
+      few: '%{count} recordings'
+      many: '%{count} recordings'
+      other: '%{count} recordings'
     index:
-      title: "Events"
-      subtitle: "Browse and manage recordings"
-      save_recording: "Save recording"
-      saving: "Saving..."
-      no_preview: "No preview"
-      record_label: "Recording"
-      content: "Content"
-      empty: "No events yet."
-      id: "ID"
+      title: Events
+      subtitle: Browse and manage recordings
+      save_recording: Save recording
+      saving: Saving...
+      no_preview: No preview
+      record_label: Recording
+      content: Content
+      empty: No events yet.
+      id: ID
     header:
-      all_events: "All events"
-      back: "Back"
-      publish: "Publish"
-      hide: "Hide"
-      delete_confirm: "Delete this event and all related recordings?"
+      all_events: All events
+      back: Back
+      publish: Publish
+      hide: Hide
+      delete_confirm: Delete this event and all related recordings?
     navigation:
-      newer: "Newer"
-      older: "Older"
+      newer: Newer
+      older: Older
     labels:
-      recording_from: "Recorded on"
-      hidden: "Hidden"
-      published: "Published"
-      capture: "Capture #%{id}"
+      recording_from: Recorded on
+      hidden: Hidden
+      published: Published
+      capture: 'Capture #%{id}'
     show:
-      empty: "No recordings for this event."
+      empty: No recordings for this event.
     files:
-      title: "Source files"
-      capture: "Capture #%{id}"
-      download: "Download"
+      title: Source files
+      capture: 'Capture #%{id}'
+      download: Download
     permissions:
-      room_required_delete: "Enter the room code to delete this event."
-      room_mismatch_delete: "Room code does not match for deleting the event."
-      room_required_visibility: "Enter the room code to change event visibility."
-      room_mismatch_visibility: "Room code does not match for changing visibility."
+      room_required_delete: Enter the room code to delete this event.
+      room_mismatch_delete: Room code does not match for deleting the event.
+      room_required_visibility: Enter the room code to change event visibility.
+      room_mismatch_visibility: Room code does not match for changing visibility.
     notices:
-      deleted_showing_older: "Event deleted. Showing an older event."
-      deleted: "Event deleted."
-      base_set: "Base capture set (Capture #%{id})."
-      offsets_updated: "Offsets updated: %{count}."
-      offsets_skipped: "skipped: %{ids}"
-      hls_already_processing: "HLS is already processing for Capture #%{id}."
-      hls_started: "HLS generation started for Capture #%{id}."
-      hls_none: "No captures require HLS generation."
-      hls_bulk_started: "HLS generation started for %{count} captures."
-      visibility_changed: "Event is now %{status}."
+      deleted_showing_older: Event deleted. Showing an older event.
+      deleted: Event deleted.
+      base_set: 'Base capture set (Capture #%{id}).'
+      offsets_updated: 'Offsets updated: %{count}.'
+      offsets_skipped: 'skipped: %{ids}'
+      hls_already_processing: 'HLS is already processing for Capture #%{id}.'
+      hls_started: 'HLS generation started for Capture #%{id}.'
+      hls_none: No captures require HLS generation.
+      hls_bulk_started: HLS generation started for %{count} captures.
+      visibility_changed: Event is now %{status}.
     errors:
-      delete_failed: "Failed to delete event."
-      base_set_failed: "Failed to set base capture: %{error}"
-      no_captures_to_sync: "No captures to sync."
-      sync_failed: "Sync error: %{error}"
-      no_video: "Capture #%{id} has no attached video."
-      hls_start_failed: "Failed to start HLS generation: %{error}"
-      hls_bulk_failed: "Failed to start bulk HLS generation: %{error}"
-      visibility_failed: "Failed to update event visibility."
-      not_found: "Event not found."
-      capture_no_video: "Capture #%{id} without video"
+      delete_failed: Failed to delete event.
+      base_set_failed: 'Failed to set base capture: %{error}'
+      no_captures_to_sync: No captures to sync.
+      sync_failed: 'Sync error: %{error}'
+      no_video: 'Capture #%{id} has no attached video.'
+      hls_start_failed: 'Failed to start HLS generation: %{error}'
+      hls_bulk_failed: 'Failed to start bulk HLS generation: %{error}'
+      visibility_failed: Failed to update event visibility.
+      not_found: Event not found.
+      capture_no_video: 'Capture #%{id} without video'
     meta:
-      title: "Event #%{id}"
-      description: "Recorded on %{time}"
+      title: 'Event #%{id}'
+      description: Recorded on %{time}
+    player_help:
+      title: Player controls
+      subtitle: Quick gestures and actions
+      items:
+      - Click the video to pause/play.
+      - Double click for fullscreen.
+      - Hold left button and move to speed up/slow down.
+      - Right button — ⟲ 1 s back.
   admin:
-    title: "Admin panel"
+    title: Admin panel
     hls:
-      title: "HLS"
+      title: HLS
   recorder:
-    signal_sent: "Recording signal sent."
-    signal_sent_at: "Recording signal sent at %{time}"
+    signal_sent: Recording signal sent.
+    signal_sent_at: Recording signal sent at %{time}
     notices:
-      uploaded: "Video uploaded"
+      uploaded: Video uploaded
     errors:
-      missing_params: "Missing video/timestamp params"
-      invalid_timestamp: "Invalid timestamp"
-      room_required: "Enter the room code to save the recording."
-      signal_failed: "Failed to send capture signal: %{error}"
+      missing_params: Missing video/timestamp params
+      invalid_timestamp: Invalid timestamp
+      room_required: Enter the room code to save the recording.
+      signal_failed: 'Failed to send capture signal: %{error}'
   video_switcher:
-    loading: "Loading…"
-    base_label: "Base"
-    offset_label: "Offset: %{offset}s"
-    camera_label: "CAM %{id}"
+    loading: Loading…
+    base_label: Base
+    offset_label: 'Offset: %{offset}s'
+    camera_label: CAM %{id}
   sync_videos:
-    waiting_metadata: "Waiting for metadata to set the anchor frame…"
-    ready_select_anchor: "Video ready. Select an anchor frame."
-    set_anchor_first: "Set an anchor frame for each video first."
-    anchor_missing: "Anchor frame not selected"
-    anchor_text: "Anchor frame: %{time}s"
-    generate_hls_all: "Generate HLS for all captures"
+    waiting_metadata: Waiting for metadata to set the anchor frame…
+    ready_select_anchor: Video ready. Select an anchor frame.
+    set_anchor_first: Set an anchor frame for each video first.
+    anchor_missing: Anchor frame not selected
+    anchor_text: 'Anchor frame: %{time}s'
+    generate_hls_all: Generate HLS for all captures
     sync:
-      title: "Synchronization"
-      set_base: "Set base #%{id}"
-      base: "Base"
-      offset: "Offset"
-      offset_none: "—"
-      base_capture: "Base capture"
-      analyze_duration: "Analysis duration (sec)"
-      sample_rate: "Sample rate (Hz)"
-      submit: "Start sync"
+      title: Synchronization
+      set_base: 'Set base #%{id}'
+      base: Base
+      offset: Offset
+      offset_none: —
+      base_capture: Base capture
+      analyze_duration: Analysis duration (sec)
+      sample_rate: Sample rate (Hz)
+      submit: Start sync
     orientation:
-      title: "Orientation"
+      title: Orientation
     hls:
-      ready: "HLS ready"
-      regenerate: "Regenerate HLS"
-      processing: "HLS processing..."
-      refresh: "Refresh status"
-      generate: "Generate HLS"
-      error: "Error"
+      ready: HLS ready
+      regenerate: Regenerate HLS
+      processing: HLS processing...
+      refresh: Refresh status
+      generate: Generate HLS
+      error: Error
   auth:
-    login_required: "Please sign in."
-    login_success: "Signed in successfully."
-    invalid_credentials: "Invalid username or password."
-    logout_success: "Signed out."
+    login_required: Please sign in.
+    login_success: Signed in successfully.
+    invalid_credentials: Invalid username or password.
+    logout_success: Signed out.
     login:
-      title: "Sign in"
-      username: "Username"
-      password: "Password"
-      submit: "Sign in"
+      title: Sign in
+      username: Username
+      password: Password
+      submit: Sign in
   room:
-    title: "Select room"
-    code: "Room code"
-    submit: "Select room"
-    selected: "Room selected: %{name}"
-    missing_code: "Enter room code"
+    title: Select room
+    code: Room code
+    submit: Select room
+    selected: 'Room selected: %{name}'
+    missing_code: Enter room code
   calendar:
-    title: "Calendar"
-    empty: "No events yet."
+    title: Calendar
+    empty: No events yet.
   modal:
-    action: "Action"
+    action: Action

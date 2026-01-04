@@ -1,188 +1,236 @@
 pl:
   time:
     formats:
-      default: "%d.%m.%Y %H:%M:%S"
-      short: "%d %b %H:%M"
-      long: "%d %B %Y %H:%M"
+      default: '%d.%m.%Y %H:%M:%S'
+      short: '%d %b %H:%M'
+      long: '%d %B %Y %H:%M'
   date:
     formats:
-      default: "%d.%m.%Y"
-      short: "%d %b"
-      long: "%d %B %Y"
-    month_names: ["", "styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"]
-    abbr_month_names: ["", "sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"]
-    day_names: ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"]
-    abbr_day_names: ["ndz", "pon", "wt", "śr", "czw", "pt", "sob"]
+      default: '%d.%m.%Y'
+      short: '%d %b'
+      long: '%d %B %Y'
+    month_names:
+    - ''
+    - styczeń
+    - luty
+    - marzec
+    - kwiecień
+    - maj
+    - czerwiec
+    - lipiec
+    - sierpień
+    - wrzesień
+    - październik
+    - listopad
+    - grudzień
+    abbr_month_names:
+    - ''
+    - sty
+    - lut
+    - mar
+    - kwi
+    - maj
+    - cze
+    - lip
+    - sie
+    - wrz
+    - paź
+    - lis
+    - gru
+    day_names:
+    - niedziela
+    - poniedziałek
+    - wtorek
+    - środa
+    - czwartek
+    - piątek
+    - sobota
+    abbr_day_names:
+    - ndz
+    - pon
+    - wt
+    - śr
+    - czw
+    - pt
+    - sob
   views:
     pagination:
-      first: "&laquo; Pierwsza"
-      last: "Ostatnia &raquo;"
-      previous: "&lsaquo; Poprzednia"
-      next: "Następna &rsaquo;"
-      truncate: "&hellip;"
+      first: '&laquo; Pierwsza'
+      last: Ostatnia &raquo;
+      previous: '&lsaquo; Poprzednia'
+      next: Następna &rsaquo;
+      truncate: '&hellip;'
   helpers:
     page_entries_info:
       one_page:
         display_entries:
-          one: "Wyświetlanie <b>1</b> wpisu"
-          few: "Wyświetlanie <b>%{count}</b> wpisów"
-          many: "Wyświetlanie <b>%{count}</b> wpisów"
-          other: "Wyświetlanie <b>%{count}</b> wpisów"
+          one: Wyświetlanie <b>1</b> wpisu
+          few: Wyświetlanie <b>%{count}</b> wpisów
+          many: Wyświetlanie <b>%{count}</b> wpisów
+          other: Wyświetlanie <b>%{count}</b> wpisów
   locales:
-    ar: "Arabski"
-    de: "Niemiecki"
-    en: "Angielski"
-    es: "Hiszpański"
-    fr: "Francuski"
-    id: "Indonezyjski"
-    it: "Włoski"
-    ja: "Japoński"
-    nl: "Niderlandzki"
-    pl: "Polski"
-    pt: "Portugalski"
-    "pt-BR": "Portugalski (Brazylia)"
-    ru: "Rosyjski"
-    sr: "Serbski"
-    tr: "Turecki"
-    zh: "Chiński"
+    ar: Arabski
+    de: Niemiecki
+    en: Angielski
+    es: Hiszpański
+    fr: Francuski
+    id: Indonezyjski
+    it: Włoski
+    ja: Japoński
+    nl: Niderlandzki
+    pl: Polski
+    pt: Portugalski
+    pt-BR: Portugalski (Brazylia)
+    ru: Rosyjski
+    sr: Serbski
+    tr: Turecki
+    zh: Chiński
   nav:
-    events: "Wydarzenia"
-    room: "Pokój"
-    login: "Zaloguj się"
-    logout: "Wyloguj się"
-    logout_confirm: "Wylogować się?"
-    cameras_online: "Kamery online"
-    privacy_policy: "Polityka prywatności"
-    language: "Język"
+    events: Wydarzenia
+    room: Pokój
+    login: Zaloguj się
+    logout: Wyloguj się
+    logout_confirm: Wylogować się?
+    cameras_online: Kamery online
+    privacy_policy: Polityka prywatności
+    language: Język
   events:
     captures_count:
-      one: "1 nagranie"
-      few: "%{count} nagrania"
-      many: "%{count} nagrań"
-      other: "%{count} nagrania"
+      one: 1 nagranie
+      few: '%{count} nagrania'
+      many: '%{count} nagrań'
+      other: '%{count} nagrania'
     index:
-      title: "Wydarzenia"
-      subtitle: "Przeglądaj i zarządzaj nagraniami"
-      save_recording: "Zapisz nagranie"
-      saving: "Zapisywanie..."
-      no_preview: "Brak podglądu"
-      record_label: "Nagranie"
-      content: "Treść"
-      empty: "Brak wydarzeń."
-      id: "ID"
+      title: Wydarzenia
+      subtitle: Przeglądaj i zarządzaj nagraniami
+      save_recording: Zapisz nagranie
+      saving: Zapisywanie...
+      no_preview: Brak podglądu
+      record_label: Nagranie
+      content: Treść
+      empty: Brak wydarzeń.
+      id: ID
     header:
-      all_events: "Wszystkie wydarzenia"
-      back: "Wstecz"
-      publish: "Opublikuj"
-      hide: "Ukryj"
-      delete_confirm: "Usunąć to wydarzenie i wszystkie powiązane nagrania?"
+      all_events: Wszystkie wydarzenia
+      back: Wstecz
+      publish: Opublikuj
+      hide: Ukryj
+      delete_confirm: Usunąć to wydarzenie i wszystkie powiązane nagrania?
     navigation:
-      newer: "Nowsze"
-      older: "Starsze"
+      newer: Nowsze
+      older: Starsze
     labels:
-      recording_from: "Nagrano"
-      hidden: "Ukryte"
-      published: "Opublikowane"
-      capture: "Ujęcie #%{id}"
+      recording_from: Nagrano
+      hidden: Ukryte
+      published: Opublikowane
+      capture: 'Ujęcie #%{id}'
     show:
-      empty: "Brak nagrań dla tego wydarzenia."
+      empty: Brak nagrań dla tego wydarzenia.
     files:
-      title: "Pliki źródłowe"
-      capture: "Ujęcie #%{id}"
-      download: "Pobierz"
+      title: Pliki źródłowe
+      capture: 'Ujęcie #%{id}'
+      download: Pobierz
     permissions:
-      room_required_delete: "Wpisz kod pokoju, aby usunąć wydarzenie."
-      room_mismatch_delete: "Kod pokoju nie pasuje do usunięcia wydarzenia."
-      room_required_visibility: "Wpisz kod pokoju, aby zmienić widoczność wydarzenia."
-      room_mismatch_visibility: "Kod pokoju nie pasuje do zmiany widoczności."
+      room_required_delete: Wpisz kod pokoju, aby usunąć wydarzenie.
+      room_mismatch_delete: Kod pokoju nie pasuje do usunięcia wydarzenia.
+      room_required_visibility: Wpisz kod pokoju, aby zmienić widoczność wydarzenia.
+      room_mismatch_visibility: Kod pokoju nie pasuje do zmiany widoczności.
     notices:
-      deleted_showing_older: "Wydarzenie usunięte. Pokazuję starsze wydarzenie."
-      deleted: "Wydarzenie usunięte."
-      base_set: "Ustawiono bazowe ujęcie (Ujęcie #%{id})."
-      offsets_updated: "Zaktualizowano przesunięcia: %{count}."
-      offsets_skipped: "pominięto: %{ids}"
-      hls_already_processing: "HLS jest już przetwarzany dla Ujęcia #%{id}."
-      hls_started: "Rozpoczęto generowanie HLS dla Ujęcia #%{id}."
-      hls_none: "Brak ujęć wymagających generowania HLS."
-      hls_bulk_started: "Rozpoczęto generowanie HLS dla %{count} ujęć."
-      visibility_changed: "Wydarzenie jest teraz %{status}."
+      deleted_showing_older: Wydarzenie usunięte. Pokazuję starsze wydarzenie.
+      deleted: Wydarzenie usunięte.
+      base_set: 'Ustawiono bazowe ujęcie (Ujęcie #%{id}).'
+      offsets_updated: 'Zaktualizowano przesunięcia: %{count}.'
+      offsets_skipped: 'pominięto: %{ids}'
+      hls_already_processing: 'HLS jest już przetwarzany dla Ujęcia #%{id}.'
+      hls_started: 'Rozpoczęto generowanie HLS dla Ujęcia #%{id}.'
+      hls_none: Brak ujęć wymagających generowania HLS.
+      hls_bulk_started: Rozpoczęto generowanie HLS dla %{count} ujęć.
+      visibility_changed: Wydarzenie jest teraz %{status}.
     errors:
-      delete_failed: "Nie udało się usunąć wydarzenia."
-      base_set_failed: "Nie udało się ustawić bazowego ujęcia: %{error}"
-      no_captures_to_sync: "Brak ujęć do synchronizacji."
-      sync_failed: "Błąd synchronizacji: %{error}"
-      no_video: "Ujęcie #%{id} nie ma dołączonego wideo."
-      hls_start_failed: "Nie udało się rozpocząć generowania HLS: %{error}"
-      hls_bulk_failed: "Nie udało się rozpocząć zbiorczego generowania HLS: %{error}"
-      visibility_failed: "Nie udało się zaktualizować widoczności wydarzenia."
-      not_found: "Wydarzenie nie znalezione."
-      capture_no_video: "Ujęcie #%{id} bez wideo"
+      delete_failed: Nie udało się usunąć wydarzenia.
+      base_set_failed: 'Nie udało się ustawić bazowego ujęcia: %{error}'
+      no_captures_to_sync: Brak ujęć do synchronizacji.
+      sync_failed: 'Błąd synchronizacji: %{error}'
+      no_video: 'Ujęcie #%{id} nie ma dołączonego wideo.'
+      hls_start_failed: 'Nie udało się rozpocząć generowania HLS: %{error}'
+      hls_bulk_failed: 'Nie udało się rozpocząć zbiorczego generowania HLS: %{error}'
+      visibility_failed: Nie udało się zaktualizować widoczności wydarzenia.
+      not_found: Wydarzenie nie znalezione.
+      capture_no_video: 'Ujęcie #%{id} bez wideo'
     meta:
-      title: "Wydarzenie #%{id}"
-      description: "Nagrano %{time}"
+      title: 'Wydarzenie #%{id}'
+      description: Nagrano %{time}
+    player_help:
+      title: Sterowanie odtwarzaczem
+      subtitle: Szybkie gesty i działania
+      items:
+      - Kliknij wideo, aby wstrzymać/odtworzyć.
+      - Podwójny klik — pełny ekran.
+      - Przytrzymaj lewy przycisk i poruszaj myszą, aby przyspieszyć/zwolnić.
+      - Prawy przycisk — ⟲ 1 s wstecz.
   admin:
-    title: "Panel administracyjny"
+    title: Panel administracyjny
     hls:
-      title: "HLS"
+      title: HLS
   recorder:
-    signal_sent: "Sygnał nagrywania wysłany."
-    signal_sent_at: "Sygnał nagrywania wysłany o %{time}"
+    signal_sent: Sygnał nagrywania wysłany.
+    signal_sent_at: Sygnał nagrywania wysłany o %{time}
     notices:
-      uploaded: "Wideo przesłane"
+      uploaded: Wideo przesłane
     errors:
-      missing_params: "Brak parametrów wideo/znacznika czasu"
-      invalid_timestamp: "Nieprawidłowy znacznik czasu"
-      room_required: "Wpisz kod pokoju, aby zapisać nagranie."
-      signal_failed: "Nie udało się wysłać sygnału przechwycenia: %{error}"
+      missing_params: Brak parametrów wideo/znacznika czasu
+      invalid_timestamp: Nieprawidłowy znacznik czasu
+      room_required: Wpisz kod pokoju, aby zapisać nagranie.
+      signal_failed: 'Nie udało się wysłać sygnału przechwycenia: %{error}'
   video_switcher:
-    loading: "Ładowanie…"
-    base_label: "Baza"
-    offset_label: "Przesunięcie: %{offset}s"
-    camera_label: "KAM %{id}"
+    loading: Ładowanie…
+    base_label: Baza
+    offset_label: 'Przesunięcie: %{offset}s'
+    camera_label: KAM %{id}
   sync_videos:
-    waiting_metadata: "Oczekiwanie na metadane, aby ustawić klatkę kotwiczącą…"
-    ready_select_anchor: "Wideo gotowe. Wybierz klatkę kotwiczącą."
-    set_anchor_first: "Najpierw ustaw klatkę kotwiczącą dla każdego wideo."
-    anchor_missing: "Nie wybrano klatki kotwiczącej"
-    anchor_text: "Klatka kotwicząca: %{time}s"
-    generate_hls_all: "Wygeneruj HLS dla wszystkich ujęć"
+    waiting_metadata: Oczekiwanie na metadane, aby ustawić klatkę kotwiczącą…
+    ready_select_anchor: Wideo gotowe. Wybierz klatkę kotwiczącą.
+    set_anchor_first: Najpierw ustaw klatkę kotwiczącą dla każdego wideo.
+    anchor_missing: Nie wybrano klatki kotwiczącej
+    anchor_text: 'Klatka kotwicząca: %{time}s'
+    generate_hls_all: Wygeneruj HLS dla wszystkich ujęć
     sync:
-      title: "Synchronizacja"
-      set_base: "Ustaw bazę #%{id}"
-      base: "Baza"
-      offset: "Przesunięcie"
-      offset_none: "—"
-      base_capture: "Bazowe ujęcie"
-      analyze_duration: "Czas analizy (s)"
-      sample_rate: "Częstotliwość próbkowania (Hz)"
-      submit: "Rozpocznij synchronizację"
+      title: Synchronizacja
+      set_base: 'Ustaw bazę #%{id}'
+      base: Baza
+      offset: Przesunięcie
+      offset_none: —
+      base_capture: Bazowe ujęcie
+      analyze_duration: Czas analizy (s)
+      sample_rate: Częstotliwość próbkowania (Hz)
+      submit: Rozpocznij synchronizację
     orientation:
-      title: "Orientacja"
+      title: Orientacja
     hls:
-      ready: "HLS gotowy"
-      regenerate: "Wygeneruj HLS ponownie"
-      processing: "Przetwarzanie HLS..."
-      refresh: "Odśwież status"
-      generate: "Wygeneruj HLS"
-      error: "Błąd"
+      ready: HLS gotowy
+      regenerate: Wygeneruj HLS ponownie
+      processing: Przetwarzanie HLS...
+      refresh: Odśwież status
+      generate: Wygeneruj HLS
+      error: Błąd
   auth:
-    login_required: "Zaloguj się."
-    login_success: "Zalogowano pomyślnie."
-    invalid_credentials: "Nieprawidłowa nazwa użytkownika lub hasło."
-    logout_success: "Wylogowano."
+    login_required: Zaloguj się.
+    login_success: Zalogowano pomyślnie.
+    invalid_credentials: Nieprawidłowa nazwa użytkownika lub hasło.
+    logout_success: Wylogowano.
     login:
-      title: "Zaloguj się"
-      username: "Nazwa użytkownika"
-      password: "Hasło"
-      submit: "Zaloguj się"
+      title: Zaloguj się
+      username: Nazwa użytkownika
+      password: Hasło
+      submit: Zaloguj się
   room:
-    title: "Wybierz pokój"
-    code: "Kod pokoju"
-    submit: "Wybierz pokój"
-    selected: "Wybrano pokój: %{name}"
-    missing_code: "Wpisz kod pokoju"
+    title: Wybierz pokój
+    code: Kod pokoju
+    submit: Wybierz pokój
+    selected: 'Wybrano pokój: %{name}'
+    missing_code: Wpisz kod pokoju
   calendar:
-    title: "Kalendarz"
-    empty: "Brak wydarzeń."
+    title: Kalendarz
+    empty: Brak wydarzeń.
   modal:
-    action: "Akcja"
+    action: Akcja
