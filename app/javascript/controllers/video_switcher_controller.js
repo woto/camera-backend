@@ -777,7 +777,10 @@ export default class extends Controller {
         button.type = "button"
         button.className = "source-button"
         button.dataset.captureId = capture.id
-        button.textContent = this.formatTemplate(this.cameraLabel(), { id: capture.id })
+        button.appendChild(this.buildCameraIcon())
+        const label = document.createElement("span")
+        label.textContent = String(capture.id)
+        button.appendChild(label)
         button.addEventListener("pointerdown", (e) => {
           e.stopPropagation()
         })
@@ -793,6 +796,18 @@ export default class extends Controller {
     })
 
     this.updateActiveSourceButton()
+  }
+
+  buildCameraIcon() {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+    svg.setAttribute("viewBox", "0 0 488.3 488.3")
+    svg.setAttribute("aria-hidden", "true")
+    svg.setAttribute("class", "w-3 h-3 shrink-0")
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path")
+    path.setAttribute("fill", "currentColor")
+    path.setAttribute("d", "M488.3,142.5v203.1c0,15.7-17,25.5-30.6,17.7l-84.6-48.8v13.9c0,41.8-33.9,75.7-75.7,75.7H75.7C33.9,404.1,0,370.2,0,328.4V159.9c0-41.8,33.9-75.7,75.7-75.7h221.8c41.8,0,75.7,33.9,75.7,75.7v13.9l84.6-48.8C471.3,117,488.3,126.9,488.3,142.5z")
+    svg.appendChild(path)
+    return svg
   }
 
   updateActiveSourceButton() {
