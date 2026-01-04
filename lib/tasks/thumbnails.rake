@@ -34,7 +34,9 @@ namespace :captures do
           capture_count: 5,
           target_width: 170,
           target_height: 320,
-          quality: 7
+          quality: 7,
+          fit_mode: :contain,
+          rotate_to_fit: true
         ).generate
 
         large_thumbnails = ThumbnailGenerator.new(

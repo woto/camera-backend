@@ -40,7 +40,9 @@ class RecorderController < ApplicationController
         # Target resolution for LilyGO T-Display S3; loremflickr 170x320 worked on device.
         target_width: 170,
         target_height: 320,
-        quality: 7
+        quality: 7,
+        fit_mode: :contain,
+        rotate_to_fit: true
       ).generate
       attach_small_thumbnails!(capture, small_thumbnails, safe_filename(video_file))
       large_thumbnails = ThumbnailGenerator.new(
