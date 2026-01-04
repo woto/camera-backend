@@ -170,8 +170,26 @@ en:
       - Right button — ⟲ 1 s back.
   admin:
     title: Admin panel
+    generate_hls_all: Generate HLS for event
     hls:
       title: HLS
+      regenerate: Regenerate HLS for capture
+      generate: Generate HLS for capture
+    thumbnails:
+      title: Small thumbnails
+      empty: No small thumbnails
+      regenerate: Regenerate images for event
+      regenerate_capture: Regenerate images for capture
+      regenerate_started: Thumbnail regeneration queued.
+      regenerate_capture_started: "Thumbnail regeneration queued for capture %{id}."
+      regenerate_failed: "Thumbnail regeneration failed: %{error}"
+    metadata:
+      title: Video metadata
+    tabs:
+      previews: Images
+      metadata: Metadata
+      sync: Synchronization
+      hls: HLS
   recorder:
     signal_sent: Recording signal sent.
     signal_sent_at: Recording signal sent at %{time}
@@ -193,7 +211,7 @@ en:
     set_anchor_first: Set an anchor frame for each video first.
     anchor_missing: Anchor frame not selected
     anchor_text: 'Anchor frame: %{time}s'
-    generate_hls_all: Generate HLS for all captures
+    generate_hls_all: Generate HLS for event
     sync:
       title: Synchronization
       set_base: 'Set base #%{id}'
@@ -204,6 +222,7 @@ en:
       analyze_duration: Analysis duration (sec)
       sample_rate: Sample rate (Hz)
       submit: Start sync
+      set_base_simple: Set base
     orientation:
       title: Orientation
     hls:

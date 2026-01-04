@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   skip_before_action :require_login, only: [ :index, :show, :latest, :set_visibility, :destroy ]
-  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :generate_hls, :generate_hls_all, :set_visibility ]
+  before_action :set_event, only: [ :show, :destroy, :set_base, :sync_offsets, :generate_hls, :generate_hls_all, :regenerate_thumbnails, :set_visibility ]
   helper_method :room_param
 
   def index
@@ -20,6 +20,7 @@ class EventsController < ApplicationController
     @prev_event = scope.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
     assign_switcher_data!(@captures)
     assign_share_metadata!(@captures)
+    assign_admin_metadata!(@captures)
 
     respond_to do |format|
       format.html
@@ -41,6 +42,7 @@ class EventsController < ApplicationController
     @captures = @event.captures.with_attached_small_thumbnails.with_attached_large_thumbnails.with_attached_video.order(created_at: :desc)
     assign_switcher_data!(@captures)
     assign_share_metadata!(@captures)
+    assign_admin_metadata!(@captures)
     @prev_event = scoped_events.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
     @from_latest = true
 
@@ -147,6 +149,19 @@ class EventsController < ApplicationController
     redirect_to event_path(@event), notice: t("events.notices.hls_bulk_started", count: captures.count)
   rescue => e
     redirect_to event_path(@event), alert: t("events.errors.hls_bulk_failed", error: e.message)
+  end
+
+  def regenerate_thumbnails
+    capture_id = params[:capture_id].presence
+    if capture_id
+      RegenerateThumbnailsJob.perform_later(capture_id: capture_id)
+      redirect_to event_path(@event), notice: t("admin.thumbnails.regenerate_capture_started", id: capture_id)
+    else
+      RegenerateThumbnailsJob.perform_later(event_id: @event.id)
+      redirect_to event_path(@event), notice: t("admin.thumbnails.regenerate_started")
+    end
+  rescue => e
+    redirect_to event_path(@event), alert: t("admin.thumbnails.regenerate_failed", error: e.message)
   end
 
   def set_visibility
@@ -259,6 +274,15 @@ class EventsController < ApplicationController
       url_for(fallback_thumb)
     else
       "#{request.base_url}/icon.png"
+    end
+  end
+
+  def assign_admin_metadata!(captures)
+    return unless current_user
+    return unless request.format.html? || request.format.turbo_stream?
+
+    @metadata_by_capture_id = captures.each_with_object({}) do |capture, memo|
+      memo[capture.id] = VideoMetadata.new(capture).call
     end
   end
 

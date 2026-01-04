@@ -1,44 +1,103 @@
-<div id="event-admin">
+<div id="event-admin" data-controller="admin-tabs">
   <% if current_user && @captures.any? %>
     <div class="mt-20 pt-10 border-t border-border-dim">
       <h2 class="text-xl font-bold text-white mb-6"><%= t("admin.title") %></h2>
+      <div class="flex flex-wrap gap-2 mb-6 admin-tabs">
+        <button type="button"
+          class="btn-ghost text-xs py-1 px-3 border border-white/10"
+          data-tab="previews"
+          data-admin-tabs-target="button"
+          data-action="admin-tabs#select">
+          <%= t("admin.tabs.previews") %>
+        </button>
+        <button type="button"
+          class="btn-ghost text-xs py-1 px-3 border border-white/10"
+          data-tab="metadata"
+          data-admin-tabs-target="button"
+          data-action="admin-tabs#select">
+          <%= t("admin.tabs.metadata") %>
+        </button>
+        <button type="button"
+          class="btn-ghost text-xs py-1 px-3 border border-white/10"
+          data-tab="sync"
+          data-admin-tabs-target="button"
+          data-action="admin-tabs#select">
+          <%= t("admin.tabs.sync") %>
+        </button>
+        <button type="button"
+          class="btn-ghost text-xs py-1 px-3 border border-white/10"
+          data-tab="hls"
+          data-admin-tabs-target="button"
+          data-action="admin-tabs#select">
+          <%= t("admin.tabs.hls") %>
+        </button>
+      </div>
+      <div class="mb-10" data-admin-tabs-target="panel" data-tab="previews">
         <div class="mb-6">
-          <%= button_to t("admin.generate_hls_all"), generate_hls_all_event_path(@event), method: :post, class: "btn-ghost text-sm py-2" %>
+          <%= button_to t("admin.thumbnails.regenerate"), regenerate_thumbnails_event_path(@event), method: :post, class: "btn-ghost text-sm py-2" %>
         </div>
-      <div class="mb-10">
-        <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4">Small thumbnails</h3>
         <div class="space-y-4">
           <% @captures.each do |capture| %>
             <div class="bg-zinc-900/50 p-4 rounded-xl border border-border-dim">
-              <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3">
-                <%= t("events.files.capture", id: capture.id) %>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
+                  <%= t("events.files.capture", id: capture.id) %>
+                </div>
+                <%= button_to t("admin.thumbnails.regenerate_capture"),
+                  regenerate_thumbnails_event_path(@event, capture_id: capture.id),
+                  method: :post,
+                  class: "btn-ghost text-[10px] py-1 px-2" %>
               </div>
               <% if capture.small_thumbnails.attached? %>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-2">Small</div>
                 <div class="flex flex-wrap gap-2">
                   <% capture.small_thumbnails.each do |thumb| %>
-                    <%= image_tag url_for(thumb), class: "h-20 w-12 object-contain rounded-md bg-black/40 border border-white/10", alt: "Small thumbnail" %>
+                    <%= image_tag url_for(thumb), class: "h-24 w-14 object-contain rounded-md bg-black/40 border border-white/10", alt: "Small thumbnail" %>
                   <% end %>
                 </div>
               <% else %>
-                <div class="text-[11px] text-white/40">No small thumbnails</div>
+                <div class="text-[11px] text-white/40"><%= t("admin.thumbnails.empty") %></div>
+              <% end %>
+              <% if capture.large_thumbnails.attached? %>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mt-3 mb-2">Large</div>
+                <div class="flex flex-wrap gap-2">
+                  <% capture.large_thumbnails.each do |thumb| %>
+                    <%= image_tag url_for(thumb), class: "h-20 w-32 object-cover rounded-md bg-black/40 border border-white/10", alt: "Large thumbnail" %>
+                  <% end %>
+                </div>
               <% end %>
             </div>
           <% end %>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div>
-          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4"><%= t("admin.sync.title") %></h3>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <% @captures.each do |capture| %>
-              <%= button_to t("admin.sync.set_base", id: capture.id), set_base_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
-            <% end %>
+      <div class="mb-10 hidden" data-admin-tabs-target="panel" data-tab="metadata" data-controller="capture-metadata">
+        <div class="flex flex-wrap gap-2 mb-4 capture-metadata-tabs">
+          <% @captures.each do |capture| %>
+            <button type="button"
+              class="btn-ghost text-xs py-1 px-3 border border-white/10"
+              data-capture-id="<%= capture.id %>"
+              data-capture-metadata-target="button"
+              data-action="capture-metadata#select">
+              <%= t("events.files.capture", id: capture.id) %>
+            </button>
+          <% end %>
+        </div>
+        <% @captures.each do |capture| %>
+          <% metadata = @metadata_by_capture_id&.fetch(capture.id, { error: "Metadata missing" }) %>
+          <div class="hidden" data-capture-id="<%= capture.id %>" data-capture-metadata-target="panel">
+            <pre class="json-viewer"><code><%= render_json_metadata(metadata) %></code></pre>
           </div>
-          <div class="space-y-2 mb-6">
-            <% @captures.each do |capture| %>
-              <div class="flex items-center justify-between bg-zinc-900/50 p-3 rounded-xl border border-border-dim">
-                <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
-                  <%= t("events.files.capture", id: capture.id) %>
+        <% end %>
+      </div>
+      <div class="hidden" data-admin-tabs-target="panel" data-tab="sync">
+        <div class="space-y-2 mb-6">
+          <% @captures.each do |capture| %>
+            <div class="flex items-center justify-between bg-zinc-900/50 p-3 rounded-xl border border-border-dim">
+                <div class="flex flex-col gap-2">
+                  <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
+                    <%= t("events.files.capture", id: capture.id) %>
+                  </div>
+                  <%= button_to t("admin.sync.set_base_simple"), set_base_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-[10px] py-1 px-2 w-fit" %>
                 </div>
                 <div class="flex items-center gap-2 text-[11px] font-bold text-white/70">
                   <% if capture.id == @base_capture&.id %>
@@ -67,34 +126,34 @@
             </div>
             <%= f.submit t("admin.sync.submit"), class: "btn-primary w-full text-xs" %>
           <% end %>
+      </div>
+      <div class="hidden" data-admin-tabs-target="panel" data-tab="hls">
+        <div class="mb-6">
+          <%= button_to t("admin.generate_hls_all"), generate_hls_all_event_path(@event), method: :post, class: "btn-ghost text-sm py-2" %>
         </div>
-
-        <div>
-          <h3 class="text-sm uppercase tracking-widest font-black text-zinc-600 mb-4"><%= t("admin.hls.title") %></h3>
-          <div class="space-y-4">
-            <% @captures.each do |capture| %>
-              <div class="bg-zinc-900/50 p-4 rounded-xl border border-border-dim">
-                <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3">
-                  <%= t("events.files.capture", id: capture.id) %>
-                </div>
-                <div class="mt-3 flex flex-wrap items-center gap-2">
-                  <% if capture.hls_manifest_path.present? %>
-                    <span class="text-[11px] text-green-400"><%= t("admin.hls.ready") %></span>
-                    <%= link_to capture.hls_manifest_path, capture.hls_manifest_path, class: "text-[11px] underline text-white/80", target: "_blank", rel: "noopener" %>
-                    <%= button_to t("admin.hls.regenerate"), generate_hls_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
-                  <% elsif capture.hls_processing? %>
-                    <span class="text-[11px] text-yellow-300"><%= t("admin.hls.processing") %></span>
-                    <%= button_to t("admin.hls.refresh"), event_path(@event), method: :get, class: "btn-ghost text-xs py-1" %>
-                  <% else %>
-                    <%= button_to t("admin.hls.generate"), generate_hls_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
-                  <% end %>
-                  <% if capture.hls_error.present? %>
-                    <div class="text-[11px] text-red-400 ml-2"><%= t("admin.hls.error") %>: <%= capture.hls_error %></div>
-                  <% end %>
-                </div>
+        <div class="space-y-4">
+          <% @captures.each do |capture| %>
+            <div class="bg-zinc-900/50 p-4 rounded-xl border border-border-dim">
+              <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3">
+                <%= t("events.files.capture", id: capture.id) %>
               </div>
-            <% end %>
-          </div>
+              <div class="mt-3 flex flex-wrap items-center gap-2">
+                <% if capture.hls_manifest_path.present? %>
+                  <span class="text-[11px] text-green-400"><%= t("admin.hls.ready") %></span>
+                  <%= link_to capture.hls_manifest_path, capture.hls_manifest_path, class: "text-[11px] underline text-white/80", target: "_blank", rel: "noopener" %>
+                  <%= button_to t("admin.hls.regenerate"), generate_hls_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
+                <% elsif capture.hls_processing? %>
+                  <span class="text-[11px] text-yellow-300"><%= t("admin.hls.processing") %></span>
+                  <%= button_to t("admin.hls.refresh"), event_path(@event), method: :get, class: "btn-ghost text-xs py-1" %>
+                <% else %>
+                  <%= button_to t("admin.hls.generate"), generate_hls_event_path(@event, capture_id: capture.id), method: :post, class: "btn-ghost text-xs py-1" %>
+                <% end %>
+                <% if capture.hls_error.present? %>
+                  <div class="text-[11px] text-red-400 ml-2"><%= t("admin.hls.error") %>: <%= capture.hls_error %></div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

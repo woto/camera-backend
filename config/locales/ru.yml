@@ -170,10 +170,11 @@ ru:
       - Правая кнопка — ⟲ 1 с назад.
   admin:
     title: Панель управления
-    generate_hls_all: Генерировать HLS для всех роликов
+    generate_hls_all: Генерировать HLS для event
     sync:
       title: Синхронизация
       set_base: 'Сделать базой #%{id}'
+      set_base_simple: Сделать базой
       base: База
       offset: Смещение
       offset_none: —
@@ -184,11 +185,26 @@ ru:
     hls:
       title: HLS
       ready: HLS готово
-      regenerate: Перегенерировать HLS
+      regenerate: Перегенерировать HLS для capture
       processing: Генерация HLS ...
       refresh: Обновить статус
-      generate: Сгенерировать HLS
+      generate: Сгенерировать HLS для capture
       error: Ошибка
+    thumbnails:
+      title: Мини‑превью
+      empty: Нет мини‑превью
+      regenerate: Перегенерировать изображения для event
+      regenerate_capture: Перегенерировать изображения для capture
+      regenerate_started: Перегенерация превью поставлена в очередь.
+      regenerate_capture_started: "Перегенерация превью поставлена в очередь для capture %{id}."
+      regenerate_failed: "Не удалось перегенерировать превью: %{error}"
+    metadata:
+      title: Метаданные видео
+    tabs:
+      previews: Изображения
+      metadata: Метаданные
+      sync: Синхронизация
+      hls: HLS
   auth:
     login_required: Пожалуйста, войдите в систему.
     login_success: Вы вошли успешно.
@@ -231,7 +247,7 @@ ru:
     set_anchor_first: Сначала задайте контрольный кадр для каждого видео.
     anchor_missing: Контрольный кадр не выбран
     anchor_text: 'Контрольный кадр: %{time}s'
-    generate_hls_all: Сгенерировать HLS для всех записей
+    generate_hls_all: Сгенерировать HLS для event
     sync:
       title: Синхронизация
       set_base: 'Установить базу #%{id}'

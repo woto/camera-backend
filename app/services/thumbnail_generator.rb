@@ -50,7 +50,7 @@ class ThumbnailGenerator
     resize_filter = build_resize_filter
     rotate_filter = rotation_filter
     filters = [rotate_filter, resize_filter].compact.join(",")
-    autorotate_flag = rotate_filter ? "-noautorotate" : nil
+    autorotate_flag = rotate_to_fit ? "-noautorotate" : nil
 
     cmd = [
       "ffmpeg", "-y",
@@ -84,7 +84,7 @@ class ThumbnailGenerator
   def rotation_filter
     return unless rotate_to_fit
 
-    rotation = video_stream_rotation
+    rotation = combined_rotation
     return unless rotation
 
     case rotation
@@ -105,18 +105,35 @@ class ThumbnailGenerator
     rotation.to_i % 360
   end
 
-  def video_stream_info
-    stdout, status = Open3.capture2(
-      "ffprobe",
-      "-v", "error",
-      "-select_streams", "v:0",
-      "-show_entries", "stream=width,height:stream_tags=rotate:stream_side_data=rotation,side_data_type",
-      "-of", "json",
-      source_path
-    )
-    return {} unless status.success?
+  def combined_rotation
+    base_rotation = video_stream_rotation || 0
+    info = video_stream_info
+    width = info[:width].to_f
+    height = info[:height].to_f
+    return base_rotation if width <= 0.0 || height <= 0.0
 
-    data = JSON.parse(stdout)
+    # Apply base rotation to determine display orientation.
+    display_width, display_height = if base_rotation == 90 || base_rotation == 270
+      [height, width]
+    else
+      [width, height]
+    end
+
+    target_is_portrait = target_height.to_f > target_width.to_f
+    display_is_portrait = display_height > display_width
+    fit_rotation = target_is_portrait != display_is_portrait ? 90 : 0
+
+    (base_rotation + fit_rotation) % 360
+  end
+
+  def scale_for(width, height)
+    [target_width / width.to_f, target_height / height.to_f].min
+  end
+
+  def video_stream_info
+    data = run_ffprobe
+    return {} if data.nil?
+
     stream = data["streams"]&.first || {}
     rotation = stream.dig("tags", "rotate")
     rotation ||= stream["side_data_list"]&.find { |item| item["rotation"] }&.dig("rotation")
@@ -128,5 +145,33 @@ class ThumbnailGenerator
     }
   rescue JSON::ParserError
     {}
+  end
+
+  def run_ffprobe
+    stdout, _stderr, status = Open3.capture3(
+      "ffprobe",
+      "-v", "error",
+      "-select_streams", "v:0",
+      "-show_entries", "stream=width,height:stream_tags=rotate:stream_side_data=rotation,side_data_type",
+      "-of", "json",
+      source_path
+    )
+    if status.success?
+      return JSON.parse(stdout)
+    end
+
+    stdout, _stderr, status = Open3.capture3(
+      "ffprobe",
+      "-v", "error",
+      "-select_streams", "v:0",
+      "-show_entries", "stream=width,height:stream_tags=rotate",
+      "-of", "json",
+      source_path
+    )
+    return unless status.success?
+
+    JSON.parse(stdout)
+  rescue JSON::ParserError
+    nil
   end
 end

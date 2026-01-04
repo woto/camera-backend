@@ -25,4 +25,23 @@ module ApplicationHelper
 
     frames
   end
+
+  def render_json_metadata(payload)
+    json = JSON.pretty_generate(payload)
+    escaped = CGI.escapeHTML(json)
+    highlighted = escaped.gsub(/("(?:\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/) do |match|
+      if match.start_with?("\"") && match.end_with?(":")
+        %(<span class="json-key">#{match}</span>)
+      elsif match.start_with?("\"")
+        %(<span class="json-string">#{match}</span>)
+      elsif match == "true" || match == "false"
+        %(<span class="json-boolean">#{match}</span>)
+      elsif match == "null"
+        %(<span class="json-null">#{match}</span>)
+      else
+        %(<span class="json-number">#{match}</span>)
+      end
+    end
+    highlighted.html_safe
+  end
 end
