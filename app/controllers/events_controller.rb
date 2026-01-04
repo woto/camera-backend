@@ -9,12 +9,12 @@ class EventsController < ApplicationController
     if @selected_date
       scoped = scoped.where(captured_at: @selected_date.beginning_of_day..@selected_date.end_of_day)
     end
-    @events = scoped.order(captured_at: :desc).includes(captures: [ { thumbnails_attachments: :blob }, { preview_thumbnails_attachments: :blob } ]).page(params[:page]).per(12)
+    @events = scoped.order(captured_at: :desc).includes(captures: [ { small_thumbnails_attachments: :blob }, { large_thumbnails_attachments: :blob } ]).page(params[:page]).per(12)
   end
 
   def show
     force_html_for_non_event_stream!
-    @captures = @event.captures.with_attached_thumbnails.with_attached_preview_thumbnails.with_attached_video.order(created_at: :asc)
+    @captures = @event.captures.with_attached_small_thumbnails.with_attached_large_thumbnails.with_attached_video.order(created_at: :asc)
     scope = scoped_events
     @next_event = scope.where("captured_at > ?", @event.captured_at).order(captured_at: :asc).first
     @prev_event = scope.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
@@ -38,7 +38,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @captures = @event.captures.with_attached_thumbnails.with_attached_preview_thumbnails.with_attached_video.order(created_at: :desc)
+    @captures = @event.captures.with_attached_small_thumbnails.with_attached_large_thumbnails.with_attached_video.order(created_at: :desc)
     assign_switcher_data!(@captures)
     assign_share_metadata!(@captures)
     @prev_event = scoped_events.where("captured_at < ?", @event.captured_at).order(captured_at: :desc).first
@@ -196,7 +196,7 @@ class EventsController < ApplicationController
   end
 
   def interleaved_thumbnails(captures)
-    attachments_by_capture = captures.map { |capture| [ capture, capture.thumbnails.attachments ] }
+    attachments_by_capture = captures.map { |capture| [ capture, capture.small_thumbnails.attachments ] }
     return [] if attachments_by_capture.empty?
 
     max_thumbs = attachments_by_capture.map { |(_, thumbs)| thumbs.size }.max
@@ -224,10 +224,10 @@ class EventsController < ApplicationController
     @switcher_captures = captures.filter_map do |capture|
       next unless capture.video.attached?
       offset = capture.offset_seconds&.to_f || 0.0
-      preview_thumbs = if capture.preview_thumbnails.attached?
-        capture.preview_thumbnails
+      large_thumbs = if capture.large_thumbnails.attached?
+        capture.large_thumbnails
       else
-        capture.thumbnails
+        capture.small_thumbnails
       end
 
       {
@@ -235,7 +235,7 @@ class EventsController < ApplicationController
         offset_seconds: offset,
         url: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : url_for(capture.video),
         label: t("events.labels.capture", id: capture.id),
-        preview_thumbnails: preview_thumbs.map { |thumb| url_for(thumb) },
+        large_thumbnails: large_thumbs.map { |thumb| url_for(thumb) },
         hls: {
           manifest: capture.hls_manifest_path.present? ? "#{request.base_url}#{capture.hls_manifest_path}" : nil,
           processing: capture.hls_processing?,
@@ -251,10 +251,10 @@ class EventsController < ApplicationController
     @meta_description = t("events.meta.description", time: I18n.l(@event.captured_at, format: :long))
     @meta_url = request.original_url
 
-    preview_thumb = captures.find { |capture| capture.preview_thumbnails.attached? }&.preview_thumbnails&.first
-    fallback_thumb = captures.find { |capture| capture.thumbnails.attached? }&.thumbnails&.first
-    @meta_image_url = if preview_thumb
-      url_for(preview_thumb)
+    large_thumb = captures.find { |capture| capture.large_thumbnails.attached? }&.large_thumbnails&.first
+    fallback_thumb = captures.find { |capture| capture.small_thumbnails.attached? }&.small_thumbnails&.first
+    @meta_image_url = if large_thumb
+      url_for(large_thumb)
     elsif fallback_thumb
       url_for(fallback_thumb)
     else

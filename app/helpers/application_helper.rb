@@ -16,10 +16,10 @@ module ApplicationHelper
     return [] if captures.empty?
 
     frames = captures.flat_map do |capture|
-      if capture.preview_thumbnails.attached?
-        capture.preview_thumbnails.to_a
+      if capture.large_thumbnails.attached?
+        capture.large_thumbnails.to_a
       else
-        capture.thumbnails.to_a
+        capture.small_thumbnails.to_a
       end
     end
 

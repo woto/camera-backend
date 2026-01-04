@@ -30,7 +30,7 @@ puts "Creating events and captures..."
     # Attach 1-2 thumbnails
     rand(1..2).times do |k|
       thumb_file = "thumb#{rand(1..3)}.jpg"
-      capture.thumbnails.attach(
+      capture.small_thumbnails.attach(
         io: File.open(Rails.root.join("db/seed_assets", thumb_file)),
         filename: "thumb_#{i}_#{j}_#{k}.jpg",
         content_type: "image/jpeg"

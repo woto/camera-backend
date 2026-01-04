@@ -4,8 +4,8 @@ class Capture < ApplicationRecord
   belongs_to :room, optional: true
 
   has_one_attached :video
-  has_many_attached :thumbnails
-  has_many_attached :preview_thumbnails
+  has_many_attached :small_thumbnails
+  has_many_attached :large_thumbnails
   # hls_manifest_path stores public path like "/hls/capture-123/master.m3u8"
 
   after_commit :enqueue_hls_generation, on: [ :create, :update ]

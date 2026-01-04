@@ -1,5 +1,5 @@
 namespace :captures do
-  desc "Regenerate thumbnails and preview thumbnails. Optional ALL, EVENT_ID, CAPTURE_ID, LIMIT env vars."
+  desc "Regenerate small and large thumbnails. Optional ALL, EVENT_ID, CAPTURE_ID, LIMIT env vars."
   task regenerate_thumbnails: :environment do
     event_id = ENV["EVENT_ID"]&.to_i
     capture_id = ENV["CAPTURE_ID"]&.to_i
@@ -25,11 +25,11 @@ namespace :captures do
       processed += 1
       puts "Regenerating Capture##{capture.id} (event #{capture.event_id})"
 
-      thumbnails = []
-      preview_thumbnails = []
+      small_thumbnails = []
+      large_thumbnails = []
 
       capture.video.open do |file|
-        thumbnails = ThumbnailGenerator.new(
+        small_thumbnails = ThumbnailGenerator.new(
           file.path,
           capture_count: 5,
           target_width: 170,
@@ -37,7 +37,7 @@ namespace :captures do
           quality: 7
         ).generate
 
-        preview_thumbnails = ThumbnailGenerator.new(
+        large_thumbnails = ThumbnailGenerator.new(
           file.path,
           capture_count: 12,
           target_width: 640,
@@ -48,23 +48,23 @@ namespace :captures do
         base_filename = capture.video.filename.to_s
 
         ActiveRecord::Base.transaction do
-          capture.thumbnails.purge
-          capture.preview_thumbnails.purge
+          capture.small_thumbnails.purge
+          capture.large_thumbnails.purge
 
-          thumbnails.each_with_index do |thumbnail_file, index|
+          small_thumbnails.each_with_index do |thumbnail_file, index|
             data = File.binread(thumbnail_file.path)
-            capture.thumbnails.attach(
+            capture.small_thumbnails.attach(
               io: StringIO.new(data),
               filename: "thumb_#{index + 1}_#{base_filename}.jpg",
               content_type: "image/jpeg"
             )
           end
 
-          preview_thumbnails.each_with_index do |thumbnail_file, index|
+          large_thumbnails.each_with_index do |thumbnail_file, index|
             data = File.binread(thumbnail_file.path)
-            capture.preview_thumbnails.attach(
+            capture.large_thumbnails.attach(
               io: StringIO.new(data),
-              filename: "preview_thumb_#{index + 1}_#{base_filename}.jpg",
+              filename: "large_thumb_#{index + 1}_#{base_filename}.jpg",
               content_type: "image/jpeg"
             )
           end
@@ -74,8 +74,8 @@ namespace :captures do
       errors += 1
       warn "Failed Capture##{capture.id}: #{e.message}"
     ensure
-      thumbnails.each { |file| file.close! if file.respond_to?(:close!) }
-      preview_thumbnails.each { |file| file.close! if file.respond_to?(:close!) }
+      small_thumbnails.each { |file| file.close! if file.respond_to?(:close!) }
+      large_thumbnails.each { |file| file.close! if file.respond_to?(:close!) }
     end
 
     puts "Done. processed=#{processed} errors=#{errors}"

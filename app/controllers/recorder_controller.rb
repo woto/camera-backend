@@ -20,8 +20,8 @@ class RecorderController < ApplicationController
       return render json: { success: false, message: t("recorder.errors.invalid_timestamp") }, status: :bad_request
     end
 
-    thumbnails = []
-    preview_thumbnails = []
+    small_thumbnails = []
+    large_thumbnails = []
     response_payload = {}
     event = nil
     capture = nil
@@ -34,7 +34,7 @@ class RecorderController < ApplicationController
       attach_video!(capture, video_file)
       capture.save!
 
-      thumbnails = ThumbnailGenerator.new(
+      small_thumbnails = ThumbnailGenerator.new(
         video_file.tempfile.path,
         capture_count: 5,
         # Target resolution for LilyGO T-Display S3; loremflickr 170x320 worked on device.
@@ -42,15 +42,15 @@ class RecorderController < ApplicationController
         target_height: 320,
         quality: 7
       ).generate
-      attach_thumbnails!(capture, thumbnails, safe_filename(video_file))
-      preview_thumbnails = ThumbnailGenerator.new(
+      attach_small_thumbnails!(capture, small_thumbnails, safe_filename(video_file))
+      large_thumbnails = ThumbnailGenerator.new(
         video_file.tempfile.path,
         capture_count: 12,
         target_width: 640,
         target_height: 400,
         quality: 3
       ).generate
-      attach_preview_thumbnails!(capture, preview_thumbnails, safe_filename(video_file))
+      attach_large_thumbnails!(capture, large_thumbnails, safe_filename(video_file))
 
       response_payload = {
         success: true,
@@ -60,7 +60,7 @@ class RecorderController < ApplicationController
         event_timestamp: event.captured_at.iso8601,
         capture_id: capture.id,
         video: blob_payload(capture.video),
-        thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
+        thumbnails: capture.small_thumbnails.map { |thumb| blob_payload(thumb) },
         offset_seconds: capture.offset_seconds&.to_f,
         room: room&.name
       }
@@ -74,8 +74,8 @@ class RecorderController < ApplicationController
     Rails.logger.error("[RecorderController#upload] Upload failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
     render json: { success: false, message: e.message }, status: :internal_server_error
   ensure
-    thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
-    preview_thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
+    small_thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
+    large_thumbnails&.each { |file| file.close! if file.respond_to?(:close!) }
   end
 
   def trigger
@@ -140,34 +140,34 @@ class RecorderController < ApplicationController
     raise "Failed to save video" unless capture.video.attached?
   end
 
-  def attach_thumbnails!(capture, files, base_filename)
+  def attach_small_thumbnails!(capture, files, base_filename)
     files.each_with_index do |thumbnail_file, index|
       data = File.binread(thumbnail_file.path)
       io = StringIO.new(data)
 
-      capture.thumbnails.attach(
+      capture.small_thumbnails.attach(
         io: io,
         filename: "thumb_#{index + 1}_#{base_filename}.jpg",
         content_type: "image/jpeg"
       )
     end
 
-    raise "Failed to save thumbnails" unless capture.thumbnails.count >= files.size
+    raise "Failed to save thumbnails" unless capture.small_thumbnails.count >= files.size
   end
 
-  def attach_preview_thumbnails!(capture, files, base_filename)
+  def attach_large_thumbnails!(capture, files, base_filename)
     files.each_with_index do |thumbnail_file, index|
       data = File.binread(thumbnail_file.path)
       io = StringIO.new(data)
 
-      capture.preview_thumbnails.attach(
+      capture.large_thumbnails.attach(
         io: io,
-        filename: "preview_thumb_#{index + 1}_#{base_filename}.jpg",
+        filename: "large_thumb_#{index + 1}_#{base_filename}.jpg",
         content_type: "image/jpeg"
       )
     end
 
-    raise "Failed to save preview thumbnails" unless capture.preview_thumbnails.count >= files.size
+    raise "Failed to save large thumbnails" unless capture.large_thumbnails.count >= files.size
   end
 
   def blob_payload(attached_file)
@@ -199,7 +199,7 @@ class RecorderController < ApplicationController
       event_timestamp: event.captured_at&.iso8601,
       capture_id: capture.id,
       video: blob_payload(capture.video),
-      thumbnails: capture.thumbnails.map { |thumb| blob_payload(thumb) },
+      thumbnails: capture.small_thumbnails.map { |thumb| blob_payload(thumb) },
       offset_seconds: capture.offset_seconds&.to_f,
       room: event.room&.name
     }

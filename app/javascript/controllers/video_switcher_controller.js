@@ -794,7 +794,7 @@ export default class extends Controller {
     return {
       ...capture,
       offset_seconds: this.offsetSeconds(capture),
-      preview_thumbnails: Array.isArray(capture.preview_thumbnails) ? capture.preview_thumbnails : []
+      large_thumbnails: Array.isArray(capture.large_thumbnails) ? capture.large_thumbnails : []
     }
   }
 
@@ -822,7 +822,7 @@ export default class extends Controller {
   }
 
   setPreviewForCapture(capture) {
-    this.previewUrls = Array.isArray(capture?.preview_thumbnails) ? capture.preview_thumbnails : []
+    this.previewUrls = Array.isArray(capture?.large_thumbnails) ? capture.large_thumbnails : []
     if (!this.previewUrls.length) {
       this.hidePreview()
     }
