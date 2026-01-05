@@ -234,3 +234,8 @@ id:
     empty: Belum ada acara.
   modal:
     action: Aksi
+  locale_prompt:
+    title: Gunakan bahasa Anda?
+    description: Kami melihat bahasa browser Anda adalah
+    switch_button: Beralih ke %{locale_name}
+    dismiss_button: Tetap %{locale_name}

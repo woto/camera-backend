@@ -4,7 +4,11 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   close(event) {
     event.preventDefault()
-    const frame = document.getElementById("modal")
-    if (frame) frame.innerHTML = ""
+    const frame = this.element.closest("turbo-frame#modal") || document.getElementById("modal")
+    if (frame && frame.contains(this.element)) {
+      frame.innerHTML = ""
+      return
+    }
+    this.element.remove()
   }
 }

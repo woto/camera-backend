@@ -1,0 +1,43 @@
+<% locale_names = I18n.available_locales.index_with { |loc| I18n.with_locale(loc) { I18n.t("locales.#{loc}") } } %>
+<% locale_prompt_copies = I18n.available_locales.index_with do |loc| %>
+  <% I18n.with_locale(loc) do %>
+    <% {
+      title: I18n.t("locale_prompt.title"),
+      description: I18n.t("locale_prompt.description"),
+      switch_button: I18n.t("locale_prompt.switch_button", locale_name: "%{locale}"),
+      dismiss_button: I18n.with_locale(:en) { I18n.t("locale_prompt.dismiss_button", locale_name: I18n.t("locales.#{I18n.default_locale}")) },
+      action: I18n.t("modal.action")
+    } %>
+  <% end %>
+<% end %>
+<% locale_flags = { ar: "🇸🇦", de: "🇩🇪", en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", id: "🇮🇩", it: "🇮🇹", ja: "🇯🇵", nl: "🇳🇱", pl: "🇵🇱", pt: "🇵🇹", :"pt-BR" => "🇧🇷", ru: "🇷🇺", sr: "🇷🇸", tr: "🇹🇷", zh: "🇨🇳" } %>
+<% dismiss_default_label = I18n.with_locale(:en) { I18n.t("locale_prompt.dismiss_button", locale_name: I18n.t("locales.#{I18n.default_locale}")) } %>
+<div
+  data-controller="locale-prompt"
+  data-locale-prompt-default-locale-value="<%= I18n.default_locale %>"
+  data-locale-prompt-current-locale-value="<%= I18n.locale %>"
+  data-locale-prompt-available-locales-value="<%= ERB::Util.json_escape(I18n.available_locales.to_json) %>"
+  data-locale-prompt-locale-names-value="<%= ERB::Util.json_escape(locale_names.to_json) %>"
+  data-locale-prompt-flags-value="<%= ERB::Util.json_escape(locale_flags.to_json) %>"
+  data-locale-prompt-copies-value="<%= ERB::Util.json_escape(locale_prompt_copies.to_json) %>">
+  <div class="hidden" data-locale-prompt-target="modal">
+    <%= render "shared/modal", title: t("locale_prompt.title"), title_target: true, action_label_target: true, close_action: "click->locale-prompt#dismiss" do %>
+      <p class="text-sm text-text-secondary mb-6">
+        <span data-locale-prompt-target="description"><%= t("locale_prompt.description") %></span>
+        <span class="font-semibold text-white" data-locale-prompt-target="localeName"></span>.
+      </p>
+      <div class="space-y-3">
+        <%= form_with url: locale_path, method: :patch, data: { turbo: false, action: "submit->locale-prompt#submit" } do %>
+          <%= hidden_field_tag :locale, "", data: { locale_prompt_target: "localeInput" } %>
+          <button type="submit" class="btn-primary w-full py-3 flex items-center justify-center gap-2">
+            <span class="text-lg" data-locale-prompt-target="primaryFlag"></span>
+            <span data-locale-prompt-target="primaryLabel"></span>
+          </button>
+        <% end %>
+        <button type="button" class="btn-secondary w-full py-3" data-action="click->locale-prompt#dismiss">
+          <span data-locale-prompt-target="dismissLabel"><%= dismiss_default_label %></span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -235,3 +235,8 @@ pt-BR:
     empty: Nenhum evento ainda.
   modal:
     action: Ação
+  locale_prompt:
+    title: Usar seu idioma?
+    description: Notamos que o idioma do navegador é
+    switch_button: Trocar para %{locale_name}
+    dismiss_button: Manter %{locale_name}

@@ -234,3 +234,8 @@ pl:
     empty: Brak wydarzeń.
   modal:
     action: Akcja
+  locale_prompt:
+    title: Użyć Twojego języka?
+    description: Zauważyliśmy, że język przeglądarki to
+    switch_button: Przełącz na %{locale_name}
+    dismiss_button: Zachowaj %{locale_name}

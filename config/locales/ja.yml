@@ -193,6 +193,11 @@ ja:
     empty: イベントはまだありません。
   modal:
     action: アクション
+  locale_prompt:
+    title: お使いの言語を使用しますか？
+    description: ブラウザの言語は
+    switch_button: "%{locale_name}に切り替える"
+    dismiss_button: "%{locale_name}のまま"
   recorder:
     signal_sent: 録画信号を送信しました。
     signal_sent_at: 録画信号を%{time}に送信しました

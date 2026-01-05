@@ -238,3 +238,8 @@ ar:
     empty: لا توجد أحداث حتى الآن.
   modal:
     action: إجراء
+  locale_prompt:
+    title: استخدام لغتك؟
+    description: لاحظنا أن لغة المتصفح هي
+    switch_button: التبديل إلى %{locale_name}
+    dismiss_button: الإبقاء على %{locale_name}

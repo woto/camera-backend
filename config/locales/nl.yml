@@ -237,3 +237,8 @@ nl:
     empty: Nog geen gebeurtenissen.
   modal:
     action: Actie
+  locale_prompt:
+    title: Uw taal gebruiken?
+    description: We hebben gezien dat de browsertaal
+    switch_button: Overschakelen naar %{locale_name}
+    dismiss_button: "%{locale_name} behouden"

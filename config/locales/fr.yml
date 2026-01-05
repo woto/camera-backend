@@ -237,3 +237,8 @@ fr:
     empty: Aucun événement pour le moment.
   modal:
     action: Action
+  locale_prompt:
+    title: "Utiliser votre langue ?"
+    description: Nous avons remarqué que la langue du navigateur est
+    switch_button: Passer à %{locale_name}
+    dismiss_button: Garder %{locale_name}

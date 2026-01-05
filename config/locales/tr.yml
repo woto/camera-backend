@@ -235,3 +235,8 @@ tr:
     empty: Henüz etkinlik yok.
   modal:
     action: İşlem
+  locale_prompt:
+    title: Diliniz kullanılsın mı?
+    description: Tarayıcı dilinizin
+    switch_button: "%{locale_name} diline geç"
+    dismiss_button: "%{locale_name} olarak kal"

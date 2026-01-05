@@ -230,6 +230,11 @@ ru:
     empty: Событий пока нет.
   modal:
     action: Действие
+  locale_prompt:
+    title: Использовать ваш язык?
+    description: Мы заметили, что язык браузера —
+    switch_button: Переключиться на %{locale_name}
+    dismiss_button: Оставить %{locale_name}
   recorder:
     signal_sent: Сигнал записи отправлен.
     signal_sent_at: Сигнал записи отправлен в %{time}

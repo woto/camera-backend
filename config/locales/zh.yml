@@ -234,3 +234,8 @@ zh:
     empty: 暂无事件。
   modal:
     action: 操作
+  locale_prompt:
+    title: 使用你的语言？
+    description: 我们注意到你的浏览器语言是
+    switch_button: 切换到%{locale_name}
+    dismiss_button: 保持%{locale_name}

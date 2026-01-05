@@ -235,3 +235,8 @@ de:
     empty: Noch keine Ereignisse.
   modal:
     action: Aktion
+  locale_prompt:
+    title: Ihre Sprache verwenden?
+    description: Wir haben festgestellt, dass die Browsersprache
+    switch_button: Wechseln zu %{locale_name}
+    dismiss_button: "%{locale_name} beibehalten"

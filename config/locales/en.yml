@@ -257,3 +257,8 @@ en:
     empty: No events yet.
   modal:
     action: Action
+  locale_prompt:
+    title: Use your language?
+    description: We noticed your browser language is
+    switch_button: Switch to %{locale_name}
+    dismiss_button: Keep %{locale_name}

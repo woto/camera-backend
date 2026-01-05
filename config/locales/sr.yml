@@ -193,6 +193,11 @@ sr:
     empty: Još nema događaja.
   modal:
     action: Radnja
+  locale_prompt:
+    title: Користити ваш језик?
+    description: Приметили смо да је језик прегледача
+    switch_button: Пређи на %{locale_name}
+    dismiss_button: Задржи %{locale_name}
   recorder:
     signal_sent: Signal za snimanje je poslat.
     signal_sent_at: Signal za snimanje je poslat u %{time}
