@@ -119,7 +119,11 @@ ar:
       back: رجوع
       publish: نشر
       hide: إخفاء
+      delete: حذف
       delete_confirm: حذف هذا الحدث وكل التسجيلات المرتبطة؟
+      report: إبلاغ
+      report_subject: الإبلاغ عن الحدث #%{id}
+      report_body: "يرجى وصف المشكلة في الحدث #%{id}.\n\nالرابط: %{url}"
     navigation:
       newer: أحدث
       older: أقدم

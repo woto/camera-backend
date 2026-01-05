@@ -14,12 +14,27 @@
   <div class="flex items-center gap-2 md:gap-3 w-full sm:w-auto">
     <%= button_to set_visibility_event_path(@event, hidden: !@event.hidden?, room: current_room_name),
       method: :patch,
-      class: "btn-secondary text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-6 py-2.5 md:py-3 flex-grow sm:flex-grow-0" do %>
+      class: "btn-secondary text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-6 h-10 md:h-11 flex items-center justify-center flex-grow sm:flex-grow-0" do %>
       <%= @event.hidden? ? t("events.header.publish") : t("events.header.hide") %>
+    <% end %>
+    <%= mail_to support_email,
+      subject: t("events.header.report_subject", id: @event.id),
+      body: t("events.header.report_body",
+        id: @event.id,
+        url: (@meta_url || request.original_url)
+      ),
+      class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors cursor-default",
+      title: t("events.header.report"),
+      aria: { label: t("events.header.report") } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 21 21" fill="currentColor">
+        <path d="M61.9,483 C61.9,482.448 61.4296,482 60.85,482 L49.3,482 L49.3,490 L60.85,490 C61.4296,490 61.9,489.552 61.9,489 L61.9,483 Z M64,482 L64,490 C64,491.105 63.06025,492 61.9,492 L47.2,492 L47.2,480 L61.9,480 C63.06025,480 64,480.895 64,482 L64,482 Z M44.05,480 L45.1,480 L45.1,499 C45.1,499.552 44.6296,500 44.05,500 C43.4704,500 43,499.552 43,499 L43,481 C43,480.448 43.4704,480 44.05,480 L44.05,480 Z" transform="translate(-43 -480)"/>
+      </svg>
     <% end %>
     <%= button_to event_path(@event, room: current_room_name), 
       method: :delete, 
-      data: { turbo_confirm: t("events.header.delete_confirm") }, 
+      data: { turbo_confirm: t("events.header.delete_confirm") },
+      title: t("events.header.delete"),
+      aria: { label: t("events.header.delete") },
       class: "w-10 h-10 md:w-11 md:h-11 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white" do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
     <% end %>

@@ -115,7 +115,11 @@ es:
       back: Atrás
       publish: Publicar
       hide: Ocultar
+      delete: Eliminar
       delete_confirm: ¿Eliminar este evento y todas las grabaciones relacionadas?
+      report: Reportar
+      report_subject: Reportar evento #%{id}
+      report_body: "Describe el problema con el evento #%{id}.\n\nEnlace: %{url}"
     navigation:
       newer: Más recientes
       older: Más antiguos

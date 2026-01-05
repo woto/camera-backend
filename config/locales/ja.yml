@@ -115,7 +115,11 @@ ja:
       back: 戻る
       publish: 公開
       hide: 非表示
+      delete: 削除
       delete_confirm: このイベントと関連する録画を削除しますか？
+      report: 報告
+      report_subject: イベント #%{id} を報告
+      report_body: "イベント #%{id} の問題を説明してください。\n\nリンク: %{url}"
     navigation:
       newer: 新しい
       older: 古い

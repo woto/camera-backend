@@ -115,7 +115,11 @@ de:
       back: Zurück
       publish: Veröffentlichen
       hide: Ausblenden
+      delete: Löschen
       delete_confirm: Dieses Ereignis und alle zugehörigen Aufnahmen löschen?
+      report: Melden
+      report_subject: Ereignis #%{id} melden
+      report_body: "Bitte beschreiben Sie das Problem mit Ereignis #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Neuer
       older: Älter

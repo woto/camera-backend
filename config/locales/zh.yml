@@ -115,7 +115,11 @@ zh:
       back: 返回
       publish: 发布
       hide: 隐藏
+      delete: 删除
       delete_confirm: 删除此事件及其所有相关录制？
+      report: 举报
+      report_subject: 举报事件 #%{id}
+      report_body: "请描述事件 #%{id} 的问题。\n\n链接: %{url}"
     navigation:
       newer: 更新
       older: 更旧

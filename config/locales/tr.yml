@@ -115,7 +115,11 @@ tr:
       back: Geri
       publish: Yayınla
       hide: Gizle
+      delete: Sil
       delete_confirm: Bu etkinliği ve tüm ilgili kayıtları sil?
+      report: Bildir
+      report_subject: Etkinlik #%{id} bildir
+      report_body: "Etkinlik #%{id} ile ilgili sorunu açıklayın.\n\nBağlantı: %{url}"
     navigation:
       newer: Daha yeni
       older: Daha eski

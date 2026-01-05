@@ -115,8 +115,12 @@ fr:
       back: Retour
       publish: Publier
       hide: Masquer
+      delete: Supprimer
       delete_confirm: Supprimer cet événement et tous les enregistrements associés
         ?
+      report: Signaler
+      report_subject: "Signaler l'événement #%{id}"
+      report_body: "Veuillez décrire le problème avec l'événement #%{id}.\n\nLien : %{url}"
     navigation:
       newer: Plus récents
       older: Plus anciens

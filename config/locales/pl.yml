@@ -115,7 +115,11 @@ pl:
       back: Wstecz
       publish: Opublikuj
       hide: Ukryj
+      delete: Usuń
       delete_confirm: Usunąć to wydarzenie i wszystkie powiązane nagrania?
+      report: Zgłoś
+      report_subject: Zgłoś wydarzenie #%{id}
+      report_body: "Opisz problem z wydarzeniem #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Nowsze
       older: Starsze

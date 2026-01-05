@@ -115,7 +115,11 @@ nl:
       back: Terug
       publish: Publiceren
       hide: Verbergen
+      delete: Verwijderen
       delete_confirm: Deze gebeurtenis en alle gerelateerde opnames verwijderen?
+      report: Melden
+      report_subject: Meld event #%{id}
+      report_body: "Beschrijf het probleem met event #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Nieuwer
       older: Ouder

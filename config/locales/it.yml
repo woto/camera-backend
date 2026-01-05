@@ -115,7 +115,11 @@ it:
       back: Indietro
       publish: Pubblica
       hide: Nascondi
+      delete: Elimina
       delete_confirm: Eliminare questo evento e tutte le registrazioni correlate?
+      report: Segnala
+      report_subject: Segnala evento #%{id}
+      report_body: "Descrivi il problema con l'evento #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Più recenti
       older: Più vecchi

@@ -115,7 +115,11 @@ sr:
       back: Nazad
       publish: Objavi
       hide: Sakrij
+      delete: Obriši
       delete_confirm: Obrisati ovaj događaj i sve povezane snimke?
+      report: Prijavi
+      report_subject: Prijavi događaj #%{id}
+      report_body: "Opišite problem sa događajem #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Noviji
       older: Stariji

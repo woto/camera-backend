@@ -115,7 +115,11 @@ ru:
       back: Назад
       publish: Опубликовать
       hide: Скрыть
+      delete: Удалить
       delete_confirm: Удалить это событие и все связанные записи?
+      report: Пожаловаться
+      report_subject: Жалоба на событие #%{id}
+      report_body: "Опишите проблему с событием #%{id}.\n\nСсылка: %{url}"
     navigation:
       newer: Новее
       older: Старее

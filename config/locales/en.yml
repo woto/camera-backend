@@ -115,7 +115,11 @@ en:
       back: Back
       publish: Publish
       hide: Hide
+      delete: Delete
       delete_confirm: Delete this event and all related recordings?
+      report: Report
+      report_subject: Report event #%{id}
+      report_body: "Please describe the issue with event #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Newer
       older: Older

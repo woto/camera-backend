@@ -115,7 +115,11 @@ pt-BR:
       back: Voltar
       publish: Publicar
       hide: Ocultar
+      delete: Excluir
       delete_confirm: Excluir este evento e todas as gravações relacionadas?
+      report: Denunciar
+      report_subject: Denunciar evento #%{id}
+      report_body: "Descreva o problema com o evento #%{id}.\n\nLink: %{url}"
     navigation:
       newer: Mais recentes
       older: Mais antigos

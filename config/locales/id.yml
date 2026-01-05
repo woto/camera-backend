@@ -115,7 +115,11 @@ id:
       back: Kembali
       publish: Publikasikan
       hide: Sembunyikan
+      delete: Hapus
       delete_confirm: Hapus acara ini dan semua rekaman terkait?
+      report: Laporkan
+      report_subject: Laporkan event #%{id}
+      report_body: "Jelaskan masalah pada event #%{id}.\n\nTautan: %{url}"
     navigation:
       newer: Lebih baru
       older: Lebih lama

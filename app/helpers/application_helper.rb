@@ -44,4 +44,8 @@ module ApplicationHelper
     end
     highlighted.html_safe
   end
+
+  def support_email
+    ENV.fetch("SUPPORT_EMAIL", "oganer@gmail.com")
+  end
 end
