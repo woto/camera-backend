@@ -11,12 +11,10 @@ module Camera
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
-    config.i18n.default_locale = :ru
     config.time_zone = "UTC"
     config.i18n.available_locales = [
       :ar, :de, :en, :es, :fr, :id, :it, :ja, :nl, :pl, :pt, :"pt-BR", :ru, :sr, :tr, :zh
     ]
-    config.i18n.default_locale = :ru
     config.i18n.fallbacks = [ :en ]
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
