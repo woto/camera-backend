@@ -37,6 +37,7 @@ I clip caricati sono conservati a tempo indeterminato finché non vengono elimin
 ## 5. Diritti e controllo dell’utente
 - **Caricamento:** controlli quando l’app è attiva e registra.
 - **Eliminazione:** gli utenti con accesso all’ID room possono eliminare i clip tramite il sito web VolleyCam. Puoi anche richiedere l’eliminazione contattando il supporto.
+- **Segnalazione:** puoi segnalare contenuti inappropriati tramite il sito.
 
 ## 6. Contatti
 Per qualsiasi domanda su questa informativa sulla privacy, contattaci a: oganer@gmail.com

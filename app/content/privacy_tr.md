@@ -37,6 +37,7 @@ Yüklenen klipler kullanıcı tarafından silinene kadar süresiz olarak saklan�
 ## 5. Kullanıcı hakları ve kontrolü
 - **Yükleme:** Uygulamanın ne zaman aktif olup kayıt yaptığını siz kontrol edersiniz.
 - **Silme:** Oda Kimliğine erişimi olan kullanıcılar VolleyCam web sitesi üzerinden klipleri silebilir. Ayrıca destekle iletişime geçerek silme talep edebilirsiniz.
+- **Bildirim:** Uygunsuz içeriği web sitesi üzerinden bildirebilirsiniz.
 
 ## 6. İletişim
 Bu gizlilik politikası hakkında sorularınız varsa lütfen şu adresten bize ulaşın: oganer@gmail.com

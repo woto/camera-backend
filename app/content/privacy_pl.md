@@ -37,6 +37,7 @@ Przesłane klipy są przechowywane bezterminowo, dopóki użytkownik ich nie usu
 ## 5. Prawa i kontrola użytkownika
 - **Przesyłanie:** kontrolujesz, kiedy aplikacja jest aktywna i nagrywa.
 - **Usuwanie:** użytkownicy z dostępem do identyfikatora pokoju mogą usuwać klipy przez stronę VolleyCam. Możesz też poprosić o usunięcie, kontaktując się z pomocą techniczną.
+- **Zgłoszenie:** możesz zgłosić nieodpowiednie treści przez stronę.
 
 ## 6. Kontakt
 Jeśli masz pytania dotyczące tej polityki prywatności, skontaktuj się z nami: oganer@gmail.com

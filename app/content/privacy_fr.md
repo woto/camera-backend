@@ -37,6 +37,7 @@ Les clips téléversés sont conservés indéfiniment jusqu’à ce qu’ils soi
 ## 5. Droits et contrôle de l’utilisateur
 - **Téléversement :** vous contrôlez quand l’application est active et enregistre.
 - **Suppression :** les utilisateurs ayant accès à l’identifiant de room peuvent supprimer des clips via le site Web VolleyCam. Vous pouvez aussi demander la suppression en contactant l’assistance.
+- **Signalement :** vous pouvez signaler du contenu inapproprié via le site.
 
 ## 6. Contact
 Si vous avez des questions sur cette politique de confidentialité, veuillez nous contacter à : oganer@gmail.com

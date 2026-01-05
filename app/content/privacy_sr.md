@@ -37,6 +37,7 @@ Otpremljeni klipovi se čuvaju neograničeno dok ih korisnik ne obriše. Korisni
 ## 5. Prava i kontrola korisnika
 - **Otpremanje:** vi kontrolišete kada je aplikacija aktivna i snima.
 - **Brisanje:** korisnici sa pristupom ID‑ju sobe mogu obrisati klipove preko VolleyCam veb‑sajta. Takođe možete zatražiti brisanje kontaktiranjem podrške.
+- **Prijava:** možete prijaviti neprimeren sadržaj preko sajta.
 
 ## 6. Kontakt
 Ako imate pitanja o ovoj politici privatnosti, kontaktirajte nas na: oganer@gmail.com

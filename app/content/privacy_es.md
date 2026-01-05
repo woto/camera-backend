@@ -37,6 +37,7 @@ Los clips subidos se almacenan indefinidamente hasta que el usuario los elimine.
 ## 5. Derechos y control del usuario
 - **Subida:** Usted controla cuándo la app está activa y grabando.
 - **Eliminación:** Los usuarios con acceso al ID de la sala pueden eliminar clips a través del sitio web de VolleyCam. También puede solicitar la eliminación contactando con soporte.
+- **Reporte:** Puede reportar contenido inapropiado a través del sitio web.
 
 ## 6. Contacto
 Si tiene preguntas sobre esta política de privacidad, contáctenos en: oganer@gmail.com

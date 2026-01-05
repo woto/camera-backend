@@ -37,6 +37,7 @@ Geüploade clips worden onbeperkt bewaard totdat ze door de gebruiker worden ver
 ## 5. Gebruikersrechten en controle
 - **Uploaden:** je bepaalt wanneer de app actief is en opneemt.
 - **Verwijderen:** gebruikers met toegang tot de Room‑ID kunnen clips verwijderen via de VolleyCam‑website. Je kunt ook verwijdering aanvragen door contact op te nemen met support.
+- **Melden:** je kunt ongepaste inhoud melden via de website.
 
 ## 6. Contact
 Als je vragen hebt over dit privacybeleid, neem dan contact op via: oganer@gmail.com

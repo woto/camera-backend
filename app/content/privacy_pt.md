@@ -37,6 +37,7 @@ Os clipes enviados são armazenados indefinidamente até serem excluídos pelo u
 ## 5. Direitos e controle do usuário
 - **Envio:** você controla quando o app está ativo e gravando.
 - **Exclusão:** usuários com acesso ao ID da sala podem excluir clipes pelo site da VolleyCam. Você também pode solicitar a exclusão entrando em contato com o suporte.
+- **Denúncia:** você pode denunciar conteúdo inadequado pelo site.
 
 ## 6. Contato
 Se tiver dúvidas sobre esta política de privacidade, entre em contato em: oganer@gmail.com

@@ -37,6 +37,7 @@ Uploaded clips are stored indefinitely until they are deleted by the user. Users
 ## 5. User Rights and Control
 - **Uploading:** You have control over when the app is active and recording.
 - **Deletion:** Users with access to the Room ID can delete clips through the VolleyCam website. You can also request deletion by contacting support.
+- **Reporting:** You can report inappropriate content through the website.
 
 ## 6. Contact Us
 If you have any questions about this Privacy Policy, please contact us at: oganer@gmail.com

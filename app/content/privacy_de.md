@@ -37,6 +37,7 @@ Hochgeladene Clips werden unbefristet gespeichert, bis sie vom Nutzer gelöscht 
 ## 5. Nutzerrechte und Kontrolle
 - **Upload:** Sie bestimmen, wann die App aktiv ist und aufzeichnet.
 - **Löschen:** Nutzer mit Zugriff auf die Room‑ID können Clips über die VolleyCam‑Website löschen. Sie können auch eine Löschung beantragen, indem Sie den Support kontaktieren.
+- **Meldung:** Sie können unangemessene Inhalte über die Website melden.
 
 ## 6. Kontakt
 Wenn Sie Fragen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns bitte unter: oganer@gmail.com

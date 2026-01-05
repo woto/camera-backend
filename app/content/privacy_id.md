@@ -37,6 +37,7 @@ Klip yang diunggah disimpan tanpa batas waktu hingga dihapus oleh pengguna. Peng
 ## 5. Hak dan kontrol pengguna
 - **Unggahan:** Anda mengendalikan kapan aplikasi aktif dan merekam.
 - **Penghapusan:** pengguna dengan akses ke ID Room dapat menghapus klip melalui situs web VolleyCam. Anda juga dapat meminta penghapusan dengan menghubungi dukungan.
+- **Pelaporan:** Anda dapat melaporkan konten tidak pantas melalui situs web.
 
 ## 6. Kontak
 Jika Anda memiliki pertanyaan tentang kebijakan privasi ini, silakan hubungi kami di: oganer@gmail.com
