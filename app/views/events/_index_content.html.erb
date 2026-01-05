@@ -97,7 +97,7 @@
 
     <div class="mt-12 md:mt-16 mb-20 flex justify-center">
       <div class="overflow-x-auto max-w-full pb-4 scrollbar-hide">
-        <%= paginate @events, params: { room: current_room_name }.compact %>
+        <%= paginate @events %>
       </div>
     </div>
   <% else %>
