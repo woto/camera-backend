@@ -635,11 +635,28 @@ export default class extends Controller {
   }
 
   toggleFullscreen() {
-    const container = this.playerTarget.closest('.player-container')
-    if (!document.fullscreenElement) {
-      container.requestFullscreen().catch(() => {})
-    } else {
-      document.exitFullscreen()
+    const video = this.playerTarget
+    if (!video) return
+    const container = video.closest(".player-container")
+    const isFullscreen = document.fullscreenElement
+
+    if (!isFullscreen) {
+      if (typeof video.webkitEnterFullscreen === "function") {
+        video.webkitEnterFullscreen()
+        return
+      }
+      if (container && typeof container.requestFullscreen === "function") {
+        container.requestFullscreen().catch(() => {})
+        return
+      }
+      if (typeof video.requestFullscreen === "function") {
+        video.requestFullscreen().catch(() => {})
+      }
+      return
+    }
+
+    if (typeof document.exitFullscreen === "function") {
+      document.exitFullscreen().catch(() => {})
     }
   }
 
