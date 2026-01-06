@@ -480,6 +480,12 @@ export default class extends Controller {
       this.hideSpeedMenu()
     }
     document.addEventListener("pointerdown", this.boundGlobalPointerDown, true)
+    this.boundFullscreenChange = () => {
+      if (document.fullscreenElement && this.isPseudoFullscreen()) {
+        this.exitPseudoFullscreen()
+      }
+    }
+    document.addEventListener("fullscreenchange", this.boundFullscreenChange)
   }
 
   updateSpeedUI() {
@@ -638,26 +644,74 @@ export default class extends Controller {
     const video = this.playerTarget
     if (!video) return
     const container = video.closest(".player-container")
+    if (this.isPseudoFullscreen()) {
+      this.exitPseudoFullscreen()
+      return
+    }
     const isFullscreen = document.fullscreenElement
 
     if (!isFullscreen) {
-      if (typeof video.webkitEnterFullscreen === "function") {
-        video.webkitEnterFullscreen()
+      const requested = this.requestNativeFullscreen(video, container)
+      if (!requested) {
+        this.enterPseudoFullscreen(container)
         return
       }
-      if (container && typeof container.requestFullscreen === "function") {
-        container.requestFullscreen().catch(() => {})
-        return
-      }
-      if (typeof video.requestFullscreen === "function") {
-        video.requestFullscreen().catch(() => {})
-      }
+      this.schedulePseudoFullscreenFallback(container)
       return
     }
 
     if (typeof document.exitFullscreen === "function") {
       document.exitFullscreen().catch(() => {})
     }
+  }
+
+  requestNativeFullscreen(video, container) {
+    if (typeof video.webkitEnterFullscreen === "function") {
+      video.webkitEnterFullscreen()
+      return true
+    }
+    if (container && typeof container.requestFullscreen === "function") {
+      container.requestFullscreen().catch(() => {})
+      return true
+    }
+    if (typeof video.requestFullscreen === "function") {
+      video.requestFullscreen().catch(() => {})
+      return true
+    }
+    return false
+  }
+
+  schedulePseudoFullscreenFallback(container) {
+    if (!container) return
+    if (this.fullscreenFallbackTimer) {
+      clearTimeout(this.fullscreenFallbackTimer)
+    }
+    this.fullscreenFallbackTimer = setTimeout(() => {
+      if (!document.fullscreenElement && !this.isPseudoFullscreen()) {
+        this.enterPseudoFullscreen(container)
+      }
+    }, 400)
+  }
+
+  isPseudoFullscreen() {
+    const container = this.pseudoFullscreenContainer
+    return Boolean(container && container.classList.contains("is-pseudo-fullscreen"))
+  }
+
+  enterPseudoFullscreen(container) {
+    if (!container) return
+    container.classList.add("is-pseudo-fullscreen")
+    document.body.classList.add("is-pseudo-fullscreen")
+    this.pseudoFullscreenContainer = container
+  }
+
+  exitPseudoFullscreen() {
+    const container = this.pseudoFullscreenContainer || this.playerTarget?.closest(".player-container")
+    if (container) {
+      container.classList.remove("is-pseudo-fullscreen")
+    }
+    document.body.classList.remove("is-pseudo-fullscreen")
+    this.pseudoFullscreenContainer = null
   }
 
   switch(event) {
@@ -927,6 +981,10 @@ export default class extends Controller {
     if (this.boundGlobalPointerDown) {
       document.removeEventListener("pointerdown", this.boundGlobalPointerDown, true)
       this.boundGlobalPointerDown = null
+    }
+    if (this.boundFullscreenChange) {
+      document.removeEventListener("fullscreenchange", this.boundFullscreenChange)
+      this.boundFullscreenChange = null
     }
     this.hidePreview()
     if (this.hls) {

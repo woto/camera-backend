@@ -212,6 +212,28 @@
   .player-container:fullscreen .player-nav {
     z-index: 60;
   }
+  .player-container.is-pseudo-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+    z-index: 9999;
+  }
+  .player-container.is-pseudo-fullscreen .player-video {
+    @apply rounded-none;
+  }
+  .player-container.is-pseudo-fullscreen .absolute {
+    @apply z-50;
+  }
+  .player-container.is-pseudo-fullscreen .player-nav {
+    z-index: 60;
+  }
+  body.is-pseudo-fullscreen {
+    overflow: hidden;
+  }
   .player-controls button,
   .player-controls input,
   .player-nav,
