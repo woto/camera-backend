@@ -1,4 +1,19 @@
 module ApplicationHelper
+  # Remove 'selected' query parameter from any URLs inside the provided HTML fragment.
+  # This is a safety measure to ensure pagination links do not carry the `selected` param.
+  def strip_selected_from_pagination(html)
+    str = html.to_s
+    # Remove 'selected' param occurrences like '?selected=123', '&selected=123' or '&amp;selected=123'
+    str = str.gsub(/([?&]|&amp;)selected=[^&"']+(&|&amp;)?/) do
+      sep = Regexp.last_match(1)
+      tail = Regexp.last_match(2)
+      # If there was a trailing separator, preserve the leading separator so other params remain valid.
+      tail ? sep : ""
+    end
+    # Clean up malformed '?&' or '?&amp;' and trailing separators before closing quotes
+    str = str.gsub("?&", "?").gsub("?&amp;", "?").gsub(/([?&])"/, '"').gsub('?"', '"')
+    str
+  end
   def render_markdown(markdown)
     html = Kramdown::Document.new(markdown, input: "GFM").to_html
     sanitize(

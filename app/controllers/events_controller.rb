@@ -5,11 +5,33 @@ class EventsController < ApplicationController
 
   def index
     @selected_date = parsed_date
+    @selected_event_id = params[:selected].presence
     scoped = scoped_events
     if @selected_date
       scoped = scoped.where(captured_at: @selected_date.beginning_of_day..@selected_date.end_of_day)
     end
     @events = scoped.order(captured_at: :desc).includes(captures: [ { small_thumbnails_attachments: :blob }, { large_thumbnails_attachments: :blob } ]).page(params[:page]).per(12)
+
+    # If a selected event was requested but is not on the current page, redirect to the page
+    # that contains it so the selected event will be visible in the list. Only perform this
+    # automatic redirect when the request did not explicitly ask for a `page` (so that
+    # users intentionally navigating pages are not forced back to the selected event's page).
+    if @selected_event_id.present? && params[:page].blank?
+      selected_event = scoped.find_by(id: @selected_event_id)
+      if selected_event && !@events.map(&:id).include?(selected_event.id)
+        # Compute page for selected event in the same scope and ordering
+        ids = scoped.order(captured_at: :desc).pluck(:id)
+        index = ids.index(selected_event.id)
+        if index
+          per = @events.limit_value
+          page = (index / per) + 1
+          redirect_params = { page: page, selected: @selected_event_id }
+          redirect_params[:room] = params[:room] if params[:room].present?
+          redirect_params[:date] = params[:date] if params[:date].present?
+          redirect_to events_path(redirect_params)
+        end
+      end
+    end
   end
 
   def show

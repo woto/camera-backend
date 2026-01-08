@@ -22,3 +22,9 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Events navigation behavior
+
+- When viewing an event (`/events/:id`), the app now stores the last viewed event id in session storage and arranges history so that pressing the browser Back button returns to `/events?selected=<id>`.
+- The `All events` link on the event page includes `?selected=<id>` so it works without JavaScript.
+- The events index reads `selected` from the URL or session storage and will highlight and scroll the selected event into view; if the selected event is on another paginated page, the index will redirect to the containing page so it is visible.

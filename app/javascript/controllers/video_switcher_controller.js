@@ -14,7 +14,9 @@ export default class extends Controller {
     loadingText: String,
     baseLabel: String,
     offsetLabel: String,
-    cameraLabel: String
+    cameraLabel: String,
+    eventsSelectedUrl: String,
+    eventId: Number
   }
 
   connect() {
@@ -57,6 +59,61 @@ export default class extends Controller {
     this.showControls()
     this.syncFromSwitcherData()
     this.bindGlobalHandlers()
+    this.setupNavigationFallback()
+  }
+
+  setupNavigationFallback() {
+
+    // Ensure there's a history entry that points to the events list with this event selected
+    // while keeping the visible URL as the event path. We replace the current entry with
+    // the events URL (so Back goes there) then push the event URL to restore the visible URL.
+    try {
+      const eventsUrl = this.eventsSelectedUrlValue
+      if (eventsUrl && eventsUrl.length > 0) {
+        const currentUrl = window.location.href
+        history.replaceState({}, "", eventsUrl)
+        // Delay pushing the event URL restore by a tick to avoid transient address flicker
+        setTimeout(() => {
+          try { history.pushState({}, "", currentUrl) } catch (e) { /* ignore */ }
+        }, 0)
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    // Persist last viewed id for index fallback behavior
+    try {
+      if (this.eventIdValue) {
+        window.sessionStorage.setItem("last_viewed_event_id", String(this.eventIdValue))
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    // On popstate, if the URL we returned to is the events list with `selected`, force a
+    // full navigation to that URL so the server can compute pagination and render the
+    // selected item on the correct page (this avoids Turbo snapshot issues).
+    this._popstateHandler = (e) => {
+      try {
+        const loc = new URL(window.location.href)
+        const eventsUrl = this.eventsSelectedUrlValue
+        if (!eventsUrl) return
+        const eventsPath = new URL(eventsUrl, window.location.origin).pathname
+        if (loc.pathname === eventsPath && loc.searchParams.get("selected")) {
+          // Force full navigation to server-rendered page
+          window.location.href = loc.href
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+    window.addEventListener("popstate", this._popstateHandler)
+  }
+
+  disconnect() {
+    if (this._popstateHandler) {
+      window.removeEventListener("popstate", this._popstateHandler)
+    }
   }
 
   switcherDataTargetConnected() {

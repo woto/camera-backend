@@ -1,6 +1,6 @@
 <div id="event-header" class="flex flex-wrap justify-between items-center gap-4 md:gap-6 mb-8 md:mb-12">
   <div class="flex items-center gap-4 md:gap-6">
-    <%= link_to events_path, class: "group flex items-center gap-2.5 md:gap-3.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white" do %>
+    <%= link_to events_path(selected: @event.id, room: current_room_name), class: "group flex items-center gap-2.5 md:gap-3.5 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-text-secondary hover:text-white" do %>
       <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-accent-purple group-hover:border-accent-purple/50">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       </div>
@@ -30,8 +30,8 @@
         <path d="M61.9,483 C61.9,482.448 61.4296,482 60.85,482 L49.3,482 L49.3,490 L60.85,490 C61.4296,490 61.9,489.552 61.9,489 L61.9,483 Z M64,482 L64,490 C64,491.105 63.06025,492 61.9,492 L47.2,492 L47.2,480 L61.9,480 C63.06025,480 64,480.895 64,482 L64,482 Z M44.05,480 L45.1,480 L45.1,499 C45.1,499.552 44.6296,500 44.05,500 C43.4704,500 43,499.552 43,499 L43,481 C43,480.448 43.4704,480 44.05,480 L44.05,480 Z" transform="translate(-43 -480)"/>
       </svg>
     <% end %>
-    <%= button_to event_path(@event, room: current_room_name), 
-      method: :delete, 
+    <%= button_to event_path(@event, room: current_room_name),
+      method: :delete,
       data: { turbo_confirm: t("events.header.delete_confirm") },
       title: t("events.header.delete"),
       aria: { label: t("events.header.delete") },

@@ -123,6 +123,15 @@
     }
   }
 
+  /* Selected event card styling */
+  .card.is-selected {
+    @apply ring-4 ring-accent-purple/40 border-accent-purple bg-white/[0.03] shadow-lg scale-105 transition-all;
+  }
+
+  .card.is-selected .badge {
+    @apply bg-accent-purple text-white;
+  }
+
 
   /* Video Source buttons */
   .source-buttons {
