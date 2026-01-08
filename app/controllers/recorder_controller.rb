@@ -47,7 +47,7 @@ class RecorderController < ApplicationController
       attach_small_thumbnails!(capture, small_thumbnails, safe_filename(video_file))
       large_thumbnails = ThumbnailGenerator.new(
         video_file.tempfile.path,
-        capture_count: 12,
+        capture_count: 24,
         target_width: 640,
         target_height: 400,
         quality: 3
