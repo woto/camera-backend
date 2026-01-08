@@ -39,5 +39,10 @@ Otpremljeni klipovi se čuvaju neograničeno dok ih korisnik ne obriše. Korisni
 - **Brisanje:** korisnici sa pristupom ID‑ju sobe mogu obrisati klipove preko VolleyCam veb‑sajta. Takođe možete zatražiti brisanje kontaktiranjem podrške.
 - **Prijava:** možete prijaviti neprimeren sadržaj preko sajta.
 
+### Kako obrisati otpremljeni video
+1. Otvorite `volleycam.com` i izaberite sobu preko stavke „Soba“ u bočnom meniju (potreban je ispravan 6‑cifreni kod).
+2. Otvorite željeni događaj.
+3. Kliknite na ikonu kante u zaglavlju događaja i potvrdite brisanje.
+
 ## 6. Kontakt
 Ako imate pitanja o ovoj politici privatnosti, kontaktirajte nas na: oganer@gmail.com

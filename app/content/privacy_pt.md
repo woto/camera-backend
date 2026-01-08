@@ -39,5 +39,10 @@ Os clipes enviados são armazenados indefinidamente até serem excluídos pelo u
 - **Exclusão:** usuários com acesso ao ID da sala podem excluir clipes pelo site da VolleyCam. Você também pode solicitar a exclusão entrando em contato com o suporte.
 - **Denúncia:** você pode denunciar conteúdo inadequado pelo site.
 
+### Como excluir um vídeo enviado
+1. Abra `volleycam.com` e selecione a sala pelo item “Sala” no menu lateral (é necessário o código correto de 6 dígitos).
+2. Abra o evento desejado.
+3. Clique no ícone da lixeira no cabeçalho do evento e confirme a exclusão.
+
 ## 6. Contato
 Se tiver dúvidas sobre esta política de privacidade, entre em contato em: oganer@gmail.com

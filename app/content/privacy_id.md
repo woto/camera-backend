@@ -39,5 +39,10 @@ Klip yang diunggah disimpan tanpa batas waktu hingga dihapus oleh pengguna. Peng
 - **Penghapusan:** pengguna dengan akses ke ID Room dapat menghapus klip melalui situs web VolleyCam. Anda juga dapat meminta penghapusan dengan menghubungi dukungan.
 - **Pelaporan:** Anda dapat melaporkan konten tidak pantas melalui situs web.
 
+### Cara menghapus video yang diunggah
+1. Buka `volleycam.com` dan pilih room melalui menu samping “Room” (diperlukan kode 6 digit yang benar).
+2. Buka event yang diinginkan.
+3. Klik ikon tempat sampah di header event dan konfirmasi penghapusan.
+
 ## 6. Kontak
 Jika Anda memiliki pertanyaan tentang kebijakan privasi ini, silakan hubungi kami di: oganer@gmail.com

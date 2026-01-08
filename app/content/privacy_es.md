@@ -39,5 +39,10 @@ Los clips subidos se almacenan indefinidamente hasta que el usuario los elimine.
 - **Eliminación:** Los usuarios con acceso al ID de la sala pueden eliminar clips a través del sitio web de VolleyCam. También puede solicitar la eliminación contactando con soporte.
 - **Reporte:** Puede reportar contenido inapropiado a través del sitio web.
 
+### Cómo eliminar un video cargado
+1. Abra `volleycam.com` y seleccione la sala desde “Sala” en el menú lateral (necesita el código correcto de 6 dígitos).
+2. Abra el evento deseado.
+3. Haga clic en el icono de la papelera en el encabezado del evento y confirme la eliminación.
+
 ## 6. Contacto
 Si tiene preguntas sobre esta política de privacidad, contáctenos en: oganer@gmail.com

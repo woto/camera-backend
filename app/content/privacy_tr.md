@@ -39,5 +39,10 @@ Yüklenen klipler kullanıcı tarafından silinene kadar süresiz olarak saklan�
 - **Silme:** Oda Kimliğine erişimi olan kullanıcılar VolleyCam web sitesi üzerinden klipleri silebilir. Ayrıca destekle iletişime geçerek silme talep edebilirsiniz.
 - **Bildirim:** Uygunsuz içeriği web sitesi üzerinden bildirebilirsiniz.
 
+### Yüklenen videoyu nasıl silebilirim
+1. `volleycam.com` adresini açın ve yan menüdeki “Oda” öğesinden doğru odayı seçin (doğru 6 haneli kod gerekir).
+2. İstediğiniz etkinliği açın.
+3. Etkinlik başlığındaki çöp kutusu simgesine tıklayın ve silmeyi onaylayın.
+
 ## 6. İletişim
 Bu gizlilik politikası hakkında sorularınız varsa lütfen şu adresten bize ulaşın: oganer@gmail.com

@@ -39,5 +39,10 @@ Hochgeladene Clips werden unbefristet gespeichert, bis sie vom Nutzer gelöscht 
 - **Löschen:** Nutzer mit Zugriff auf die Room‑ID können Clips über die VolleyCam‑Website löschen. Sie können auch eine Löschung beantragen, indem Sie den Support kontaktieren.
 - **Meldung:** Sie können unangemessene Inhalte über die Website melden.
 
+### So löschen Sie ein hochgeladenes Video
+1. Öffnen Sie `volleycam.com` und wählen Sie über „Room“ in der Seitenleiste den richtigen Raum (6‑stelliger Code erforderlich).
+2. Öffnen Sie das gewünschte Ereignis.
+3. Klicken Sie im Kopfbereich des Ereignisses auf das Papierkorb‑Symbol und bestätigen Sie die Löschung.
+
 ## 6. Kontakt
 Wenn Sie Fragen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns bitte unter: oganer@gmail.com

@@ -39,5 +39,10 @@ Przesłane klipy są przechowywane bezterminowo, dopóki użytkownik ich nie usu
 - **Usuwanie:** użytkownicy z dostępem do identyfikatora pokoju mogą usuwać klipy przez stronę VolleyCam. Możesz też poprosić o usunięcie, kontaktując się z pomocą techniczną.
 - **Zgłoszenie:** możesz zgłosić nieodpowiednie treści przez stronę.
 
+### Jak usunąć przesłany film
+1. Otwórz `volleycam.com` i wybierz pokój przez pozycję „Pokój” w bocznym menu (wymagany jest poprawny 6‑cyfrowy kod).
+2. Otwórz wybrane wydarzenie.
+3. Kliknij ikonę kosza w nagłówku wydarzenia i potwierdź usunięcie.
+
 ## 6. Kontakt
 Jeśli masz pytania dotyczące tej polityki prywatności, skontaktuj się z nami: oganer@gmail.com

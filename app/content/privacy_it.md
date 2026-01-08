@@ -39,5 +39,10 @@ I clip caricati sono conservati a tempo indeterminato finché non vengono elimin
 - **Eliminazione:** gli utenti con accesso all’ID room possono eliminare i clip tramite il sito web VolleyCam. Puoi anche richiedere l’eliminazione contattando il supporto.
 - **Segnalazione:** puoi segnalare contenuti inappropriati tramite il sito.
 
+### Come eliminare un video caricato
+1. Apri `volleycam.com` e seleziona la stanza tramite “Stanza” nel menu laterale (serve il codice corretto di 6 cifre).
+2. Apri l’evento desiderato.
+3. Clicca sull’icona del cestino nell’intestazione dell’evento e conferma l’eliminazione.
+
 ## 6. Contatti
 Per qualsiasi domanda su questa informativa sulla privacy, contattaci a: oganer@gmail.com

@@ -39,5 +39,10 @@ Les clips téléversés sont conservés indéfiniment jusqu’à ce qu’ils soi
 - **Suppression :** les utilisateurs ayant accès à l’identifiant de room peuvent supprimer des clips via le site Web VolleyCam. Vous pouvez aussi demander la suppression en contactant l’assistance.
 - **Signalement :** vous pouvez signaler du contenu inapproprié via le site.
 
+### Comment supprimer une vidéo téléversée
+1. Ouvrez `volleycam.com` et sélectionnez la salle via « Salle » dans le menu latéral (le code à 6 chiffres est requis).
+2. Ouvrez l’événement souhaité.
+3. Cliquez sur l’icône de corbeille dans l’en‑tête de l’événement et confirmez la suppression.
+
 ## 6. Contact
 Si vous avez des questions sur cette politique de confidentialité, veuillez nous contacter à : oganer@gmail.com

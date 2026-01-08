@@ -39,5 +39,10 @@ Geüploade clips worden onbeperkt bewaard totdat ze door de gebruiker worden ver
 - **Verwijderen:** gebruikers met toegang tot de Room‑ID kunnen clips verwijderen via de VolleyCam‑website. Je kunt ook verwijdering aanvragen door contact op te nemen met support.
 - **Melden:** je kunt ongepaste inhoud melden via de website.
 
+### Hoe je een geüploade video verwijdert
+1. Open `volleycam.com` en kies de kamer via “Kamer” in het zijmenu (je hebt de juiste 6‑cijferige code nodig).
+2. Open het gewenste event.
+3. Klik op het prullenbak‑icoon in de kop van het event en bevestig het verwijderen.
+
 ## 6. Contact
 Als je vragen hebt over dit privacybeleid, neem dan contact op via: oganer@gmail.com

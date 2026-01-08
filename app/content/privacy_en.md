@@ -39,5 +39,10 @@ Uploaded clips are stored indefinitely until they are deleted by the user. Users
 - **Deletion:** Users with access to the Room ID can delete clips through the VolleyCam website. You can also request deletion by contacting support.
 - **Reporting:** You can report inappropriate content through the website.
 
+### How to delete an uploaded video
+1. Open `volleycam.com` and select the room via “Room” in the sidebar (you need the correct 6-digit code).
+2. Open the event you want.
+3. Click the trash icon in the event header and confirm deletion.
+
 ## 6. Contact Us
 If you have any questions about this Privacy Policy, please contact us at: oganer@gmail.com
