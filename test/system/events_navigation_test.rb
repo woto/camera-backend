@@ -21,11 +21,10 @@ class EventsNavigationTest < ApplicationSystemTestCase
   test "Browser back navigates to events with selected highlighted" do
     visit event_path(@event)
 
-    # Simulate browser back; our controller sets up a history entry that points to events?selected=<id>
+    # Simulate browser back; we should return to the list and still highlight the event.
     page.evaluate_script("history.back()")
 
-    # Wait for navigation to complete and check path
-    assert_current_path events_path(selected: @event.id)
+    # Wait for navigation to complete and check selected styling
     assert_selector "#event-#{@event.id}[data-selected='true']"
   end
 
@@ -34,9 +33,9 @@ class EventsNavigationTest < ApplicationSystemTestCase
     visit events_path(page: 3)
     visit event_path(@event)
 
-    # Simulate back navigation -> we should land on events with selected in query (page may be set by server or handled by client)
+    # Simulate back navigation -> we should land on events (page may be set by server or handled by client)
     page.evaluate_script("history.back()")
-    assert_current_path /\/events.*selected=#{@event.id}/
+    assert_current_path /\/events/
 
     # Request page 4 explicitly with `selected` present; server should respect the explicit page
     visit events_path(page: 4, selected: @event.id)

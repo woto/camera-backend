@@ -19,7 +19,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% @events.each do |event| %>
         <div id="event-<%= event.id %>" data-event-id="<%= event.id %>" data-selected="<%= 'true' if @selected_event_id.to_s == event.id.to_s %>" class="card group cursor-pointer border-2 border-white/5 hover:border-accent-purple/30 relative <%= 'is-selected' if @selected_event_id.to_s == event.id.to_s %>">
-          <%= link_to event_path(event), class: "block h-full" do %>
+          <%= link_to event_path(event),
+            class: "block h-full",
+            data: { turbo: false, action: "click->events-list#rememberSelection", events_list_event_id: event.id } do %>
             <% frames = event_preview_frames(event) %>
             <% frame_urls = frames.map { |thumb| url_for(thumb) } %>
             <div class="relative aspect-[16/10] bg-zinc-950 overflow-hidden rounded-t-2xl"

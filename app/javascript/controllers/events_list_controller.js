@@ -22,6 +22,44 @@ export default class extends Controller {
     setTimeout(() => {
       try { el.scrollIntoView({ behavior: "smooth", block: "center" }) } catch (e) { /* ignore */ }
     }, 50)
+
+    this._popstateHandler = () => {
+      try {
+        const loc = new URL(window.location.href)
+        if (this._isEventPath(loc.pathname)) {
+          window.location.href = loc.href
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    window.addEventListener("popstate", this._popstateHandler)
+  }
+
+  disconnect() {
+    if (this._popstateHandler) {
+      window.removeEventListener("popstate", this._popstateHandler)
+      this._popstateHandler = null
+    }
+  }
+
+  rememberSelection(event) {
+    if (event.defaultPrevented) return
+    if (event.button !== 0) return
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    const id = event.currentTarget?.dataset?.eventsListEventId
+    if (!id) return
+    try {
+      const url = new URL(window.location.href)
+      url.searchParams.set("selected", id)
+      window.history.replaceState({}, "", url)
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  _isEventPath(pathname) {
+    return /^\/events\/\d+/.test(pathname)
   }
 
   _selectedFromUrl() {

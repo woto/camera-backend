@@ -63,24 +63,6 @@ export default class extends Controller {
   }
 
   setupNavigationFallback() {
-
-    // Ensure there's a history entry that points to the events list with this event selected
-    // while keeping the visible URL as the event path. We replace the current entry with
-    // the events URL (so Back goes there) then push the event URL to restore the visible URL.
-    try {
-      const eventsUrl = this.eventsSelectedUrlValue
-      if (eventsUrl && eventsUrl.length > 0) {
-        const currentUrl = window.location.href
-        history.replaceState({}, "", eventsUrl)
-        // Delay pushing the event URL restore by a tick to avoid transient address flicker
-        setTimeout(() => {
-          try { history.pushState({}, "", currentUrl) } catch (e) { /* ignore */ }
-        }, 0)
-      }
-    } catch (e) {
-      // ignore
-    }
-
     // Persist last viewed id for index fallback behavior
     try {
       if (this.eventIdValue) {
@@ -90,30 +72,23 @@ export default class extends Controller {
       // ignore
     }
 
-    // On popstate, if the URL we returned to is the events list with `selected`, force a
-    // full navigation to that URL so the server can compute pagination and render the
-    // selected item on the correct page (this avoids Turbo snapshot issues).
-    this._popstateHandler = (e) => {
+    // Handle browser back/forward while staying in fullscreen-friendly stream updates.
+    this._popstateHandler = () => {
       try {
         const loc = new URL(window.location.href)
         const eventsUrl = this.eventsSelectedUrlValue
         if (!eventsUrl) return
         const eventsPath = new URL(eventsUrl, window.location.origin).pathname
-        if (loc.pathname === eventsPath && loc.searchParams.get("selected")) {
-          // Force full navigation to server-rendered page
+        if (loc.pathname === eventsPath) {
           window.location.href = loc.href
+          return
         }
+        this._fetchEventStream(loc.href)
       } catch (err) {
         // ignore
       }
     }
     window.addEventListener("popstate", this._popstateHandler)
-  }
-
-  disconnect() {
-    if (this._popstateHandler) {
-      window.removeEventListener("popstate", this._popstateHandler)
-    }
   }
 
   switcherDataTargetConnected() {
@@ -211,6 +186,10 @@ export default class extends Controller {
     if (this.hasLabelTarget) {
       this.labelTarget.textContent = this.loadingText()
     }
+    this._fetchEventStream(url, { pushHistory: true })
+  }
+
+  _fetchEventStream(url, { pushHistory = false } = {}) {
     fetch(url, {
       headers: {
         Accept: "text/vnd.turbo-stream.html",
@@ -220,13 +199,24 @@ export default class extends Controller {
       .then((response) => response.text())
       .then((html) => {
         Turbo.renderStreamMessage(html)
-        history.pushState({}, "", url)
+        if (pushHistory) {
+          this._pushHistory(url)
+        }
       })
       .catch(() => {})
       .finally(() => {
         this.isNavigating = false
       })
   }
+
+  _pushHistory(url) {
+    try {
+      window.history.pushState({}, "", url)
+    } catch (e) {
+      // ignore
+    }
+  }
+
 
   showControls() {
     if (!this.hasControlsOverlayTarget) return
@@ -1047,6 +1037,10 @@ export default class extends Controller {
     if (this.hls) {
       try { this.hls.destroy() } catch (e) { /* ignore */ }
       this.hls = null
+    }
+    if (this._popstateHandler) {
+      window.removeEventListener("popstate", this._popstateHandler)
+      this._popstateHandler = null
     }
   }
 
