@@ -32,7 +32,7 @@ class RegenerateThumbnailsJob < ApplicationJob
 
       large_thumbnails = ThumbnailGenerator.new(
         file.path,
-        capture_count: 24,
+        capture_count: 36,
         target_width: 640,
         target_height: 400,
         quality: 3

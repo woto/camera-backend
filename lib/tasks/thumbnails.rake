@@ -41,7 +41,7 @@ namespace :captures do
 
         large_thumbnails = ThumbnailGenerator.new(
           file.path,
-          capture_count: 12,
+          capture_count: 36,
           target_width: 640,
           target_height: 400,
           quality: 3
