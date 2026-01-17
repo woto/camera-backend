@@ -30,16 +30,16 @@ class HlsGenerator
         "-i", src,
 
         # video
-        "-vf", "scale='min(1280,iw)':'-2'",
+        "-vf", "scale='min(1920,iw)':'-2'",
         "-vsync", "cfr", "-r", "30",
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
         "-profile:v", "main",
         "-level:v", "4.0",
-        "-preset", "veryfast",
-        "-crf", "23",
-        "-maxrate", "3000k",
-        "-bufsize", "6000k",
+        "-preset", "fast",
+        "-crf", "20",
+        "-maxrate", "5000k",
+        "-bufsize", "10000k",
         "-g", "180",
         "-keyint_min", "180",
         "-sc_threshold", "0",
@@ -48,7 +48,7 @@ class HlsGenerator
 
         # audio
         "-c:a", "aac",
-        "-b:a", "128k",
+        "-b:a", "160k",
         "-af", "aresample=async=1:first_pts=0",
 
         # hls
