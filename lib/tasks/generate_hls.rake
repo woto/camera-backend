@@ -12,11 +12,18 @@ namespace :captures do
     scope = scope.where(room_id: room_id) if room_id && room_id > 0
     scope = scope.limit(limit) if limit && limit > 0
 
-    puts "Enqueuing HLS generation for #{scope.count} captures..."
+    total = scope.count
+    processed = 0
+    errors = 0
+    puts "Generating HLS for #{total} capture(s)..."
     scope.find_each do |capture|
+      processed += 1
+      puts "Generating Capture##{capture.id} (event #{capture.event_id})"
       GenerateHlsJob.perform_now(capture.id)
-      puts "Enqueued Capture ##{capture.id}"
+    rescue => e
+      errors += 1
+      warn "Failed Capture##{capture.id}: #{e.message}"
     end
-    puts "Done."
+    puts "Done. processed=#{processed} errors=#{errors}"
   end
 end
